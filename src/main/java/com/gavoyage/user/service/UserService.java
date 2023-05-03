@@ -4,7 +4,10 @@ import java.sql.SQLException;
 
 import com.gavoyage.user.domain.User;
 import com.gavoyage.user.dto.request.UserLoginReq;
+import com.gavoyage.user.dto.response.UserLoginRes;
 
 public interface UserService {
-	User findByEmail(String email) throws SQLException;
+	int emailCheck(String email) throws Exception;
+	UserLoginRes login(UserLoginReq userLoginReq) throws SQLException;
+	User findOne(Long userIdx) throws SQLException;
 }

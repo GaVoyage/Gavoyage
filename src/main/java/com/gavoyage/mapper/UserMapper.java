@@ -6,11 +6,15 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.gavoyage.user.domain.User;
 import com.gavoyage.user.dto.request.UserLoginReq;
+import com.gavoyage.user.dto.response.UserLoginRes;
 
 @Mapper
 public interface UserMapper {
-	User findOne(Integer userIdx) throws SQLException;
-	User findByEmail(String email) throws SQLException;
+	
+	int emailCheck(String email) throws SQLException;
+	UserLoginRes login(UserLoginReq userLoginReq) throws SQLException;
+	User findOne(Long userIdx) throws SQLException;
+
 }
 
 
