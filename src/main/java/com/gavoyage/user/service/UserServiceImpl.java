@@ -1,6 +1,7 @@
 package com.gavoyage.user.service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class UserServiceImpl implements UserService{
 	private final UserMapper userMapper;
 
 	@Override
-	public UserLoginRes login(UserLoginReq userLoginReq) throws SQLException {
+	public User login(UserLoginReq userLoginReq) throws SQLException {
 		return userMapper.login(userLoginReq);
 	}
 
@@ -31,6 +32,10 @@ public class UserServiceImpl implements UserService{
 	public User findOne(Long userIdx) throws SQLException {
 		return userMapper.findOne(userIdx);
 	}
-	
+
+	@Override
+	public List<User> findAll() throws SQLException {
+		return userMapper.findAll();
+	}
 	
 }

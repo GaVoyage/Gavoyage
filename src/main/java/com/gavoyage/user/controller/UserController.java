@@ -1,6 +1,9 @@
 package com.gavoyage.user.controller;
 
 import java.sql.SQLException;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,23 +32,27 @@ public class UserController {
 	private final UserServiceImpl userService;
 	
 	@PostMapping("/login")
-	public ResponseEntity<Long> login(@RequestBody UserLoginReq userLoginReq) throws SQLException {
+	public ResponseEntity<UserLoginRes> login(@RequestBody UserLoginReq userLoginReq, HttpSession session) throws SQLException {
 		try {
 			log.debug("/user/login");
-			log.debug("userLoginReq : " + userLoginReq);
 			
-			UserLoginRes findUser = userService.login(userLoginReq);
-			log.debug("findUser : " + findUser);
+			User findUser = userService.login(userLoginReq);
+			
 			if(findUser == null) { // email과 password가 일치하는 사용자가 없을 경우
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 			
-			Long findUserIdx = findUser.getUserIdx();
-			return new ResponseEntity<>(findUserIdx, HttpStatus.OK);
+			session.setAttribute("user", findUser); // 세션에 유저 정보 저장
+			
+			return new ResponseEntity<>(new UserLoginRes(findUser.getUserIdx(), findUser.getNickname()), HttpStatus.OK);
+			
 		}catch(Exception exception) {
 			log.debug("error" + exception);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		
+		
+		
 	}
 	
 	@GetMapping("/emailCheck/{email}")
@@ -70,6 +77,23 @@ public class UserController {
 			log.debug("error" + exception);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
 	}
+	
+	@GetMapping("")
+	public ResponseEntity<List<User>> findAll() throws Exception{
+		try {
+			List<User> findUsers = userService.findAll();
+			log.debug("findUser : " + findUsers);
+			
+			if(findUsers == null) {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+			
+			return new ResponseEntity<>(findUsers, HttpStatus.OK);
+		}catch(Exception exception) {
+			log.debug("error" + exception);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 }

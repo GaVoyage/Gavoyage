@@ -4,7 +4,7 @@
 
 <mapper namespace="com.gavoyage.mapper.UserMapper">
 
-	<resultMap type="User" id="member">
+	<resultMap type="User" id="user">
 		<result column="userIdx" property="userIdx"/>
 		<result column="email" property="email"/>
 		<result column="nickname" property="nickname"/>
@@ -17,8 +17,8 @@
 		<result column="modifiedAt" property="modifiedAt"/>
 	</resultMap>
 
-	<select id="login" parameterType="userLoginReq" resultType="userLoginRes">
-		select userIdx, email, userPassword
+	<select id="login" parameterType="userLoginReq" resultMap="user">
+		select *
 		from user
 		where email=#{email} and userPassword=#{userPassword}
 	</select>
@@ -29,10 +29,16 @@
 		where email = #{email}
 	</select>
 	
-	<select id="findOne" parameterType="Long" resultMap="member">
+	<select id="findOne" parameterType="Long" resultMap="user">
 		select *
 		from user
 		where userIdx = #{userIdx}
+	</select>
+	
+	<select id="findAll" resultMap="user">
+		select *
+		from user
+		order by createdAt
 	</select>
 	
 </mapper>
