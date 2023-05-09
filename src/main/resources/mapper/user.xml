@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.voyage.mapper.UserMapper">
+<mapper namespace="com.gavoyage.mapper.UserMapper">
 
-	<resultMap type="User" id="member">
+	<resultMap type="User" id="user">
 		<result column="userIdx" property="userIdx"/>
 		<result column="email" property="email"/>
 		<result column="nickname" property="nickname"/>
-		<result column="password" property="password"/>
+		<result column="userPassword" property="userPassword"/>
 		<result column="userImageUrl" property="userImageUrl"/>
 		<result column="phoneNumber" property="phoneNumber"/>
 		<result column="userRole" property="userRole"/>
@@ -17,10 +17,28 @@
 		<result column="modifiedAt" property="modifiedAt"/>
 	</resultMap>
 
-	<select id="findByEmail" parameterType="String" resultMap="member">
+	<select id="login" parameterType="userLoginReq" resultMap="user">
 		select *
-		from members
-		where email=#{email} 
+		from user
+		where email=#{email} and userPassword=#{userPassword}
+	</select>
+	
+	<select id="emailCheck" parameterType="String" resultType="int">
+		select count(email)
+		from user
+		where email = #{email}
+	</select>
+	
+	<select id="findOne" parameterType="Long" resultMap="user">
+		select *
+		from user
+		where userIdx = #{userIdx}
+	</select>
+	
+	<select id="findAll" resultMap="user">
+		select *
+		from user
+		order by createdAt
 	</select>
 	
 </mapper>

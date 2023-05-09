@@ -96,7 +96,7 @@ CREATE TABLE UserLikeAttraction
     `content_id`             BIGINT       NOT NULL, 
     `status`                 CHAR(1)      NOT NULL    DEFAULT 'Y', 
     `createdAt`              TIMESTAMP    NOT NULL    DEFAULT current_timestamp, 
-    `modifiedAt`             TIMESTAMP    NOT NULL    DEFAULT current_timestamp on update current_timestampon update current_timestamp, 
+    `modifiedAt`             TIMESTAMP    NOT NULL    DEFAULT current_timestamp on update current_timestamp on update current_timestamp, 
      PRIMARY KEY (userLikeAttractionIdx)
 );
 
