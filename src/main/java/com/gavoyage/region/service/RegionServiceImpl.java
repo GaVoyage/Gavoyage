@@ -31,12 +31,8 @@ public class RegionServiceImpl implements RegionService {
 
 		return regionMapper.getSigungu(sidoCode);
 	}
-
-	@Override
-	public List<AttractionInfo> getAttractionInfos(AttractionInfo attr) throws Exception {
-
-		return regionMapper.getAttractionInfos(attr);
-	}
+	
+	
 
 	@Override
 	public AttractionDescription getAttractionDescription(int contentId) throws Exception {
@@ -48,6 +44,11 @@ public class RegionServiceImpl implements RegionService {
 	public AttractionDetail getAttractionDetail(int contentId) throws Exception {
 
 		return regionMapper.getAttractionDetail(contentId);
+	}
+
+	@Override
+	public List<AttractionInfo> getAttractionInfos(int contendId) throws Exception {
+		return regionMapper.getAttractionInfos(contendId);
 	}
 
 }

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.gavoyage.mapper.UserMapper;
 import com.gavoyage.user.domain.User;
+import com.gavoyage.user.dto.request.UserJoinReq;
 import com.gavoyage.user.dto.request.UserLoginReq;
-import com.gavoyage.user.dto.response.UserLoginRes;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,6 +36,11 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public List<User> findAll() throws SQLException {
 		return userMapper.findAll();
+	}
+
+	@Override
+	public void join(UserJoinReq userJoinReq) throws Exception {
+		userMapper.join(userJoinReq);
 	}
 	
 }

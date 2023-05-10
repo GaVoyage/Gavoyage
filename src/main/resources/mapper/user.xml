@@ -41,4 +41,10 @@
 		order by createdAt
 	</select>
 	
+	<insert id="join" parameterType="userJoinReq">
+		insert into 
+		user(email, nickname, userPassword, phoneNumber) 
+		values (#{email}, #{nickname}, #{userPassword}, #{phoneNumber});
+	</insert>
+	
 </mapper>
