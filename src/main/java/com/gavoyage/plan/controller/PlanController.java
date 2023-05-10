@@ -18,6 +18,7 @@ import com.gavoyage.plan.domain.Plan;
 import com.gavoyage.plan.dto.request.PlanCreateDto;
 import com.gavoyage.plan.dto.request.PlanCreateReq;
 import com.gavoyage.plan.service.PlanServiceImpl;
+import com.gavoyage.region.service.RegionServiceImpl;
 import com.gavoyage.user.domain.User;
 
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PlanController {
 	
 	private final PlanServiceImpl planService;
+	private final RegionServiceImpl regionService;
 	
 	@PostMapping("")
 	public ResponseEntity<?> createPlan(@RequestBody() PlanCreateReq planCreateReq, HttpSession session) throws Exception{
@@ -58,7 +60,7 @@ public class PlanController {
 		
 	}
 	
-	@GetMapping("/dailyplan/{planIdx}")
+	@GetMapping("/{planIdx}")
 	public ResponseEntity<List<DailyPlan>> getDailyPlans(@PathVariable Long planIdx){
 		
 //		User user = (User) session.getAttribute("user");
