@@ -67,6 +67,5 @@ public class PlanController {
 		List<DailyPlan> findDailyPlans = planService.findDailyPlans(planIdx);
 		
 		return new ResponseEntity<>(findDailyPlans, HttpStatus.OK);
-		
 	}
 }

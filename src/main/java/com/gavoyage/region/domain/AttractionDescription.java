@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AttractionDescription extends BaseEntity{
+public class AttractionDescription {
 
 	private int content_id;
 	private String homepage;

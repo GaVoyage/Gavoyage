@@ -10,12 +10,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Gugun {
 
-	private int gugunCode;
-	private String gugunName;
-	private int sidoCode;
+	private int gugun_code;
+	private String gugun_name;
+	private int sido_code;
 
 	public Gugun(int sidoCode) {
 		super();
-		this.sidoCode = sidoCode;
+		this.sido_code = sidoCode;
 	}
 }

@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Sido {
 
-	private int sidoCode;
-	private String sidoName;
+	private int sido_code;
+	private String sido_name;
 
 }
