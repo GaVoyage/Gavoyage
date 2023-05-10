@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService{
 	private final UserMapper userMapper;
 
 	@Override
-	public User login(UserLoginReq userLoginReq) throws SQLException {
+	public User login(UserLoginReq userLoginReq) throws Exception {
 		return userMapper.login(userLoginReq);
 	}
 
@@ -29,12 +29,12 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public User findOne(Long userIdx) throws SQLException {
+	public User findOne(Long userIdx) throws Exception {
 		return userMapper.findOne(userIdx);
 	}
 
 	@Override
-	public List<User> findAll() throws SQLException {
+	public List<User> findAll() throws Exception {
 		return userMapper.findAll();
 	}
 

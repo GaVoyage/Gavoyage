@@ -1,6 +1,8 @@
 package com.gavoyage.plan.controller;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -18,6 +20,7 @@ import com.gavoyage.plan.domain.Plan;
 import com.gavoyage.plan.dto.request.PlanCreateDto;
 import com.gavoyage.plan.dto.request.PlanCreateReq;
 import com.gavoyage.plan.service.PlanServiceImpl;
+import com.gavoyage.region.domain.AttractionInfo;
 import com.gavoyage.region.service.RegionServiceImpl;
 import com.gavoyage.user.domain.User;
 
@@ -49,7 +52,7 @@ public class PlanController {
 	}
 	
 	@GetMapping("")
-	public ResponseEntity<List<Plan>> getPlans(){
+	public ResponseEntity<List<Plan>> getPlans() throws Exception {
 		
 //		User user = (User) session.getAttribute("user");
 //		long userIdx = user.getUserIdx();
@@ -61,13 +64,13 @@ public class PlanController {
 	}
 	
 	@GetMapping("/{planIdx}")
-	public ResponseEntity<List<DailyPlan>> getDailyPlans(@PathVariable Long planIdx){
+	public ResponseEntity<Map<LocalDate, List<AttractionInfo>>> getDailyPlans(@PathVariable Long planIdx) throws Exception {
 		
 //		User user = (User) session.getAttribute("user");
 //		long userIdx = user.getUserIdx();
 		
-		List<DailyPlan> findDailyPlans = planService.findDailyPlans(planIdx);
+		Map<LocalDate, List<AttractionInfo>> attractionInfos = planService.findAllAttractionInfos(planIdx);
 		
-		return new ResponseEntity<>(findDailyPlans, HttpStatus.OK);
+		return new ResponseEntity<>(attractionInfos, HttpStatus.OK);
 	}
 }

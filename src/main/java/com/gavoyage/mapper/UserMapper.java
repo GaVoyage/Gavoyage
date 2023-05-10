@@ -17,7 +17,7 @@ public interface UserMapper {
 	User login(UserLoginReq userLoginReq) throws SQLException;
 	User findOne(Long userIdx) throws SQLException;
 	List<User> findAll() throws SQLException;
-	void join(UserJoinReq userJoinReq);
+	void join(UserJoinReq userJoinReq)  throws SQLException;
 
 }
 
