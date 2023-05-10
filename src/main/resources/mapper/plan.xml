@@ -4,7 +4,7 @@
 
 <mapper namespace="com.gavoyage.mapper.PlanMapper">
 	
-	<insert id="createPlan" parameterType="PlanCreateReq">
+	<insert id="createPlan" parameterType="planCreateReq">
 		insert into plan(userIdx, title, startDate, endDate) 
 		values(#{userIdx}, #{title}, #{startDate}, #{endDate});
 		
@@ -14,15 +14,19 @@
         
 	</insert>
 	
-	<insert id="createDailyPlan" parameterType="DailyPlanCreateDto">
+	<insert id="createDailyPlan" parameterType="dailyPlanCreateDto">
 		insert into daillyPlan(planIdx, content_id, dailyDate) 
 		values (#{planIdx}, #{content_id}, #{dailyDate});
-		
-		<selectKey resultType="long" keyProperty="planIdx" order="AFTER">
-            select last_insert_id()
-        </selectKey>
-        
 	</insert>
 	
+	<select id="getPlans" parameterType="Long" resultType="plan">
+		select * from plan 
+		where userIdx = #{userIdx};
+	</select>
 	
+	<select id="getDailyPlans" parameterType="Long" resultType="dailyPlan">
+		select * from daillyplan
+		 where planIdx = #{planIdx};
+	</select>
+	 
 </mapper>

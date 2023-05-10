@@ -1,4 +1,6 @@
-package com.gavoyage.region.domain;
+package com.gavoyage.config;
+
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,9 +10,8 @@ import lombok.Setter;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Sido {
-
-	private int sidoCode;
-	private String sidoName;
-
+public class BaseEntity {
+	public Character status;
+	public LocalDate createdAt;
+	public LocalDate modifiedAt;
 }

@@ -9,10 +9,11 @@ import com.gavoyage.region.domain.Gugun;
 import com.gavoyage.region.domain.Sido;
 
 public interface RegionService {
-
+	
 	List<Sido> getSido() throws Exception;
 	List<Gugun> getSigungu(int sidoCode) throws Exception;
-	List<AttractionInfo> getAttractionInfos(AttractionInfo attr) throws Exception;
+	List<AttractionInfo> getAttractionInfos(int contendId) throws Exception;
 	AttractionDescription getAttractionDescription(int contentId) throws Exception;
 	AttractionDetail getAttractionDetail(int contentId) throws Exception;
+	
 }

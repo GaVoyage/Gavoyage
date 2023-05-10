@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.gavoyage.mapper.PlanMapper;
+import com.gavoyage.plan.domain.DailyPlan;
+import com.gavoyage.plan.domain.Plan;
 import com.gavoyage.plan.dto.request.DailyPlanCreateDto;
 import com.gavoyage.plan.dto.request.PlanCreateReq;
 
@@ -33,10 +35,17 @@ public class PlanServiceImpl implements PlanService{
 			
 			curDate.plusDays(1); // 날짜 증가
 		}
-		
-		
 	}
-	
+
+	@Override
+	public List<Plan> findPlans(Long userIdx) {
+		return planMapper.getPlans(userIdx);
+	}
+
+	@Override
+	public List<DailyPlan> findDailyPlans(Long planIdx) {
+		return planMapper.getDailyPlans(planIdx);
+	}
 	
 
 }
