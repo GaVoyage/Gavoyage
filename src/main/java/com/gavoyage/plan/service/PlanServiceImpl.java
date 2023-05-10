@@ -23,7 +23,6 @@ public class PlanServiceImpl implements PlanService{
 		planMapper.createPlan(planCreateReq);
 		
 		LocalDate curDate = planCreateReq.getStartDate();
-		Long userIdx = planCreateReq.getUserIdx();
 		Long planIdx = planCreateReq.getPlanIdx();
 		
 		for(List<Integer> content_ids : planCreateReq.getDailyPlans()) {
@@ -32,6 +31,7 @@ public class PlanServiceImpl implements PlanService{
 				planMapper.createDailyPlan(new DailyPlanCreateDto(planIdx, content_id, curDate));
 			}
 			
+			curDate.plusDays(1); // 날짜 증가
 		}
 		
 		

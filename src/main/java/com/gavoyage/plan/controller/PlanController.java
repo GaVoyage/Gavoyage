@@ -31,8 +31,8 @@ public class PlanController {
 		log.debug("createPlan()");
 		log.debug(planCreateReq.toString());
 		
-		User user = (User) session.getAttribute("user");
-		long userIdx = user.getUserIdx();
+//		User user = (User) session.getAttribute("user");
+//		long userIdx = user.getUserIdx();
 		
 		planService.createPlan(planCreateReq);
 		

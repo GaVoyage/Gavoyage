@@ -3,36 +3,6 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gavoyage.mapper.PlanMapper">
-
-	<select id="login" parameterType="userLoginReq" resultMap="user">
-		select *
-		from user
-		where email=#{email} and userPassword=#{userPassword}
-	</select>
-	
-	<select id="emailCheck" parameterType="String" resultType="int">
-		select count(email)
-		from user
-		where email = #{email}
-	</select>
-	
-	<select id="findOne" parameterType="Long" resultMap="user">
-		select *
-		from user
-		where userIdx = #{userIdx}
-	</select>
-	
-	<select id="findAll" resultMap="user">
-		select *
-		from user
-		order by createdAt
-	</select>
-	
-	<select id="join" parameterType="userJoinReq">
-		insert into 
-		user(email, nickname, userPassword, phoneNumber) 
-		values (#{email}, #{nickname}, #{userPassword}, #{phoneNumber});
-	</select>
 	
 	<insert id="createPlan" parameterType="PlanCreateReq">
 		insert into plan(userIdx, title, startDate, endDate) 
@@ -44,9 +14,9 @@
         
 	</insert>
 	
-	<insert id="createDailyPlan" parameterType="PlanCreateReq">
-		insert into plan(userIdx, title, startDate, endDate) 
-		values(#{userIdx}, #{title}, #{startDate}, #{endDate});
+	<insert id="createDailyPlan" parameterType="DailyPlanCreateDto">
+		insert into daillyPlan(planIdx, content_id, dailyDate) 
+		values (#{planIdx}, #{content_id}, #{dailyDate});
 		
 		<selectKey resultType="long" keyProperty="planIdx" order="AFTER">
             select last_insert_id()

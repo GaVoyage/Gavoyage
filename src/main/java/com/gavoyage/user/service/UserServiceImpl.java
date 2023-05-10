@@ -9,7 +9,6 @@ import com.gavoyage.mapper.UserMapper;
 import com.gavoyage.user.domain.User;
 import com.gavoyage.user.dto.request.UserJoinReq;
 import com.gavoyage.user.dto.request.UserLoginReq;
-import com.gavoyage.user.dto.response.UserLoginRes;
 
 import lombok.RequiredArgsConstructor;
 
