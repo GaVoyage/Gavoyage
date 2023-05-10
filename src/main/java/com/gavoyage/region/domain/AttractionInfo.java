@@ -28,10 +28,4 @@ public class AttractionInfo {
 	private int sido_code;
 	private int gugun_code;
 
-	public AttractionInfo( int sido_code, int gugun_code, int content_type_id) {
-		super();
-		this.content_type_id = content_type_id;
-		this.sido_code = sido_code;
-		this.gugun_code = gugun_code;
-	}
 }

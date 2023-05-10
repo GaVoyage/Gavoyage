@@ -10,6 +10,7 @@ import com.gavoyage.region.domain.AttractionDetail;
 import com.gavoyage.region.domain.AttractionInfo;
 import com.gavoyage.region.domain.Gugun;
 import com.gavoyage.region.domain.Sido;
+import com.gavoyage.region.dto.request.RegionSearchReq;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,12 +28,9 @@ public class RegionServiceImpl implements RegionService {
 	}
 
 	@Override
-	public List<Gugun> getSigungu(int sidoCode) throws Exception{
-
-		return regionMapper.getSigungu(sidoCode);
+	public List<Gugun> getGugun(int sidoCode) throws Exception {
+		return regionMapper.getGugun(sidoCode);
 	}
-	
-	
 
 	@Override
 	public AttractionDescription getAttractionDescription(int contentId) throws Exception {
@@ -47,8 +45,13 @@ public class RegionServiceImpl implements RegionService {
 	}
 
 	@Override
-	public List<AttractionInfo> getAttractionInfos(int contendId) throws Exception {
-		return regionMapper.getAttractionInfos(contendId);
+	public List<AttractionInfo> getAttractionInfos(RegionSearchReq regionSearchReq) throws Exception {
+		return regionMapper.getAttractionInfos(regionSearchReq);
+	}
+
+	@Override
+	public AttractionInfo getAttractionInfosByContentId(int contentId) throws Exception {
+		return regionMapper.getAttractionInfosByContentId(contentId);
 	}
 
 }
