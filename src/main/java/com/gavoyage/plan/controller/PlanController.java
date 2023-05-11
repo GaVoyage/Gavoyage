@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@RequestMapping("/plan")
+@RequestMapping("/plans")
 public class PlanController {
 	
 	private final PlanServiceImpl planService;

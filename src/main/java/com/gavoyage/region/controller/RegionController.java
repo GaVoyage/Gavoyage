@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @CrossOrigin("*")
-@RequestMapping("/region")
+@RequestMapping("/regions")
 public class RegionController {
 	
 	private final RegionService regionService;

@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @CrossOrigin("*")
 @RequiredArgsConstructor // 생성자 주입
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 	
 	private final UserServiceImpl userService;
