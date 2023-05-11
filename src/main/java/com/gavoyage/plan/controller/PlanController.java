@@ -8,6 +8,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@CrossOrigin("*")
 @RequestMapping("/plan")
 public class PlanController {
 	
@@ -72,5 +75,21 @@ public class PlanController {
 		Map<LocalDate, List<AttractionInfo>> attractionInfos = planService.findAllAttractionInfos(planIdx);
 		
 		return new ResponseEntity<>(attractionInfos, HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/{planIdx}")
+	public ResponseEntity<?> deletePlan(@PathVariable Long planIdx){
+		
+		planService.deletePlan(planIdx);
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/dailyplan/{dailyPlanIdx}")
+	public ResponseEntity<?> deleteDailyPlan(@PathVariable Long dailyPlanIdx){
+		
+		planService.deleteDailyPlan(dailyPlanIdx);
+		
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

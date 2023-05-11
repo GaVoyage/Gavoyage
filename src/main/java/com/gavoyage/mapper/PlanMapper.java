@@ -17,5 +17,7 @@ public interface PlanMapper {
 	void createDailyPlan(DailyPlanCreateDto dailyPlanCreateDto) throws SQLException;
 	List<Plan> getPlans(Long userIdx) throws SQLException;
 	List<DailyPlan> getDailyPlans(Long planIdx) throws SQLException;
+	void deletePlan(Long planIdx);
+	void deleteDailyPlan(Long dailyPlanIdx);
 	
 }

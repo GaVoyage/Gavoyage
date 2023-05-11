@@ -15,5 +15,7 @@ public interface PlanService {
 	List<Plan> findPlans(Long userIdx) throws Exception;
 	List<DailyPlan> findDailyPlans(Long planIdx) throws Exception;
 	Map<LocalDate, List<AttractionInfo>> findAllAttractionInfos(Long planIdx) throws Exception;
+	void deletePlan(Long planIdx);
+	void deleteDailyPlan(Long dailyPlanIdx);
 	
 }

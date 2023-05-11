@@ -6,7 +6,10 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,8 +26,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequiredArgsConstructor // 생성자 주입
 @Slf4j
+@CrossOrigin("*")
+@RequiredArgsConstructor // 생성자 주입
 @RequestMapping("/user")
 public class UserController {
 	
@@ -35,7 +39,7 @@ public class UserController {
 	 */
 	@PostMapping("/join")
 	public ResponseEntity<?> join(@RequestBody UserJoinReq userJoinReq) throws Exception{
-		
+
 		log.debug("/user/join");
 		userService.join(userJoinReq);
 		
@@ -117,6 +121,14 @@ public class UserController {
 			log.debug("error" + exception);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	@DeleteMapping("/{userIdx}")
+	public ResponseEntity<?> deleteUser(@PathVariable Long userIdx) throws Exception{
+		
+		userService.deleteUser(userIdx);
+		
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 }
