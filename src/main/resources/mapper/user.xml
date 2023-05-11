@@ -38,6 +38,7 @@
 	<select id="findAll" resultMap="user">
 		select *
 		from user
+		where status = 'Y'
 		order by createdAt
 	</select>
 	
@@ -46,5 +47,9 @@
 		user(email, nickname, userPassword, phoneNumber) 
 		values (#{email}, #{nickname}, #{userPassword}, #{phoneNumber});
 	</insert>
+	
+	<update id="deleteUser" parameterType="long">
+		update user set status = 'N' where userIdx = #{userIdx}
+	</update>
 	
 </mapper>

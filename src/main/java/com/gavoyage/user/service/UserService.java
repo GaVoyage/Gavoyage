@@ -12,4 +12,6 @@ public interface UserService {
 	void join(UserJoinReq userJoinReq) throws Exception;
 	User findOne(Long userIdx) throws Exception;
 	List<User> findAll() throws Exception;
+	void deleteUser(Long userIdx) throws Exception;
+	
 }

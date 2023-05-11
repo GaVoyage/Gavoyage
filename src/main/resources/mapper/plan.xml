@@ -21,12 +21,20 @@
 	
 	<select id="getPlans" parameterType="Long" resultType="plan">
 		select * from plan 
-		where userIdx = #{userIdx};
+		where userIdx = #{userIdx} and status = 'Y'
 	</select>
 	
 	<select id="getDailyPlans" parameterType="Long" resultType="dailyPlan">
-		select * from daillyplan
-		 where planIdx = #{planIdx};
+		select * from dailyPlan
+		 where planIdx = #{planIdx} and status = 'Y'
 	</select>
+	
+	<update id="deletePlan" parameterType="long">
+		update plan set status = 'N' where planIdx = #{planIdx}
+	</update>
+	
+	<update id="deleteDailyPlan" parameterType="long">
+		update dailyPlan set status = 'N' where dailyPlanIdx = #{dailyPlanIdx}
+	</update>
 	 
 </mapper>

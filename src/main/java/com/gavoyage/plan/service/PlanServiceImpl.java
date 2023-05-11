@@ -78,4 +78,14 @@ public class PlanServiceImpl implements PlanService{
 		return attractionInfos; 
 	}
 
+	@Override
+	public void deletePlan(Long planIdx) {
+		planMapper.deletePlan(planIdx);
+	}
+
+	@Override
+	public void deleteDailyPlan(Long dailyPlanIdx) {
+		planMapper.deleteDailyPlan(dailyPlanIdx);
+	}
+
 }

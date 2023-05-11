@@ -42,5 +42,10 @@ public class UserServiceImpl implements UserService{
 	public void join(UserJoinReq userJoinReq) throws Exception {
 		userMapper.join(userJoinReq);
 	}
+
+	@Override
+	public void deleteUser(Long userIdx) throws Exception {
+		userMapper.deleteUser(userIdx);
+	}
 	
 }
