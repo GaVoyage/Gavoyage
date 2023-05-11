@@ -7,7 +7,7 @@
  * or disable the default devtool with "devtool: false".
  * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
  */
-(self["webpackChunkgavoyage_front"] = self["webpackChunkgavoyage_front"] || []).push([["about"],{
+(self["webpackChunkgavoyage_front"] = self["webpackChunkgavoyage_front"] || []).push([["src_views_AboutView_vue"],{
 
 /***/ "./src/views/AboutView.vue":
 /*!*********************************!*\
