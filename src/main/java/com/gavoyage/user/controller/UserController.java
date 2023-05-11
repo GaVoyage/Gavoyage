@@ -39,7 +39,13 @@ public class UserController {
 	 */
 	@PostMapping("/join")
 	public ResponseEntity<?> join(@RequestBody UserJoinReq userJoinReq) throws Exception{
-
+		
+		String email = userJoinReq.getEmail();
+		if(userService.emailCheck(email) == 1) {
+			log.debug("이미 있는 이메일 입니다.");
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		log.debug("/user/join");
 		userService.join(userJoinReq);
 		
