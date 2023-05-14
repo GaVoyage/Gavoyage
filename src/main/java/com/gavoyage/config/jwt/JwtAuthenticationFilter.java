@@ -67,14 +67,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
-		// 2. authenticalManager로 로그인 시도를 하게 되면 PrincipalDetailsService가 호출되고 loadUserByUsername이 실행된다.
-		
-		// 3. PrincipalDetails를 세션에 담아준다.(for 유저 권한을 구분하여 호출할 수 있는 api를 구분하기 위해서)
-		
-		// 4. JWT 토큰을 만들어서 응답
-		
+
 		return null;
 	}
 	
@@ -91,12 +84,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		// JWT 토큰 생성
 		String jwtToken = JWT.create()
 				.withSubject(principalDetails.getUser().getEmail())
-				.withExpiresAt(new Date(System.currentTimeMillis() + (60000*10))) // 유효 기간을 10분으로 지정
+				.withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME)) // 유효 기간을 10분으로 지정
 				.withClaim("id", principalDetails.getUser().getUserIdx())  // 비공개 클레임으로 내가 넣어 주고 싶은 걸 넣어주면 된다.
-				.withClaim("username", principalDetails.getUser().getNickname())
-				.sign(Algorithm.HMAC512("seojio")); // 시크릿 키 설정
+				.withClaim("email", principalDetails.getUser().getEmail())
+				.sign(Algorithm.HMAC512(JwtProperties.SECRETE)); // 시크릿 키 설정
 		
 		// 토큰을 응답에 사용하는걸 Bearer 방식이라고 부른다.
-		response.addHeader("Authorization", "Bearer " + jwtToken); // 한칸 뛰어줘야 함에 유의!!
+		response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken); // 한칸 뛰어줘야 함에 유의!!
 	}
 }

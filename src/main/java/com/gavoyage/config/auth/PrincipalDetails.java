@@ -45,7 +45,7 @@ public class PrincipalDetails implements UserDetails{ // 스프링 세큐리티�
 
 	@Override
 	public String getUsername() {
-		return user.getNickname();
+		return user.getEmail();
 	}
 	
 	/**
