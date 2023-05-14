@@ -4,7 +4,7 @@
 
 <mapper namespace="com.gavoyage.mapper.UserMapper">
 
-	<resultMap type="User" id="user">
+	<resultMap type="Users" id="user">
 		<result column="userIdx" property="userIdx"/>
 		<result column="email" property="email"/>
 		<result column="nickname" property="nickname"/>
@@ -29,11 +29,18 @@
 		where email = #{email}
 	</select>
 	
-	<select id="findOne" parameterType="Long" resultMap="user">
+	<select id="findByUserIdx" parameterType="Long" resultMap="user">
 		select *
 		from user
 		where userIdx = #{userIdx}
 	</select>
+	
+	<select id="findByUserEmail" parameterType="String" resultMap="user">
+		select *
+		from user
+		where email = #{email}
+	</select>
+	
 	
 	<select id="findAll" resultMap="user">
 		select *

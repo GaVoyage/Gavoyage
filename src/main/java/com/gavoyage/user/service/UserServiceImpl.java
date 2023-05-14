@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.gavoyage.mapper.UserMapper;
-import com.gavoyage.user.domain.User;
+import com.gavoyage.user.domain.Users;
 import com.gavoyage.user.dto.request.UserJoinReq;
 import com.gavoyage.user.dto.request.UserLoginReq;
 
@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService{
 	private final UserMapper userMapper;
 
 	@Override
-	public User login(UserLoginReq userLoginReq) throws Exception {
+	public Users login(UserLoginReq userLoginReq) throws Exception {
 		return userMapper.login(userLoginReq);
 	}
 
@@ -29,12 +29,14 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public User findOne(Long userIdx) throws Exception {
-		return userMapper.findOne(userIdx);
+	public Users findByUserIdx(Long userIdx) throws Exception {
+		return userMapper.findByUserIdx(userIdx);
 	}
+	
+	
 
 	@Override
-	public List<User> findAll() throws Exception {
+	public List<Users> findAll() throws Exception {
 		return userMapper.findAll();
 	}
 
@@ -46,6 +48,11 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void deleteUser(Long userIdx) throws Exception {
 		userMapper.deleteUser(userIdx);
+	}
+
+	@Override
+	public Users findByUserEmail(String email) {
+		return userMapper.findByUserEmail(email);
 	}
 	
 }

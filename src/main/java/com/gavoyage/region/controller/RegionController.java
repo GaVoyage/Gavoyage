@@ -26,11 +26,16 @@ import lombok.extern.slf4j.Slf4j;
 @RestController()
 @Slf4j
 @RequiredArgsConstructor
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @RequestMapping("/regions")
 public class RegionController {
 	
 	private final RegionService regionService;
+	
+	@PostMapping("/token")
+	public String token() {
+		return "<h1>toekn<h1>";
+	}
 	
 	@PostMapping("/search")
 	public List<AttractionInfo> search(@RequestBody RegionSearchReq regionSearchReq, HttpServletRequest request,  HttpServletResponse response) throws Exception {
