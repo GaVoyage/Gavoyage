@@ -15,7 +15,7 @@
 	</insert>
 	
 	<insert id="createDailyPlan" parameterType="dailyPlanCreateDto">
-		insert into daillyPlan(planIdx, content_id, dailyDate) 
+		insert into dailyPlan(planIdx, content_id, dailyDate) 
 		values (#{planIdx}, #{content_id}, #{dailyDate});
 	</insert>
 	
