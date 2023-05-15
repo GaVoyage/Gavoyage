@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Plan extends BaseEntity{
+public class Plan extends BaseEntity {
 	private Long planIdx;
 	private Long userIdx;
 	private String title;

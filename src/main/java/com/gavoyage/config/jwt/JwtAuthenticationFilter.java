@@ -1,6 +1,7 @@
 package com.gavoyage.config.jwt;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Date;
 
 import javax.servlet.FilterChain;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gavoyage.config.auth.PrincipalDetails;
 import com.gavoyage.user.domain.Users;
 import com.gavoyage.user.dto.request.UserLoginReq;
+import com.google.gson.JsonObject;
 
 import lombok.RequiredArgsConstructor;
 
@@ -92,5 +94,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		
 		// 토큰을 응답에 사용하는걸 Bearer 방식이라고 부른다.
 		response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken); // 한칸 뛰어줘야 함에 유의!!
+		ObjectMapper objectMapper = new ObjectMapper();
+		String userResponse = objectMapper.writeValueAsString(new UserResponse(principalDetails.getUser().getNickname(), principalDetails.getUser().getEmail()));
+		response.getWriter().print(userResponse);
 	}
 }

@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration // 스프링 설정 정보 
 @EnableWebSecurity // 스프링 시큐리티 활성화
 @RequiredArgsConstructor
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private final CorsFilter corsFilter;
 	private final UserServiceImpl userService;
