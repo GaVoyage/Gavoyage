@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gavoyage.config.auth.PrincipalDetails;
 import com.gavoyage.plan.domain.DailyPlan;
 import com.gavoyage.plan.domain.Plan;
 import com.gavoyage.plan.dto.request.PlanCreateDto;
@@ -40,26 +42,17 @@ public class PlanController {
 	private final RegionServiceImpl regionService;
 	
 	@PostMapping("")
-	public ResponseEntity<?> createPlan(@RequestBody() PlanCreateReq planCreateReq, HttpSession session) throws Exception{
-		
-		log.debug("createPlan()");
+	public ResponseEntity<?> createPlan(@RequestBody() PlanCreateReq planCreateReq, HttpSession session, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception{
 		log.debug(planCreateReq.toString());
-		
-//		User user = (User) session.getAttribute("user");
-//		long userIdx = user.getUserIdx();
-		
+	
+		planCreateReq.setUserIdx(principalDetails.getUser().getUserIdx()); // 현재 로그인한 유저 정보 획득
 		planService.createPlan(planCreateReq);
-		
-		
+	
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@GetMapping("")
 	public ResponseEntity<List<Plan>> getPlans() throws Exception {
-		
-//		User user = (User) session.getAttribute("user");
-//		long userIdx = user.getUserIdx();
-		
 		List<Plan> findPlans = planService.findPlans(1L);
 		
 		return new ResponseEntity<>(findPlans, HttpStatus.OK);
@@ -68,10 +61,6 @@ public class PlanController {
 	
 	@GetMapping("/{planIdx}")
 	public ResponseEntity<Map<LocalDate, List<AttractionInfo>>> getDailyPlans(@PathVariable Long planIdx) throws Exception {
-		
-//		User user = (User) session.getAttribute("user");
-//		long userIdx = user.getUserIdx();
-		
 		Map<LocalDate, List<AttractionInfo>> attractionInfos = planService.findAllAttractionInfos(planIdx);
 		
 		return new ResponseEntity<>(attractionInfos, HttpStatus.OK);
