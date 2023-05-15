@@ -1,19 +1,35 @@
 -- 테이블 순서는 관계를 고려하여 한 번에 실행해도 에러가 발생하지 않게 정렬되었습니다.
 
+use gavoyage;
+
+-- drop table 구문
+drop table if exists DailyPlan;
+drop table if exists Scrap;
+drop table if exists Follow;
+drop table if exists UserLikeAttraction;
+drop table if exists Comment;
+drop table if exists Likes;
+drop table if exists Recommend;
+drop table if exists Unrecommend;
+drop table if exists Review;
+drop table if exists Plan;
+drop table if exists User;
+
+
 -- User Table Create SQL
 -- 테이블 생성 SQL - User
 CREATE TABLE User
 (
-    `userIdx`       BIGINT          NOT NULL    AUTO_INCREMENT, 
-    `email`         VARCHAR(45)     NOT NULL    COMMENT '사용자 이메일', 
-    `nickname`      VARCHAR(45)     NOT NULL    COMMENT '사용자 이름', 
-    `password`      VARCHAR(200)    NOT NULL    COMMENT '비밀번호', 
-    `userImageUrl`  TEXT            NULL        COMMENT '프로필 사진', 
-    `phoneNumber`   VARCHAR(20)     NOT NULL    COMMENT '전화번호', 
-    `userRole`      CHAR(1)         NOT NULL    DEFAULT 'C' COMMENT 'A : 관리자 / C : 일반 회원', 
-    `status`        CHAR(1)         NOT NULL    DEFAULT 'Y' COMMENT 'N : 탈퇴한 회원 / Y : 활동 중인 회원', 
-    `createdAt`     TIMESTAMP       NOT NULL    DEFAULT current_timestamp, 
-    `modifiedAt`    TIMESTAMP       NULL        DEFAULT current_timestamp on update current_timestamp, 
+    `userIdx`       BIGINT          NOT NULL    AUTO_INCREMENT,
+    `email`         VARCHAR(45)     NOT NULL    COMMENT '사용자 이메일',
+    `nickname`      VARCHAR(45)     NOT NULL    COMMENT '사용자 이름',
+    `userPassword`  VARCHAR(200)    NOT NULL    COMMENT '비밀번호',
+    `userImageUrl`  TEXT            NULL        COMMENT '프로필 사진',
+    `phoneNumber`   VARCHAR(20)     NOT NULL    COMMENT '전화번호',
+    `userRole`      CHAR(50)        NOT NULL    DEFAULT 'ROLE_USER' COMMENT 'ROLE_ADMIN : 관리자 / ROLE_USER : 일반 회원',
+    `status`        CHAR(1)         NOT NULL    DEFAULT 'Y' COMMENT 'N : 탈퇴한 회원 / Y : 활동 중인 회원',
+    `createdAt`     TIMESTAMP       NOT NULL    DEFAULT current_timestamp,
+    `modifiedAt`    TIMESTAMP       NULL        DEFAULT current_timestamp on update current_timestamp,
     CONSTRAINT PK_MEMBERS PRIMARY KEY (userIdx)
 );
 
@@ -25,14 +41,14 @@ ALTER TABLE User COMMENT '사용자 테이블';
 -- 테이블 생성 SQL - Plan
 CREATE TABLE Plan
 (
-    `planIdx`     BIGINT          NOT NULL    AUTO_INCREMENT, 
-    `userIdx`     BIGINT          NOT NULL, 
-    `title`       VARCHAR(200)    NOT NULL    COMMENT '여행 계획 제목', 
-    `startDate`   TIMESTAMP       NOT NULL    COMMENT '여행 시작일', 
-    `endDate`     TIMESTAMP       NOT NULL    COMMENT '여행 종료일', 
-    `status`      CHAR(1)         NOT NULL    DEFAULT 'Y', 
-    `createdAt`   TIMESTAMP       NOT NULL    DEFAULT current_timestamp, 
-    `modifiedAt`  TIMESTAMP       NULL        DEFAULT current_timestamp on update current_timestamp, 
+    `planIdx`     BIGINT          NOT NULL    AUTO_INCREMENT,
+    `userIdx`     BIGINT          NOT NULL,
+    `title`       VARCHAR(200)    NOT NULL    COMMENT '여행 계획 제목',
+    `startDate`   TIMESTAMP       NOT NULL    COMMENT '여행 시작일',
+    `endDate`     TIMESTAMP       NOT NULL    COMMENT '여행 종료일',
+    `status`      CHAR(1)         NOT NULL    DEFAULT 'Y',
+    `createdAt`   TIMESTAMP       NOT NULL    DEFAULT current_timestamp,
+    `modifiedAt`  TIMESTAMP       NULL        DEFAULT current_timestamp on update current_timestamp,
     CONSTRAINT PK_PLAN PRIMARY KEY (planIdx)
 );
 
@@ -48,20 +64,19 @@ ALTER TABLE Plan
 -- ALTER TABLE Plan
 -- DROP FOREIGN KEY FK_Plan_userIdx_User_userIdx;
 
-
 -- Review Table Create SQL
 -- 테이블 생성 SQL - Review
 CREATE TABLE Review
 (
-    `reviewIdx`   BIGINT          NOT NULL    AUTO_INCREMENT, 
-    `userIdx`     BIGINT          NOT NULL, 
-    `planIdx`     BIGINT          NOT NULL, 
-    `title`       VARCHAR(200)    NOT NULL, 
-    `contents`    TEXT            NOT NULL, 
-    `hit`         INT             NOT NULL, 
-    `status`      CHAR(1)         NOT NULL    DEFAULT 'Y', 
-    `createdAt`   TIMESTAMP       NOT NULL    DEFAULT current_timestamp, 
-    `modifiedAt`  TIMESTAMP       NULL        DEFAULT current_timestamp on update current_timestamp, 
+    `reviewIdx`   BIGINT          NOT NULL    AUTO_INCREMENT,
+    `userIdx`     BIGINT          NOT NULL,
+    `planIdx`     BIGINT          NOT NULL,
+    `title`       VARCHAR(200)    NOT NULL,
+    `contents`    TEXT            NOT NULL,
+    `hit`         INT             NOT NULL,
+    `status`      CHAR(1)         NOT NULL    DEFAULT 'Y',
+    `createdAt`   TIMESTAMP       NOT NULL    DEFAULT current_timestamp,
+    `modifiedAt`  TIMESTAMP       NULL        DEFAULT current_timestamp on update current_timestamp,
     CONSTRAINT PK_REVIEW PRIMARY KEY (reviewIdx)
 );
 
@@ -91,12 +106,12 @@ ALTER TABLE Review
 -- 테이블 생성 SQL - UserLikeAttraction
 CREATE TABLE UserLikeAttraction
 (
-    `userLikeAttractionIdx`  BIGINT       NOT NULL    AUTO_INCREMENT, 
-    `userIdx`                BIGINT       NOT NULL, 
-    `content_id`             BIGINT       NOT NULL, 
-    `status`                 CHAR(1)      NOT NULL    DEFAULT 'Y', 
-    `createdAt`              TIMESTAMP    NOT NULL    DEFAULT current_timestamp, 
-    `modifiedAt`             TIMESTAMP    NOT NULL    DEFAULT current_timestamp on update current_timestamp on update current_timestamp, 
+    `userLikeAttractionIdx`  BIGINT       NOT NULL    AUTO_INCREMENT,
+    `userIdx`                BIGINT       NOT NULL,
+    `content_id`             BIGINT       NOT NULL,
+    `status`                 CHAR(1)      NOT NULL    DEFAULT 'Y',
+    `createdAt`              TIMESTAMP    NOT NULL    DEFAULT current_timestamp,
+    `modifiedAt`             TIMESTAMP    NOT NULL    DEFAULT current_timestamp on update current_timestamp on update current_timestamp,
      PRIMARY KEY (userLikeAttractionIdx)
 );
 
@@ -113,43 +128,43 @@ ALTER TABLE UserLikeAttraction
 -- DROP FOREIGN KEY FK_UserLikeAttraction_userIdx_User_userIdx;
 
 
--- DaillyPlan Table Create SQL
--- 테이블 생성 SQL - DaillyPlan
-CREATE TABLE DaillyPlan
+-- DailyPlan Table Create SQL
+-- 테이블 생성 SQL - DailyPlan
+CREATE TABLE DailyPlan
 (
-    `dailyplanIdx`  BIGINT       NOT NULL    AUTO_INCREMENT, 
-    `planIdx`       BIGINT       NOT NULL, 
-    `content_id`    INT          NOT NULL, 
-    `dailydate`     TIMESTAMP    NOT NULL, 
-    `status`        CHAR(1)      NOT NULL    DEFAULT 'Y', 
-    `createdAt`     TIMESTAMP    NOT NULL    DEFAULT current_timestamp, 
-    `modifiedAt`    TIMESTAMP    NULL        DEFAULT current_timestamp on update current_timestamp, 
-     PRIMARY KEY (dailyplanIdx)
+    `dailyPlanIdx`  BIGINT       NOT NULL    AUTO_INCREMENT,
+    `planIdx`       BIGINT       NOT NULL,
+    `content_id`    INT          NOT NULL,
+    `dailyDate`     TIMESTAMP    NOT NULL,
+    `status`        CHAR(1)      NOT NULL    DEFAULT 'Y',
+    `createdAt`     TIMESTAMP    NOT NULL    DEFAULT current_timestamp,
+    `modifiedAt`    TIMESTAMP    NULL        DEFAULT current_timestamp on update current_timestamp,
+     PRIMARY KEY (dailyPlanIdx)
 );
 
--- 테이블 Comment 설정 SQL - DaillyPlan
-ALTER TABLE DaillyPlan COMMENT '여행 계획 내부 Day별 계획';
+-- 테이블 Comment 설정 SQL - DailyPlan
+ALTER TABLE DailyPlan COMMENT '여행 계획 내부 Day별 계획';
 
--- Foreign Key 설정 SQL - DaillyPlan(planIdx) -> Plan(planIdx)
-ALTER TABLE DaillyPlan
-    ADD CONSTRAINT FK_DaillyPlan_planIdx_Plan_planIdx FOREIGN KEY (planIdx)
+-- Foreign Key 설정 SQL - DailyPlan(planIdx) -> Plan(planIdx)
+ALTER TABLE DailyPlan
+    ADD CONSTRAINT FK_DailyPlan_planIdx_Plan_planIdx FOREIGN KEY (planIdx)
         REFERENCES Plan (planIdx) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
--- Foreign Key 삭제 SQL - DaillyPlan(planIdx)
--- ALTER TABLE DaillyPlan
--- DROP FOREIGN KEY FK_DaillyPlan_planIdx_Plan_planIdx;
+-- Foreign Key 삭제 SQL - DailyPlan(planIdx)
+-- ALTER TABLE DailyPlan
+-- DROP FOREIGN KEY FK_DailyPlan_planIdx_Plan_planIdx;
 
 
 -- Unrecommend Table Create SQL
 -- 테이블 생성 SQL - Unrecommend
 CREATE TABLE Unrecommend
 (
-    `unrecommendIdx`  BIGINT       NOT NULL    AUTO_INCREMENT, 
-    `reviewIdx`       BIGINT       NOT NULL, 
-    `content_id`      INT          NOT NULL, 
-    `status`          CHAR(1)      NOT NULL    DEFAULT 'Y', 
-    `createdAt`       TIMESTAMP    NOT NULL    DEFAULT current_timestamp, 
-    `modifiedAt`      TIMESTAMP    NULL        DEFAULT current_timestamp on update current_timestamp, 
+    `unrecommendIdx`  BIGINT       NOT NULL    AUTO_INCREMENT,
+    `reviewIdx`       BIGINT       NOT NULL,
+    `content_id`      INT          NOT NULL,
+    `status`          CHAR(1)      NOT NULL    DEFAULT 'Y',
+    `createdAt`       TIMESTAMP    NOT NULL    DEFAULT current_timestamp,
+    `modifiedAt`      TIMESTAMP    NULL        DEFAULT current_timestamp on update current_timestamp,
     CONSTRAINT PK_UNRECOMMEND PRIMARY KEY (unrecommendIdx)
 );
 
@@ -170,12 +185,12 @@ ALTER TABLE Unrecommend
 -- 테이블 생성 SQL - Recommend
 CREATE TABLE Recommend
 (
-    `unrecommendIdx`  BIGINT       NOT NULL    AUTO_INCREMENT, 
-    `reviewIdx`       BIGINT       NOT NULL, 
-    `content_id`      INT          NOT NULL, 
-    `status`          CHAR(1)      NOT NULL    DEFAULT 'Y', 
-    `createdAt`       TIMESTAMP    NOT NULL    DEFAULT current_timestamp, 
-    `modifiedAt`      TIMESTAMP    NULL        DEFAULT current_timestamp on update current_timestamp, 
+    `unrecommendIdx`  BIGINT       NOT NULL    AUTO_INCREMENT,
+    `reviewIdx`       BIGINT       NOT NULL,
+    `content_id`      INT          NOT NULL,
+    `status`          CHAR(1)      NOT NULL    DEFAULT 'Y',
+    `createdAt`       TIMESTAMP    NOT NULL    DEFAULT current_timestamp,
+    `modifiedAt`      TIMESTAMP    NULL        DEFAULT current_timestamp on update current_timestamp,
     CONSTRAINT PK_RECOMMEND PRIMARY KEY (unrecommendIdx)
 );
 
@@ -196,13 +211,13 @@ ALTER TABLE Recommend
 -- 테이블 생성 SQL - Comment
 CREATE TABLE Comment
 (
-    `commentIdx`  BIGINT       NOT NULL    AUTO_INCREMENT, 
-    `userIdx`     BIGINT       NOT NULL, 
-    `reviewIdx`   BIGINT       NOT NULL, 
-    `contents`    TEXT         NOT NULL, 
-    `status`      CHAR(1)      NOT NULL    DEFAULT 'Y', 
-    `createdAt`   TIMESTAMP    NOT NULL    DEFAULT current_timestamp, 
-    `modifiedAt`  TIMESTAMP    NULL        DEFAULT current_timestamp on update current_timestamp, 
+    `commentIdx`  BIGINT       NOT NULL    AUTO_INCREMENT,
+    `userIdx`     BIGINT       NOT NULL,
+    `reviewIdx`   BIGINT       NOT NULL,
+    `contents`    TEXT         NOT NULL,
+    `status`      CHAR(1)      NOT NULL    DEFAULT 'Y',
+    `createdAt`   TIMESTAMP    NOT NULL    DEFAULT current_timestamp,
+    `modifiedAt`  TIMESTAMP    NULL        DEFAULT current_timestamp on update current_timestamp,
     CONSTRAINT PK_COMMENTS PRIMARY KEY (commentIdx)
 );
 
@@ -232,12 +247,12 @@ ALTER TABLE Comment
 -- 테이블 생성 SQL - Scrap
 CREATE TABLE Scrap
 (
-    `scrapIdx`    BIGINT       NOT NULL    AUTO_INCREMENT, 
-    `userIdx`     BIGINT       NOT NULL, 
-    `planIdx`     BIGINT       NOT NULL, 
-    `status`      CHAR(1)      NOT NULL    DEFAULT 'Y', 
-    `createdAt`   TIMESTAMP    NOT NULL    DEFAULT current_timestamp, 
-    `modifiedAt`  TIMESTAMP    NULL        DEFAULT current_timestamp on update current_timestamp, 
+    `scrapIdx`    BIGINT       NOT NULL    AUTO_INCREMENT,
+    `userIdx`     BIGINT       NOT NULL,
+    `planIdx`     BIGINT       NOT NULL,
+    `status`      CHAR(1)      NOT NULL    DEFAULT 'Y',
+    `createdAt`   TIMESTAMP    NOT NULL    DEFAULT current_timestamp,
+    `modifiedAt`  TIMESTAMP    NULL        DEFAULT current_timestamp on update current_timestamp,
     CONSTRAINT PK_SCRAP PRIMARY KEY (scrapIdx)
 );
 
@@ -267,12 +282,12 @@ ALTER TABLE Scrap
 -- 테이블 생성 SQL - Follow
 CREATE TABLE Follow
 (
-    `followIdx`      BIGINT       NOT NULL    AUTO_INCREMENT, 
-    `userIdx`        BIGINT       NOT NULL, 
-    `targetUserIdx`  BIGINT       NOT NULL, 
-    `status`         CHAR(1)      NOT NULL    DEFAULT 'Y', 
-    `createdAt`      TIMESTAMP    NOT NULL    DEFAULT current_timestamp, 
-    `modifiedAt`     TIMESTAMP    NULL        DEFAULT current_timestamp on update current_timestamp, 
+    `followIdx`      BIGINT       NOT NULL    AUTO_INCREMENT,
+    `userIdx`        BIGINT       NOT NULL,
+    `targetUserIdx`  BIGINT       NOT NULL,
+    `status`         CHAR(1)      NOT NULL    DEFAULT 'Y',
+    `createdAt`      TIMESTAMP    NOT NULL    DEFAULT current_timestamp,
+    `modifiedAt`     TIMESTAMP    NULL        DEFAULT current_timestamp on update current_timestamp,
     CONSTRAINT PK_FOLLOW PRIMARY KEY (followIdx)
 );
 
@@ -299,12 +314,12 @@ ALTER TABLE Follow
 -- 테이블 생성 SQL - Likes
 CREATE TABLE Likes
 (
-    `likeIdx`     BIGINT       NOT NULL    AUTO_INCREMENT, 
-    `userIdx`     BIGINT       NOT NULL, 
-    `reviewIdx`   BIGINT       NOT NULL, 
-    `status`      CHAR(1)      NOT NULL    DEFAULT 'Y', 
-    `createdAt`   TIMESTAMP    NOT NULL    DEFAULT current_timestamp, 
-    `modifed_at`  TIMESTAMP    NULL        DEFAULT current_timestamp on update current_timestamp, 
+    `likeIdx`     BIGINT       NOT NULL    AUTO_INCREMENT,
+    `userIdx`     BIGINT       NOT NULL,
+    `reviewIdx`   BIGINT       NOT NULL,
+    `status`      CHAR(1)      NOT NULL    DEFAULT 'Y',
+    `createdAt`   TIMESTAMP    NOT NULL    DEFAULT current_timestamp,
+    `modifiedAt`  TIMESTAMP    NULL        DEFAULT current_timestamp on update current_timestamp,
     CONSTRAINT PK_LIKES PRIMARY KEY (likeIdx)
 );
 
@@ -329,4 +344,6 @@ ALTER TABLE Likes
 -- ALTER TABLE Likes
 -- DROP FOREIGN KEY FK_Likes_reviewIdx_Review_reviewIdx;
 
-
+ALTER TABLE DailyPlan
+    ADD CONSTRAINT FK_DailyPlan_contend_id_AttractionInfo_content_id FOREIGN KEY (content_id)
+        REFERENCES attraction_info(content_id) ON DELETE RESTRICT ON UPDATE RESTRICT;

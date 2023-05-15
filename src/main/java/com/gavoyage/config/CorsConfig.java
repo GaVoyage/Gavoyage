@@ -21,6 +21,8 @@ public class CorsConfig {
 		config.addAllowedHeader("*"); // 모든 header에 응답 허용
 		config.addAllowedMethod("*"); // 모든 http method(post, get, put, delete, patch) 요청 허용
 		source.registerCorsConfiguration("/**", config);
+		
+        config.addExposedHeader("Authorization"); // 응답 헤더에 JWT 토큰을 노출
 		return new CorsFilter(source);
 	}
 }
