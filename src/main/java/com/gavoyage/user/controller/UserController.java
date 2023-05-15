@@ -6,6 +6,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gavoyage.user.domain.User;
+import com.gavoyage.user.domain.Users;
 import com.gavoyage.user.dto.request.UserJoinReq;
 import com.gavoyage.user.dto.request.UserLoginReq;
 import com.gavoyage.user.dto.response.UserLoginRes;
@@ -27,12 +29,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @RequiredArgsConstructor // 생성자 주입
 @RequestMapping("/users")
 public class UserController {
 	
 	private final UserServiceImpl userService;
+	private final BCryptPasswordEncoder passwordEncoder;
 
 	/**
 	 * 회원 가입
@@ -40,42 +43,47 @@ public class UserController {
 	@PostMapping("/join")
 	public ResponseEntity<?> join(@RequestBody UserJoinReq userJoinReq) throws Exception{
 		
+		log.debug("/user/join");
+		
 		String email = userJoinReq.getEmail();
 		if(userService.emailCheck(email) == 1) {
 			log.debug("이미 있는 이메일 입니다.");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
-		log.debug("/user/join");
+		// 유저 패스워드 암호화
+		String userPassword =  passwordEncoder.encode(userJoinReq.getUserPassword());
+		
+		userJoinReq.setUserPassword(userPassword);
 		userService.join(userJoinReq);
 		
 		return new ResponseEntity<>(HttpStatus.OK);	
 	}
 	
 	
-	/**
-	 * 로그인
-	 */
-	@PostMapping("/login")
-	public ResponseEntity<UserLoginRes> login(@RequestBody UserLoginReq userLoginReq, HttpSession session) throws Exception {
-		try {
-			log.debug("/user/login");
-			
-			User findUser = userService.login(userLoginReq);
-			
-			if(findUser == null) { // email과 password가 일치하는 사용자가 없을 경우
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			}
-			
-			session.setAttribute("user", findUser); // 세션에 유저 정보 저장
-			
-			return new ResponseEntity<>(new UserLoginRes(findUser.getUserIdx(), findUser.getNickname()), HttpStatus.OK);
-			
-		}catch(Exception exception) {
-			log.debug("error" + exception);
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}		
-	}
+//	/**
+//	 * 로그인
+//	 */
+//	@PostMapping("/login")
+//	public ResponseEntity<UserLoginRes> login(@RequestBody UserLoginReq userLoginReq, HttpSession session) throws Exception {
+//		try {
+//			log.debug("/user/login");
+//			
+//			Users findUser = userService.login(userLoginReq);
+//			
+//			if(findUser == null) { // email과 password가 일치하는 사용자가 없을 경우
+//				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//			}
+//			
+//			session.setAttribute("user", findUser); // 세션에 유저 정보 저장
+//			
+//			return new ResponseEntity<>(new UserLoginRes(findUser.getUserIdx(), findUser.getNickname()), HttpStatus.OK);
+//			
+//		}catch(Exception exception) {
+//			log.debug("error" + exception);
+//			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//		}		
+//	}
 	
 	/**
 	 * 이메일 중복 검사
@@ -93,9 +101,9 @@ public class UserController {
 	 * 유저 정보 조회
 	 */
 	@GetMapping("/{userIdx}")
-	public ResponseEntity<User> findOne(@PathVariable("userIdx") Long userIdx) throws Exception{
+	public ResponseEntity<Users> findOne(@PathVariable("userIdx") Long userIdx) throws Exception{
 		try {
-			User findUser = userService.findOne(userIdx);
+			Users findUser = userService.findByUserIdx(userIdx);
 			log.debug("findUser : " + findUser);
 			
 			if(findUser == null) { // userIdx에 해당하는 user가 존재하지 않는 경우
@@ -113,9 +121,9 @@ public class UserController {
 	 * 모든 유저 정보 조회
 	 */
 	@GetMapping("")
-	public ResponseEntity<List<User>> findAll() throws Exception{
+	public ResponseEntity<List<Users>> findAll() throws Exception{
 		try {
-			List<User> findUsers = userService.findAll();
+			List<Users> findUsers = userService.findAll();
 			log.debug("findUser : " + findUsers);
 			
 			if(findUsers == null) {

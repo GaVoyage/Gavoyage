@@ -24,7 +24,7 @@ import com.gavoyage.plan.dto.request.PlanCreateReq;
 import com.gavoyage.plan.service.PlanServiceImpl;
 import com.gavoyage.region.domain.AttractionInfo;
 import com.gavoyage.region.service.RegionServiceImpl;
-import com.gavoyage.user.domain.User;
+import com.gavoyage.user.domain.Users;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@CrossOrigin("*")
+//@CrossOrigin("*") @CrossOrigin은 인증이 필요 없는 요청은 처리 가능하지만 인증이 필요한 요청들은 cors가 거부 되어 시큐리티 필터에 등록하여야 한다. 
 @RequestMapping("/plans")
 public class PlanController {
 	

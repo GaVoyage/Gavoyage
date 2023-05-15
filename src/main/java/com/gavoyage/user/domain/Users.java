@@ -11,7 +11,8 @@ import lombok.ToString;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends BaseEntity{
+@ToString
+public class Users extends BaseEntity{
 	private Long userIdx;
 	private String email;
 	private String nickname;
