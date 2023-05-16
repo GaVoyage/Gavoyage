@@ -41,6 +41,9 @@
 		where email = #{email}
 	</select>
 	
+	<select id="findUserIdxByEmail" parameterType="String" resultType="Long">
+		select userIdx from user where email = #{email}
+	</select>
 	
 	<select id="findAll" resultMap="user">
 		select *

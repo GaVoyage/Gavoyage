@@ -32,8 +32,6 @@ public class UserServiceImpl implements UserService{
 	public Users findByUserIdx(Long userIdx) throws Exception {
 		return userMapper.findByUserIdx(userIdx);
 	}
-	
-	
 
 	@Override
 	public List<Users> findAll() throws Exception {

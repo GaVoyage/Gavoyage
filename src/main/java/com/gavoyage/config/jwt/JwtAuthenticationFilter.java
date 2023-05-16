@@ -87,7 +87,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		String jwtToken = JWT.create()
 				.withSubject(principalDetails.getUser().getEmail())
 				.withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME)) // 유효 기간을 10분으로 지정
-				.withClaim("id", principalDetails.getUser().getUserIdx())  // 비공개 클레임으로 내가 넣어 주고 싶은 걸 넣어주면 된다.
 				.withClaim("email", principalDetails.getUser().getEmail())
 				.withClaim("nickname", principalDetails.getUser().getNickname())
 				.sign(Algorithm.HMAC512(JwtProperties.SECRETE)); // 시크릿 키 설정
