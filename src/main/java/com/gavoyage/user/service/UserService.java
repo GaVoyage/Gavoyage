@@ -14,5 +14,5 @@ public interface UserService {
 	List<Users> findAll() throws Exception;
 	void deleteUser(Long userIdx) throws Exception;
 	Users findByUserEmail(String email);
-	
+	void updateRefreshToken(String email, String refreshToken);	
 }

@@ -52,5 +52,10 @@ public class UserServiceImpl implements UserService{
 	public Users findByUserEmail(String email) {
 		return userMapper.findByUserEmail(email);
 	}
+
+	@Override
+	public void updateRefreshToken(String email, String refreshToken) {
+		userMapper.updateRefreshToken(email, refreshToken);
+	}
 	
 }

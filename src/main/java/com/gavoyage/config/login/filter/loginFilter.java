@@ -1,4 +1,4 @@
-package com.gavoyage.config.jwt;
+package com.gavoyage.config.login.filter;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -10,15 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gavoyage.config.auth.PrincipalDetails;
+import com.gavoyage.config.jwt.JwtProperties;
+import com.gavoyage.config.jwt.UserResponse;
+import com.gavoyage.config.login.PrincipalDetails;
 import com.gavoyage.user.domain.Users;
 import com.gavoyage.user.dto.request.UserLoginReq;
 import com.google.gson.JsonObject;
@@ -28,21 +32,21 @@ import lombok.RequiredArgsConstructor;
 // 스프링 시큐리티는 기본적으로 로그인 요청이 오면 주소가 http://localhost:8080/login으로 오게되고 UsernamePasswordAuthenticationFilter가 동작하여
 // login 요청 시 username, userpassword를 전송하면(by POST) 동작한다.
 // 하지만 SecurityConfig에서 .formLogin().disable()을 적용해놨기 때문에 별도의 filter를 필요로 하여 이와 같이 사용자 정의 필터를 생성하고
-// UsernamePasswordAuthenticationFilter를 상속받는다.
+// UsernamePasswordAuthenticationFilter를 상속받으면 "/login" 주소로 오는 POST 요청을 빼앗아 실행된다.
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
-	
+public class loginFilter extends UsernamePasswordAuthenticationFilter{
+
 	private final AuthenticationManager authenticationManager;
 	
 	// "/login"으로 요청을 하면  username, userpassword를 받아 로그인을 시도하는 메소드
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
-	
+
 		System.out.println("JwtAuthenticationFilter : 로그인 시도");
 		
-		// 1. username, userpassword를 받아옴
 		try {
+			// 1. username, userpassword를 받아옴
 			ObjectMapper om = new ObjectMapper();
 			UserLoginReq user = om.readValue(request.getInputStream(), UserLoginReq.class);
 			System.out.println(user);
@@ -59,7 +63,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			// PrincipalDetailsService의 loadUserByUsername을 내부적으로 호출하고 올바른 아이디, 패스워드라면 authentication을 return 한다.
 			Authentication authentication = authenticationManager.authenticate(authenticationToken);
 			
-			// 로그인이 되었는지 principalDetails 출력하여 확인(유저가 출력된다면 로그인 성공)
+			// 로그인이 되었는지 principalDetails 출력하여 확인(유저가 출력된다면 로그인 성공), 꼭 필요한 코드는 아님!
 			PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
 			System.out.println("principalDetails.getUser() : " + principalDetails.getUser());
 			
@@ -93,8 +97,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		
 		// 토큰을 응답에 사용하는걸 Bearer 방식이라고 부른다.
 		response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken); // 한칸 뛰어줘야 함에 유의!!
+		
 		ObjectMapper objectMapper = new ObjectMapper();
 		String userResponse = objectMapper.writeValueAsString(new UserResponse(principalDetails.getUser().getNickname(), principalDetails.getUser().getEmail()));
 		response.getWriter().print(userResponse);
 	}
+
 }

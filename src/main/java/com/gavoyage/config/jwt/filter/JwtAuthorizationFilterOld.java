@@ -1,4 +1,4 @@
-package com.gavoyage.config.jwt;
+package com.gavoyage.config.jwt.filter;
 
 import java.io.IOException;
 
@@ -15,17 +15,18 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.gavoyage.config.auth.PrincipalDetails;
+import com.gavoyage.config.jwt.JwtProperties;
+import com.gavoyage.config.login.PrincipalDetails;
 import com.gavoyage.user.domain.Users;
 import com.gavoyage.user.service.UserServiceImpl;
 
 // 권한이나 인증이 필요한(회원용 api) url을 호출했을 경우  스프링 시큐리티의 BasicAuthenticationFilter를 무조건 거치게 된다.
 // 권한이나 인증이 필요 없는 경우에는 거치지 않는다.
-public class JwtAuthorizationFilter extends BasicAuthenticationFilter{
+public class JwtAuthorizationFilterOld extends BasicAuthenticationFilter{
 	
 	private UserServiceImpl userService;
 
-	public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserServiceImpl userService) {
+	public JwtAuthorizationFilterOld(AuthenticationManager authenticationManager, UserServiceImpl userService) {
 		super(authenticationManager);
 		this.userService = userService;
 	}

@@ -347,3 +347,7 @@ ALTER TABLE Likes
 ALTER TABLE DailyPlan
     ADD CONSTRAINT FK_DailyPlan_contend_id_AttractionInfo_content_id FOREIGN KEY (content_id)
         REFERENCES attraction_info(content_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+alter table user add socialType CHAR(50);
+alter table user add socialID VARCHAR(200);
+alter table user add refreshToken VARCHAR(200);

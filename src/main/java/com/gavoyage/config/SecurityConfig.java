@@ -7,12 +7,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 import org.springframework.web.filter.CorsFilter;
 
-import com.gavoyage.config.jwt.JwtAuthenticationFilter;
-import com.gavoyage.config.jwt.JwtAuthorizationFilter;
+import com.gavoyage.config.jwt.filter.JwtAuthorizationFilterOld;
+import com.gavoyage.config.login.filter.loginFilter;
 import com.gavoyage.filter.MyFilter3;
 import com.gavoyage.user.service.UserServiceImpl;
 
@@ -27,10 +29,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private final UserServiceImpl userService;
 	
 	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
+	public BCryptPasswordEncoder passwordEncoder() { // 비밀번호 암호화 
 		return new BCryptPasswordEncoder();
 	}
-	
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
@@ -44,11 +45,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //		 HttpBasic: http 요청을 보낼 때 마다 Header 영역에  Authorization이라는 key 값으로 매번 id와 pw를 함께 보내는 방식
 //		 HttpBearer: http 요청 시 Authorization이라는 key 값으로 idl, pw가 아닌 Token(ex. JWT)을 보내주는 방식  
 		.httpBasic().disable() // 기본 인증 방식 비활성화
-		.addFilter(new JwtAuthenticationFilter(authenticationManager())) // 로그인 시 정상 회원이라면 jwt 토큰을 생성해주는 필터
-		.addFilter(new JwtAuthorizationFilter(authenticationManager(), userService)) // 회원용 api 호출 시 jwt의 유효성을 검사해주는 필터
+		
+		.addFilter(new loginFilter(authenticationManager())) // 로그인 시 정상 회원이라면 jwt 토큰을 생성해주는 필터
+		.addFilter(new JwtAuthorizationFilterOld(authenticationManager(), userService)) // 회원용 api 호출 시 jwt의 유효성을 검사해주는 필터
 		.authorizeHttpRequests()
 		.antMatchers("/plans").authenticated() // 여행 관련 api는 로그인 필요
 		.anyRequest().permitAll(); // 나머지 요청들은 로그인 없어도 허용
+		
+		/**
+		 * 소셜 로그인 관리
+		 */
+//		.and()
+//		.oauth2Login()
+//        .successHandler(oAuth2LoginSuccessHandler) // 동의하고 계속하기를 눌렀을 때 Handler 설정
+//        .failureHandler(oAuth2LoginFailureHandler) // 소셜 로그인 실패 시 핸들러 설정
+//        .userInfoEndpoint().userService(customOAuth2UserService); // customUserService 설정
 	}
 	
 }

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gavoyage.config.auth.PrincipalDetails;
+import com.gavoyage.config.login.PrincipalDetails;
 import com.gavoyage.plan.dto.request.PlanCreateReq;
 import com.gavoyage.plan.dto.response.GetPlansRes;
 import com.gavoyage.plan.service.PlanServiceImpl;

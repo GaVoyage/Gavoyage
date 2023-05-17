@@ -1,4 +1,4 @@
-package com.gavoyage.config.oauth.dto;
+package com.gavoyage.config.oauthold.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
