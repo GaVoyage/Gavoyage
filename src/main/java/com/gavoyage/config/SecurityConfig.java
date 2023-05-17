@@ -2,6 +2,7 @@ package com.gavoyage.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -9,12 +10,16 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 import org.springframework.web.filter.CorsFilter;
 
-import com.gavoyage.config.jwt.filter.JwtAuthorizationFilterOld;
-import com.gavoyage.config.login.filter.loginFilter;
+import com.gavoyage.config.jwt.filter.JwtAuthorizationFilter;
+import com.gavoyage.config.jwt.service.JwtService;
+import com.gavoyage.config.login.filter.LoginFilter;
+//import com.gavoyage.config.login.handler.LoginFailureHandler;
+//import com.gavoyage.config.login.handler.LoginSuccessHandler;
 import com.gavoyage.filter.MyFilter3;
 import com.gavoyage.user.service.UserServiceImpl;
 
@@ -27,11 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private final CorsFilter corsFilter;
 	private final UserServiceImpl userService;
-	
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() { // 비밀번호 암호화 
-		return new BCryptPasswordEncoder();
-	}
+	private final JwtService jwtService;
+//	private final LoginFilter loginFilter;
+//	private final JwtAuthorizationFilter JwtAuthorizationFilter;
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
@@ -46,12 +49,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //		 HttpBearer: http 요청 시 Authorization이라는 key 값으로 idl, pw가 아닌 Token(ex. JWT)을 보내주는 방식  
 		.httpBasic().disable() // 기본 인증 방식 비활성화
 		
-		.addFilter(new loginFilter(authenticationManager())) // 로그인 시 정상 회원이라면 jwt 토큰을 생성해주는 필터
-		.addFilter(new JwtAuthorizationFilterOld(authenticationManager(), userService)) // 회원용 api 호출 시 jwt의 유효성을 검사해주는 필터
 		.authorizeHttpRequests()
 		.antMatchers("/plans").authenticated() // 여행 관련 api는 로그인 필요
 		.anyRequest().permitAll(); // 나머지 요청들은 로그인 없어도 허용
 		
+		http.addFilter(new LoginFilter(authenticationManager(), jwtService, userService)); // 로그인 시 정상 회원이라면 jwt 토큰을 생성해주는 필터
+		http.addFilter(new JwtAuthorizationFilter(authenticationManager(), userService, jwtService)); // 회원용 api 호출 시 jwt의 유효성을 검사해주는 필터
+		
+//		http.addFilterAfter(new LoginFilter(authenticationManager(), userService, jwtService), LogoutFilter.class); // 로그인 시 정상 회원이라면 jwt 토큰을 생성해주는 필터
+//		http.addFilterBefore(new JwtAuthorizationFilter(authenticationManager(), userService, jwtService), LoginFilter.class); // 회원용 api 호출 시 jwt의 유효성을 검사해주는 필터
+		
+//		http.addFilterAfter(loginFilter, LogoutFilter.class);
+//        http.addFilterBefore(JwtAuthorizationFilter, LoginFilter.class);
+
 		/**
 		 * 소셜 로그인 관리
 		 */
@@ -61,5 +71,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        .failureHandler(oAuth2LoginFailureHandler) // 소셜 로그인 실패 시 핸들러 설정
 //        .userInfoEndpoint().userService(customOAuth2UserService); // customUserService 설정
 	}
+	
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder() { // 비밀번호 암호화 
+		return new BCryptPasswordEncoder();
+	}
+	
+//	@Bean
+//	public LoginSuccessHandler loginSuccessHandler() {
+//		return new LoginSuccessHandler(jwtService, userService);
+//	}
+//	
+//	@Bean
+//	public LoginFailureHandler loginFailureHandler() {
+//		return new LoginFailureHandler();
+//	}
 	
 }

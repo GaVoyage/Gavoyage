@@ -13,6 +13,7 @@ public interface UserService {
 	Users findByUserIdx(Long userIdx) throws Exception;
 	List<Users> findAll() throws Exception;
 	void deleteUser(Long userIdx) throws Exception;
-	Users findByUserEmail(String email);
-	void updateRefreshToken(String email, String refreshToken);	
+	Users findByUserEmail(String email) throws Exception;
+	void updateRefreshToken(String email, String refreshToken) throws Exception;	
+	Users findByRefreshToken(String refreshToken) throws Exception;
 }

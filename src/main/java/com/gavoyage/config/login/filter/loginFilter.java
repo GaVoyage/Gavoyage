@@ -21,29 +21,43 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gavoyage.config.jwt.JwtProperties;
-import com.gavoyage.config.jwt.UserResponse;
+import com.gavoyage.config.jwt.service.JwtService;
 import com.gavoyage.config.login.PrincipalDetails;
+import com.gavoyage.config.login.UserResponse;
 import com.gavoyage.user.domain.Users;
 import com.gavoyage.user.dto.request.UserLoginReq;
+import com.gavoyage.user.service.UserServiceImpl;
 import com.google.gson.JsonObject;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 // 스프링 시큐리티는 기본적으로 로그인 요청이 오면 주소가 http://localhost:8080/login으로 오게되고 UsernamePasswordAuthenticationFilter가 동작하여
 // login 요청 시 username, userpassword를 전송하면(by POST) 동작한다.
 // 하지만 SecurityConfig에서 .formLogin().disable()을 적용해놨기 때문에 별도의 filter를 필요로 하여 이와 같이 사용자 정의 필터를 생성하고
 // UsernamePasswordAuthenticationFilter를 상속받으면 "/login" 주소로 오는 POST 요청을 빼앗아 실행된다.
-@RequiredArgsConstructor
-public class loginFilter extends UsernamePasswordAuthenticationFilter{
+
+@Slf4j
+public class LoginFilter extends UsernamePasswordAuthenticationFilter{
 
 	private final AuthenticationManager authenticationManager;
+	private final JwtService jwtService;
+	private final UserServiceImpl userService;
 	
+	public LoginFilter(AuthenticationManager authenticationManager, JwtService jwtService,
+			UserServiceImpl userService) {
+		this.authenticationManager = authenticationManager;
+		this.jwtService = jwtService;
+		this.userService = userService;
+	}
+
 	// "/login"으로 요청을 하면  username, userpassword를 받아 로그인을 시도하는 메소드
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
 
 		System.out.println("JwtAuthenticationFilter : 로그인 시도");
+		System.out.println("request.getRequestURI() : " + request.getRequestURL());
 		
 		try {
 			// 1. username, userpassword를 받아옴
@@ -77,30 +91,40 @@ public class loginFilter extends UsernamePasswordAuthenticationFilter{
 		return null;
 	}
 	
-	// attemptAuthentication에서 인증이 정상적으로 되었다면 실행되는 메소드
-	// 이 메소드에서 JWT를 생성하고 response에 JWT 토큰을 담아 응답
+//	 attemptAuthentication에서 인증이 정상적으로 되었다면 실행되는 메소드
+//	 이 메소드에서 JWT를 생성하고 response에 JWT 토큰을 담아 응답
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
 		
-		System.out.println("인증이 정상적으로 완료되었습니다");
-		
 		PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
+		Users user = principalDetails.getUser();
 		
-		// JWT 토큰 생성
-		String jwtToken = JWT.create()
-				.withSubject(principalDetails.getUser().getEmail())
-				.withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME)) // 유효 기간을 10분으로 지정
-				.withClaim("email", principalDetails.getUser().getEmail())
-				.withClaim("nickname", principalDetails.getUser().getNickname())
-				.sign(Algorithm.HMAC512(JwtProperties.SECRETE)); // 시크릿 키 설정
+		String accessToken = jwtService.createAccessToken(user);
+		String refreshToken = jwtService.createRefreshToken();
 		
-		// 토큰을 응답에 사용하는걸 Bearer 방식이라고 부른다.
-		response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken); // 한칸 뛰어줘야 함에 유의!!
+		jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
+		
+		/**
+		 * 로그인한 사용자 refresh token 값 갱신
+		 */
+		userService.updateRefreshToken(user.getEmail(), refreshToken);
+		
+		System.out.println("onAuthenticationSuccess called");
 		
 		ObjectMapper objectMapper = new ObjectMapper();
-		String userResponse = objectMapper.writeValueAsString(new UserResponse(principalDetails.getUser().getNickname(), principalDetails.getUser().getEmail()));
+		String userResponse = objectMapper.writeValueAsString(new UserResponse(user.getNickname(), user.getEmail()));
 		response.getWriter().print(userResponse);
+	}
+	
+	@Override
+	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException failed) throws IOException, ServletException {
+
+		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        response.getWriter().write("로그인 실패");
+        
+        log.info("로그인에 실패했습니다. 메시지 : {}", failed.getMessage());
 	}
 
 }

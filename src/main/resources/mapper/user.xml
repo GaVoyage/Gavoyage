@@ -41,6 +41,13 @@
 		where email = #{email}
 	</select>
 	
+	<select id="findByRefreshToken" parameterType="String" resultMap="user">
+		select *
+		from user
+		where refreshToken = #{refreshToken}
+	</select>
+	
+	
 	<select id="findUserIdxByEmail" parameterType="String" resultType="Long">
 		select userIdx from user where email = #{email}
 	</select>

@@ -54,14 +54,14 @@ public class JwtService {
 			   .sign(Algorithm.HMAC512(secretKey)); // 시크릿 키 설정
    }
    
-   public String createRefreshToken(Users user) {
+   public String createRefreshToken() {
 	   return JWT.create()
 			   .withSubject("RefreshToken") // jwt의 subject를 지정해주는데 사실 아무거나 사용해도 상관 없다
 			   .withExpiresAt(new Date(System.currentTimeMillis() + refreshTokenExpirationTime)) // JWT 유효기간
 			   .sign(Algorithm.HMAC512(secretKey)); // 시크릿 키 설정
    }
    
-   public void sendToken(HttpServletResponse response, String accessToken, String refreshToken) {
+   public void sendAccessAndRefreshToken(HttpServletResponse response, String accessToken, String refreshToken) {
 	   response.setContentType("application/json;charset=UTF-8"); // 응답의 content-type 지정
        response.setStatus(HttpServletResponse.SC_OK); // 응답 상태 코드 지정
        
@@ -69,13 +69,12 @@ public class JwtService {
        sendRefreshToken(response, refreshToken);
    }
    
-   
    public void sendAccessToken(HttpServletResponse response, String accessToken) {
-	   response.setHeader(accessHeader, accessToken);
+	   response.setHeader(accessHeader, tokenPrefix + accessToken);
    }
    
    public void sendRefreshToken(HttpServletResponse response, String refreshToken) {
-	   response.setHeader(accessHeader, refreshToken);
+	   response.setHeader(accessHeader, tokenPrefix + refreshToken);
    }
    
    public String extractAccessToken(HttpServletRequest request) {
@@ -86,7 +85,7 @@ public class JwtService {
 	   return request.getHeader(refreshHeader).replace(tokenPrefix, "");
    }
    
-   public String extractEmail(String accessToken) throws Exception{
+   public String extractEmail(String accessToken){
 	   return JWT.require(Algorithm.HMAC512(secretKey)) // jwt verifier builder를 불러옴
 				.build()              // 불러온 jwt verifier builder로 jwt verifier 생성
 				.verify(accessToken)  // access token 유효성 검증
@@ -96,6 +95,18 @@ public class JwtService {
    
    public void updateRefreshToken(String email, String refreshToken) {
 	   userService.updateRefreshToken(email, refreshToken);
+   }
+   
+   public boolean isTokenValid(String token) {
+       try {
+    	   // jwt verifier builder 호출 후 jwt verifier를 생성하여 검증
+    	   // 이 과정에서 예외가 터진다면 토큰이 유효하지 않다는 것이다!
+           JWT.require(Algorithm.HMAC512(secretKey)).build().verify(token);
+           return true;
+       } catch (Exception e) {
+           log.error("유효하지 않은 토큰입니다. {}", e.getMessage());
+           return false;
+       }
    }
    
 }

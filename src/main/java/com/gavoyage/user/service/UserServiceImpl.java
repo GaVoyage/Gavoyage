@@ -49,13 +49,18 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public Users findByUserEmail(String email) {
+	public Users findByUserEmail(String email){
 		return userMapper.findByUserEmail(email);
 	}
 
 	@Override
-	public void updateRefreshToken(String email, String refreshToken) {
+	public void updateRefreshToken(String email, String refreshToken){
 		userMapper.updateRefreshToken(email, refreshToken);
+	}
+
+	@Override
+	public Users findByRefreshToken(String refreshToken){
+		return userMapper.findByRefreshToken(refreshToken);
 	}
 	
 }
