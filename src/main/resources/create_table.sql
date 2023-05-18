@@ -26,6 +26,9 @@ CREATE TABLE User
     `userPassword`  VARCHAR(200)    NOT NULL    COMMENT '비밀번호',
     `userImageUrl`  TEXT            NULL        COMMENT '프로필 사진',
     `phoneNumber`   VARCHAR(20)     NOT NULL    COMMENT '전화번호',
+    `socialType`    CHAR(50)        NULL        COMMENT 'KAKAO, NAVER',
+    `socialID`      VARCHAR(200)    NULL        COMMENT '인증 서버에서 제공하는 유저 PK',
+    `refreshToken`  VARCHAR(200)    NULL        COMMENT 'refresh token',
     `userRole`      CHAR(50)        NOT NULL    DEFAULT 'ROLE_USER' COMMENT 'ROLE_ADMIN : 관리자 / ROLE_USER : 일반 회원',
     `status`        CHAR(1)         NOT NULL    DEFAULT 'Y' COMMENT 'N : 탈퇴한 회원 / Y : 활동 중인 회원',
     `createdAt`     TIMESTAMP       NOT NULL    DEFAULT current_timestamp,
@@ -63,6 +66,7 @@ ALTER TABLE Plan
 -- Foreign Key 삭제 SQL - Plan(userIdx)
 -- ALTER TABLE Plan
 -- DROP FOREIGN KEY FK_Plan_userIdx_User_userIdx;
+
 
 -- Review Table Create SQL
 -- 테이블 생성 SQL - Review
@@ -314,12 +318,12 @@ ALTER TABLE Follow
 -- 테이블 생성 SQL - Likes
 CREATE TABLE Likes
 (
-    `likeIdx`     BIGINT       NOT NULL    AUTO_INCREMENT,
-    `userIdx`     BIGINT       NOT NULL,
-    `reviewIdx`   BIGINT       NOT NULL,
-    `status`      CHAR(1)      NOT NULL    DEFAULT 'Y',
-    `createdAt`   TIMESTAMP    NOT NULL    DEFAULT current_timestamp,
-    `modifiedAt`  TIMESTAMP    NULL        DEFAULT current_timestamp on update current_timestamp,
+    `likeIdx`    BIGINT       NOT NULL    AUTO_INCREMENT,
+    `userIdx`    BIGINT       NOT NULL,
+    `reviewIdx`  BIGINT       NOT NULL,
+    `status`     CHAR(1)      NOT NULL    DEFAULT 'Y',
+    `createdAt`  TIMESTAMP    NOT NULL    DEFAULT current_timestamp,
+    `modifedAt`  TIMESTAMP    NULL        DEFAULT current_timestamp on update current_timestamp,
     CONSTRAINT PK_LIKES PRIMARY KEY (likeIdx)
 );
 
@@ -344,10 +348,4 @@ ALTER TABLE Likes
 -- ALTER TABLE Likes
 -- DROP FOREIGN KEY FK_Likes_reviewIdx_Review_reviewIdx;
 
-ALTER TABLE DailyPlan
-    ADD CONSTRAINT FK_DailyPlan_contend_id_AttractionInfo_content_id FOREIGN KEY (content_id)
-        REFERENCES attraction_info(content_id) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-alter table user add socialType CHAR(50);
-alter table user add socialID VARCHAR(200);
-alter table user add refreshToken VARCHAR(200);
