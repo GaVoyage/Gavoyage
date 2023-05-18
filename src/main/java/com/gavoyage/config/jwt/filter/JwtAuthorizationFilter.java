@@ -12,16 +12,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.gavoyage.config.jwt.JwtProperties;
 import com.gavoyage.config.jwt.service.JwtService;
 import com.gavoyage.config.login.PrincipalDetails;
 import com.gavoyage.user.domain.Users;
 import com.gavoyage.user.service.UserServiceImpl;
 
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 
 // 권한이나 인증이 필요한(회원용 api) url을 호출했을 경우  스프링 시큐리티의 BasicAuthenticationFilter를 무조건 거치게 된다.
 // 권한이나 인증이 필요 없는 경우에는 거치지 않는다.
@@ -33,12 +33,19 @@ import lombok.RequiredArgsConstructor;
  * 3. Refresh Token이 있는 경우
  *  => 로그인한 사용자의 refresh token과 비교하여 일치한다면 Access Token과 Refresh Token 모두 재발급(RTR) + 인증 실패
  */
-public class JwtAuthorizationFilter extends BasicAuthenticationFilter{
+@Slf4j
+public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	
 	private final JwtService jwtService;
 	private final UserServiceImpl userService;
+	
+//	public JwtAuthorizationFilter(JwtService jwtService, UserServiceImpl userService) {
+//		super();
+//		this.jwtService = jwtService;
+//		this.userService = userService;
+//	}
 
-	public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserServiceImpl userService, JwtService jwtService) {
+	public JwtAuthorizationFilter(AuthenticationManager authenticationManager, JwtService jwtService, UserServiceImpl userService) {
 		super(authenticationManager);
 		this.userService = userService;
 		this.jwtService = jwtService;
@@ -48,31 +55,36 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter{
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		System.out.println("인증이나 권한이 필요한 주소 요청");
-		System.out.println("request.getRequestURI() : " + request.getRequestURL());
+		
+		log.debug("인증이나 권한이 필요한 주소 요청");
+		log.debug("request.getRequestURI() : " + request.getRequestURL());
 		
 		
 		if(request.getRequestURI().equals("/login")) { // "/login" url로 요청시 인증 과정 생략
-			System.out.println("인증인데 login 주소로 온 경우");
+			log.debug("인증인데 login 주소로 온 경우");
 			chain.doFilter(request, response);
 			return;
 		}
 		
-//		String jwtHeader = request.getHeader(JwtProperties.HEADER_STRING);
-//		System.out.println("jwtHeader : " + jwtHeader);
-//		
-//		if(jwtHeader == null || jwtHeader.startsWith(JwtProperties.TOKEN_PREFIX)) { // header가 없거나 Bearer 방식이 아닐 경우
-//			chain.doFilter(request, response);
-//			return;
-//		}
+		String accessToken = jwtService.extractAccessToken(request).orElse(null);
+		String refreshToken = jwtService.extractRefreshToken(request).orElse(null);
 		
-		// JWT 토큰 검증을 통해 정상적인 사용자인지 확인	
-		String refreshToken = jwtService.extractRefreshToken(request);
-		System.out.println("refreshToken : " + refreshToken);
+		log.debug("accessToken : " + refreshToken);
+		log.debug("refreshToken : " + refreshToken);
 		
-		// refresh token이 만료된 경우
+		if((accessToken == null && refreshToken == null)) { // header가 없거나 Bearer 방식이 아닐 경우
+			log.debug("토큰이 아예 없는 경우");
+			chain.doFilter(request, response);
+			return;
+		}
+		
+		
+		// refresh token이 만료된 경우 에러를 발생 시키고 access token과 refresh token 모두 재발급
 		if(refreshToken != null) {
+			log.debug("refresh token이 만료된 경우");
+			
 			Users findUser = userService.findByRefreshToken(refreshToken);
+			log.debug("findUser : " + findUser);
 			
 			// refresh token 갱신
 			String reIssuedRefreshToken = jwtService.createRefreshToken();
@@ -85,17 +97,17 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter{
 		
 		// access token을 보내 인증 처리
 		if(refreshToken == null) {
-			String accessToken = jwtService.extractAccessToken(request);
+			log.debug("유효한 토큰인 경우");
 			
 			if(!jwtService.isTokenValid(accessToken)) {
-				throw new ServletException("유요하지 않은 토큰입니다.");
+				throw new ServletException("유효하지 않은 토큰입니다.");
 			}
 			
-			String email = jwtService.extractEmail(accessToken); // claim으로 부터 email 추출
-			Users userEntity = userService.findByUserEmail(email);
+			String email = jwtService.extractEmail(accessToken).orElse(null); // claim으로 부터 email 추출
+			Users userEntity = userService.findByUserEmail(email).orElse(null);
 			
 			PrincipalDetails principalDetails = new PrincipalDetails(userEntity);
-			System.out.println("userEntity : " + userEntity);
+			log.debug("userEntity : " + userEntity);
 			
 			// JWT 토큰 서명이 정상일 경우 Authentication 객체를 직접 생성한다.
 			Authentication authentication = 

@@ -20,15 +20,13 @@ public class PrincipalDetailsService implements UserDetailsService{
 	/**
 	 * 스프링이 로그인 요청이 들어오면 이를 가로채 username과 password 변수 2개를 가로챈다.
 	 */
-	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		
 		System.out.println("PrincipalDetailsService loadUserByUsername calls");
 		
-		Users userEntity = userService.findByUserEmail(email);
-		System.out.println("userEntity : " + userEntity);
-		
-		return new PrincipalDetails(userEntity);
+		return new PrincipalDetails(userService.findByUserEmail(email)
+									.orElseThrow(() -> new UsernameNotFoundException("해당 이메일과 일치하는 사용자가 존재하지 않습니다.")));
 	}
 
 }

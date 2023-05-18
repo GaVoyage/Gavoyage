@@ -2,6 +2,7 @@ package com.gavoyage.user.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -49,8 +50,8 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public Users findByUserEmail(String email){
-		return userMapper.findByUserEmail(email);
+	public Optional<Users> findByUserEmail(String email){
+		return Optional.ofNullable(userMapper.findByUserEmail(email));
 	}
 
 	@Override

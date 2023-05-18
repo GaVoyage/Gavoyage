@@ -1,7 +1,9 @@
 package com.gavoyage.config.jwt.service;
 
 import java.util.Date;
+import java.util.Optional;
 
+import javax.management.RuntimeErrorException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -74,37 +76,56 @@ public class JwtService {
    }
    
    public void sendRefreshToken(HttpServletResponse response, String refreshToken) {
-	   response.setHeader(accessHeader, tokenPrefix + refreshToken);
+	   response.setHeader(refreshHeader, tokenPrefix + refreshToken);
    }
    
-   public String extractAccessToken(HttpServletRequest request) {
-	   return request.getHeader(accessHeader).replace(tokenPrefix, "");
+   public Optional<String> extractAccessToken(HttpServletRequest request) {
+	   log.debug("access token : " + request.getHeader(accessHeader));
+	   return Optional.ofNullable(request.getHeader(accessHeader))
+	   			.filter(token -> token.startsWith(tokenPrefix))
+	   			.map(token -> token.replace(tokenPrefix, ""));
    }
    
-   public String extractRefreshToken(HttpServletRequest request) {
-	   return request.getHeader(refreshHeader).replace(tokenPrefix, "");
+   public Optional<String> extractRefreshToken(HttpServletRequest request) {
+	   return Optional.ofNullable(request.getHeader(refreshHeader))
+			   			.filter(token -> token.startsWith(tokenPrefix))
+			   			.map(token -> token.replace(tokenPrefix, ""));
    }
    
-   public String extractEmail(String accessToken){
-	   return JWT.require(Algorithm.HMAC512(secretKey)) // jwt verifier builder를 불러옴
-				.build()              // 불러온 jwt verifier builder로 jwt verifier 생성
-				.verify(accessToken)  // access token 유효성 검증
-				.getClaim("email")    // email cliam 추출
-				.asString();
+   public Optional<String> extractEmail(String accessToken){
+	   try {
+		   return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey)) // jwt verifier builder를 불러옴 
+						.build()              // 불러온 jwt verifier builder로 jwt verifier 생성
+						.verify(accessToken)  // access token 유효성 검증
+						.getClaim("email")
+						.asString());   
+	   } catch (Exception e) { // 토큰이 유효하지 않을 때는 빈 optinal 객체 return
+		   log.error("Access Token이 유효하지 않아 이메일을 들고 올 수 없습니다");
+		   return Optional.empty(); 
+	   }
+	   
+			   						 
    }
    
    public void updateRefreshToken(String email, String refreshToken) {
-	   userService.updateRefreshToken(email, refreshToken);
+	   Optional<Users> user = userService.findByUserEmail(email);
+	   if(user.isPresent()) {
+		   userService.updateRefreshToken(user.get().getEmail(), refreshToken);
+		   return;
+	   }
+	   
+	   throw new IllegalStateException("이메일에 해당하는 유저가 존재하지 않습니다.");
    }
    
    public boolean isTokenValid(String token) {
        try {
     	   // jwt verifier builder 호출 후 jwt verifier를 생성하여 검증
     	   // 이 과정에서 예외가 터진다면 토큰이 유효하지 않다는 것이다!
+    	   log.debug("token : " +  token);
            JWT.require(Algorithm.HMAC512(secretKey)).build().verify(token);
            return true;
        } catch (Exception e) {
-           log.error("유효하지 않은 토큰입니다. {}", e.getMessage());
+           log.error("유효하지 않은 토큰 {}", e.getMessage());
            return false;
        }
    }
