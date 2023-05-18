@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 세션을 사용하지 않도록 설정
 		http.authorizeHttpRequests()
-		.antMatchers("/", "/users/join", "/regions/**", "/login", "/css/**", "/img/**", "/js/**", "/favicon.ico").permitAll()
+		.antMatchers("/", "/users/**",  "/users/join", "/users/emailCheck/**", "/regions/**", "/login", "/css/**", "/img/**", "/js/**", "/favicon.ico").permitAll()
 		.anyRequest().authenticated(); // 나머지 요청들은 로그인 없어도 허용
 		
 		http.addFilterAfter(new LoginFilter(authenticationManager(), jwtService, userService), LogoutFilter.class); // 로그인 시 정상 회원이라면 jwt 토큰을 생성해주는 필터

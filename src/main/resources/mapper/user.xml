@@ -41,6 +41,12 @@
 		where email = #{email}
 	</select>
 	
+	<select id="findBySocialIdAndSocialType" parameterType="String" resultMap="user">
+		select *
+		from user
+		where socialId = #{socialId} and socialType = #{socialType}
+	</select>
+	
 	<select id="findByRefreshToken" parameterType="String" resultMap="user">
 		select *
 		from user
@@ -63,6 +69,15 @@
 		insert into 
 		user(email, nickname, userPassword, phoneNumber) 
 		values (#{email}, #{nickname}, #{userPassword}, #{phoneNumber});
+	</insert>
+	
+	<insert id="socialJoin" parameterType="socialJoinDto">
+		insert into user(socialType, socialID, nickname, email, userPassword, phoneNumber)
+		value(#{socialType}, #{socialID}, #{nickname}, #{email}, #{userPassword}, #{phoneNumber});
+		
+		<selectKey resultType="long" keyProperty="userIdx" order="AFTER">
+            select last_insert_id()
+        </selectKey>
 	</insert>
 	
 	<update id="deleteUser" parameterType="long">

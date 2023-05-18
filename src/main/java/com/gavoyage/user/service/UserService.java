@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.gavoyage.user.domain.Users;
+import com.gavoyage.user.dto.SocialJoinDto;
 import com.gavoyage.user.dto.request.UserJoinReq;
 import com.gavoyage.user.dto.request.UserLoginReq;
 
@@ -17,4 +18,6 @@ public interface UserService {
 	Optional<Users> findByUserEmail(String email) throws Exception;
 	void updateRefreshToken(String email, String refreshToken) throws Exception;	
 	Users findByRefreshToken(String refreshToken) throws Exception;
+	Optional<Users> findBySocialIdAndSocialType(String socialId, String socialType) throws Exception;
+	Long socialJoin(SocialJoinDto socialJoinDto);
 }

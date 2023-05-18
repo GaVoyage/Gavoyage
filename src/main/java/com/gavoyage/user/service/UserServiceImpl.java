@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.gavoyage.mapper.UserMapper;
 import com.gavoyage.user.domain.Users;
+import com.gavoyage.user.dto.SocialJoinDto;
 import com.gavoyage.user.dto.request.UserJoinReq;
 import com.gavoyage.user.dto.request.UserLoginReq;
 
@@ -62,6 +63,17 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public Users findByRefreshToken(String refreshToken){
 		return userMapper.findByRefreshToken(refreshToken);
+	}
+
+	@Override
+	public Optional<Users> findBySocialIdAndSocialType(String socialId, String socialType){
+		return userMapper.findBySocialIdAndSocialType(socialId, socialType);
+	}
+
+	@Override
+	public Long socialJoin(SocialJoinDto socialJoinDto) {
+		userMapper.socialJoin(socialJoinDto);
+		return socialJoinDto.getUserIdx();
 	}
 	
 }
