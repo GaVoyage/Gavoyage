@@ -8,14 +8,17 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.gavoyage.mapper.PlanMapper;
 import com.gavoyage.plan.domain.DailyPlan;
 import com.gavoyage.plan.domain.Plan;
 import com.gavoyage.plan.dto.request.DailyPlanCreateDto;
 import com.gavoyage.plan.dto.request.PlanCreateReq;
+import com.gavoyage.plan.dto.response.GetPlansRes;
 import com.gavoyage.region.domain.AttractionInfo;
 import com.gavoyage.region.service.RegionServiceImpl;
+import com.gavoyage.review.service.ReviewServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,9 +29,11 @@ import lombok.extern.slf4j.Slf4j;
 public class PlanServiceImpl implements PlanService{
 
 	private final RegionServiceImpl regionService;
+	private final ReviewServiceImpl reviewSevice;
 	private final PlanMapper planMapper;
-
+	
 	@Override
+	@Transactional
 	public void createPlan(PlanCreateReq planCreateReq) throws Exception{
 		
 		planMapper.createPlan(planCreateReq);
@@ -49,8 +54,16 @@ public class PlanServiceImpl implements PlanService{
 	}
 
 	@Override
-	public List<Plan> findPlans(Long userIdx) throws Exception{
-		return planMapper.getPlans(userIdx);
+	public List<GetPlansRes> findPlans(Long userIdx) throws Exception{
+		
+		List<Plan> plans = planMapper.getPlans(userIdx);
+		List<GetPlansRes> getPlansReses = new ArrayList<GetPlansRes>();
+		
+		for(Plan plan : plans) {
+			getPlansReses.add(new GetPlansRes(plan, reviewSevice.hasReview(plan.getPlanIdx())));
+		}
+	
+		return getPlansReses;
 	}
 
 	@Override
@@ -79,12 +92,15 @@ public class PlanServiceImpl implements PlanService{
 	}
 
 	@Override
-	public void deletePlan(Long planIdx) {
+	public void deletePlan(Long planIdx) throws Exception {
 		planMapper.deletePlan(planIdx);
+		for(DailyPlan dailyPlans : findDailyPlans(planIdx)) {
+			deleteDailyPlan(dailyPlans.getDailyPlanIdx());
+		}
 	}
 
 	@Override
-	public void deleteDailyPlan(Long dailyPlanIdx) {
+	public void deleteDailyPlan(Long dailyPlanIdx) throws Exception {
 		planMapper.deleteDailyPlan(dailyPlanIdx);
 	}
 

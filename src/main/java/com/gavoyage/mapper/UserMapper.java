@@ -20,5 +20,7 @@ public interface UserMapper {
 	void join(UserJoinReq userJoinReq)  throws SQLException;
 	void deleteUser(Long userIdx);
 	Users findByUserEmail(String email);
-
+	Users findByRefreshToken(String refreshToken);
+	void updateRefreshToken(String email, String refreshToken);
+	
 }

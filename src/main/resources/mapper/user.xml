@@ -41,6 +41,16 @@
 		where email = #{email}
 	</select>
 	
+	<select id="findByRefreshToken" parameterType="String" resultMap="user">
+		select *
+		from user
+		where refreshToken = #{refreshToken}
+	</select>
+	
+	
+	<select id="findUserIdxByEmail" parameterType="String" resultType="Long">
+		select userIdx from user where email = #{email}
+	</select>
 	
 	<select id="findAll" resultMap="user">
 		select *
@@ -57,6 +67,10 @@
 	
 	<update id="deleteUser" parameterType="long">
 		update user set status = 'N' where userIdx = #{userIdx}
+	</update>
+	
+	<update id="updateRefreshToken" parameterType="String">
+		update user set refreshToken = #{refreshToken} where email = #{email};
 	</update>
 	
 </mapper>

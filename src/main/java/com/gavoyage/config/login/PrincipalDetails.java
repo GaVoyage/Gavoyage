@@ -1,4 +1,4 @@
-package com.gavoyage.config.auth;
+package com.gavoyage.config.login;
 
 import java.util.ArrayList;
 import java.util.Collection;

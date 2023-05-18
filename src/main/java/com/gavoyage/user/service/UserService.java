@@ -1,6 +1,7 @@
 package com.gavoyage.user.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.gavoyage.user.domain.Users;
 import com.gavoyage.user.dto.request.UserJoinReq;
@@ -13,6 +14,7 @@ public interface UserService {
 	Users findByUserIdx(Long userIdx) throws Exception;
 	List<Users> findAll() throws Exception;
 	void deleteUser(Long userIdx) throws Exception;
-	Users findByUserEmail(String email);
-	
+	Optional<Users> findByUserEmail(String email) throws Exception;
+	void updateRefreshToken(String email, String refreshToken) throws Exception;	
+	Users findByRefreshToken(String refreshToken) throws Exception;
 }

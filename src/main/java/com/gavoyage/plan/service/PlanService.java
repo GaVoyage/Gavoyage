@@ -7,15 +7,16 @@ import java.util.Map;
 import com.gavoyage.plan.domain.DailyPlan;
 import com.gavoyage.plan.domain.Plan;
 import com.gavoyage.plan.dto.request.PlanCreateReq;
+import com.gavoyage.plan.dto.response.GetPlansRes;
 import com.gavoyage.region.domain.AttractionInfo;
 
 public interface PlanService {
 	
 	void createPlan(PlanCreateReq planCreateReq) throws Exception;
-	List<Plan> findPlans(Long userIdx) throws Exception;
+	List<GetPlansRes> findPlans(Long userIdx) throws Exception;
 	List<DailyPlan> findDailyPlans(Long planIdx) throws Exception;
 	Map<LocalDate, List<AttractionInfo>> findAllAttractionInfos(Long planIdx) throws Exception;
-	void deletePlan(Long planIdx);
-	void deleteDailyPlan(Long dailyPlanIdx);
+	void deletePlan(Long planIdx) throws Exception;
+	void deleteDailyPlan(Long dailyPlanIdx) throws Exception;
 	
 }

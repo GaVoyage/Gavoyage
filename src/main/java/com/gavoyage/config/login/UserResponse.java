@@ -1,4 +1,4 @@
-package com.gavoyage.config.jwt;
+package com.gavoyage.config.login;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

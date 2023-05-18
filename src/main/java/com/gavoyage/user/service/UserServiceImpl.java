@@ -2,6 +2,7 @@ package com.gavoyage.user.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -32,8 +33,6 @@ public class UserServiceImpl implements UserService{
 	public Users findByUserIdx(Long userIdx) throws Exception {
 		return userMapper.findByUserIdx(userIdx);
 	}
-	
-	
 
 	@Override
 	public List<Users> findAll() throws Exception {
@@ -51,8 +50,18 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public Users findByUserEmail(String email) {
-		return userMapper.findByUserEmail(email);
+	public Optional<Users> findByUserEmail(String email){
+		return Optional.ofNullable(userMapper.findByUserEmail(email));
+	}
+
+	@Override
+	public void updateRefreshToken(String email, String refreshToken){
+		userMapper.updateRefreshToken(email, refreshToken);
+	}
+
+	@Override
+	public Users findByRefreshToken(String refreshToken){
+		return userMapper.findByRefreshToken(refreshToken);
 	}
 	
 }
