@@ -9,5 +9,50 @@
 		from review
 		where planIdx = #{planIdx} and status = 'Y'
 	</select>
+	
+	<insert id="createReview" parameterType="CreateReviewReq">
+		insert into review(userIdx, planIdx, title, contents, hit)
+		value (#{userIdx}, #{planIdx}, #{title}, #{contents}, #{hit});
+		
+		<selectKey resultType="long" keyProperty="reviewIdx" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+	</insert>
+	
+	<insert id="createRecommend" parameterType="createRecommendDto">
+		insert into recommend(reviewIdx, content_id) 
+		value(#{reviewIdx}, #{content_id});
+	</insert>
+	 
+	 <insert id="createUnRecommend" parameterType="createRecommendDto">
+		insert into unrecommend(reviewIdx, content_id) 
+		value(#{reviewIdx}, #{content_id});
+	</insert>
+	
+	<select id="findReviewInfoByPlanIdx" parameterType="Long" resultType="findReviewInfo">
+		select reviewIdx, title, contents, hit from review where planIdx = #{planIdx} and status = 'Y';
+	</select>
+	 
+	 <select id="getRecommendsAttractionInfo" parameterType="Long" resultType="attractionInfo">
+	 	select a.* from review r, recommend rc, attraction_info a 
+	 	where r.reviewIdx = rc.reviewIdx and r.planIdx = #{planIdx} and rc.content_id = a.content_id;
+	 </select>
+	 
+	 <select id="getUnRecommendsAttractionInfo" parameterType="Long" resultType="attractionInfo">
+	 	select a.* from review r, unrecommend urc, attraction_info a 
+	 	where r.reviewIdx = urc.reviewIdx and r.planIdx = 3 and urc.content_id = a.content_id;
+	 </select>
+	 
+	 <update id="deleteReview" parameterType="Long">
+	 	update review set status = 'N' where reviewIdx = #{reviewIdx};
+	 </update>
+	 
+	 <update id="deleteRecommend" parameterType="Long">
+	 	update recommend set status = 'N' where reviewIdx = #{reviewIdx};
+	 </update>
+	 
+	 <update id="deleteUnRecommend" parameterType="Long">
+	 	update unrecommend set status = 'N' where reviewIdx = #{reviewIdx};
+	 </update>
 	 
 </mapper>
