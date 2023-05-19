@@ -57,10 +57,12 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 			throws IOException, ServletException {
 		
 		log.debug("인증이나 권한이 필요한 주소 요청");
-		log.debug("request.getRequestURI() : " + request.getRequestURL());
+		log.debug("request.getRequestURL() : " + request.getRequestURL());
+		log.debug("request.getRequestURI() : " + request.getRequestURI());
 		
+		String uri = request.getRequestURI();
 		
-		if(request.getRequestURI().equals("/login")) { // "/login" url로 요청시 인증 과정 생략
+		if(uri.equals("/login") || uri.startsWith("/oauth2")) { // "/login" url로 요청시 인증 과정 생략
 			log.debug("인증인데 login 주소로 온 경우");
 			chain.doFilter(request, response);
 			return;
@@ -91,7 +93,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 			userService.updateRefreshToken(findUser.getEmail(), reIssuedRefreshToken);
 			
 			jwtService.sendAccessAndRefreshToken(response,
-								jwtService.createAccessToken(findUser),
+								jwtService.createAccessToken(findUser.getEmail()),
 								reIssuedRefreshToken);
 		}
 		

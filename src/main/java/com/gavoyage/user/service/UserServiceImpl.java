@@ -8,11 +8,14 @@ import org.springframework.stereotype.Service;
 
 import com.gavoyage.mapper.UserMapper;
 import com.gavoyage.user.domain.Users;
+import com.gavoyage.user.dto.SocialJoinDto;
 import com.gavoyage.user.dto.request.UserJoinReq;
 import com.gavoyage.user.dto.request.UserLoginReq;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
@@ -62,6 +65,23 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public Users findByRefreshToken(String refreshToken){
 		return userMapper.findByRefreshToken(refreshToken);
+	}
+
+	@Override
+	public Optional<Users> findBySocialIdAndSocialType(String socialId, String socialType){
+		return userMapper.findBySocialIdAndSocialType(socialId, socialType);
+	}
+
+	@Override
+	public Long socialJoin(SocialJoinDto socialJoinDto) {
+//		log.debug(socialJoinDto.toString());
+		try {
+			userMapper.socialJoin(socialJoinDto);
+		} catch (SQLException e) {
+			log.error(e.getMessage());
+		}
+		
+		return socialJoinDto.getUserIdx();
 	}
 	
 }
