@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gavoyage.config.jwt.service.JwtService;
@@ -25,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler{
 	
 	private final JwtService jwtService;
-	private final UserServiceImpl userService;
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -37,13 +37,17 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler{
 		String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
 		String refreshToken = jwtService.createRefreshToken();
 		
-		jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
+//		jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
 		
-		ObjectMapper objectMapper = new ObjectMapper();
-		String userResponse = objectMapper.writeValueAsString(new UserResponse(oAuth2User.getNickname(), oAuth2User.getEmail()));
-		response.getWriter().print(userResponse);
+//		ObjectMapper objectMapper = new ObjectMapper();
+//		String userResponse = objectMapper.writeValueAsString(new UserResponse(oAuth2User.getName(), oAuth2User.getEmail()));
+//		response.getWriter().print(userResponse);
 		
+		String uri = UriComponentsBuilder.fromUriString("http://localhost:8080/")
+                .queryParam("accessToken", accessToken)
+                .queryParam("refreshToken", refreshToken)
+                .build().toUriString();
+        response.sendRedirect(uri);
 	}
-	
 	
 }
