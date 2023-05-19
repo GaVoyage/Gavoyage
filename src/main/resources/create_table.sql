@@ -27,7 +27,7 @@ CREATE TABLE User
     `userImageUrl`  TEXT            NULL        COMMENT '프로필 사진',
     `phoneNumber`   VARCHAR(20)     NOT NULL    COMMENT '전화번호',
     `socialType`    CHAR(50)        NULL        COMMENT 'KAKAO, NAVER',
-    `socialID`      VARCHAR(200)    NULL        COMMENT '인증 서버에서 제공하는 유저 PK',
+    `socialId`      VARCHAR(200)    NULL        COMMENT '인증 서버에서 제공하는 유저 PK',
     `refreshToken`  VARCHAR(200)    NULL        COMMENT 'refresh token',
     `userRole`      CHAR(50)        NOT NULL    DEFAULT 'ROLE_USER' COMMENT 'ROLE_ADMIN : 관리자 / ROLE_USER : 일반 회원',
     `status`        CHAR(1)         NOT NULL    DEFAULT 'Y' COMMENT 'N : 탈퇴한 회원 / Y : 활동 중인 회원',
