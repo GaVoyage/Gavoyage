@@ -17,11 +17,13 @@ import lombok.Setter;
 public class CustomOAuth2User extends DefaultOAuth2User{
 	private String email;
 	private String userRole;
+	private String nickname;
 	
 	public CustomOAuth2User(Collection<? extends GrantedAuthority> authorities, Map<String, Object> attributes,
-			String nameAttributeKey, String email, String userRole) {
+			String nameAttributeKey, String email, String userRole, String nickname) {
 		super(authorities, attributes, nameAttributeKey);
 		this.email = email;
 		this.userRole = userRole;
+		this.nickname = nickname;
 	}
 }

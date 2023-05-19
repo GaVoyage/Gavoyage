@@ -31,5 +31,15 @@ public class NaverOAuth2UserInfo extends OAuth2UserInfo{
 		
 		return (String) responses.get("nickname");
 	}
+	
+	@Override
+	public String getEmail() {
+		
+		if( (boolean) attributes.get("email")) {
+			return (String) attributes.get("email");
+		}
+		
+		return null;
+	}
 
 }

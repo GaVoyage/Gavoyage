@@ -72,8 +72,8 @@
 	</insert>
 	
 	<insert id="socialJoin" parameterType="socialJoinDto">
-		insert into user(socialType, socialID, nickname, email, userPassword, phoneNumber)
-		value(#{socialType}, #{socialID}, #{nickname}, #{email}, #{userPassword}, #{phoneNumber});
+		insert into user(socialType, socialId, nickname, email, userPassword, phoneNumber)
+		value(#{socialType}, #{socialId}, #{nickname}, #{email}, #{userPassword}, #{phoneNumber});
 		
 		<selectKey resultType="long" keyProperty="userIdx" order="AFTER">
             select last_insert_id()

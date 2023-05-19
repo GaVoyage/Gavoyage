@@ -13,7 +13,9 @@ import com.gavoyage.user.dto.request.UserJoinReq;
 import com.gavoyage.user.dto.request.UserLoginReq;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
@@ -72,7 +74,13 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public Long socialJoin(SocialJoinDto socialJoinDto) {
-		userMapper.socialJoin(socialJoinDto);
+//		log.debug(socialJoinDto.toString());
+		try {
+			userMapper.socialJoin(socialJoinDto);
+		} catch (SQLException e) {
+			log.error(e.getMessage());
+		}
+		
 		return socialJoinDto.getUserIdx();
 	}
 	

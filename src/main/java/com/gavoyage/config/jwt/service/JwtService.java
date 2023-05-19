@@ -48,11 +48,11 @@ public class JwtService {
     @Value("${jwt.refresh.header}")
     private String refreshHeader;
     
-   public String createAccessToken(Users user) {
+   public String createAccessToken(String email) {
 	   return JWT.create()
 			   .withSubject("AccessToken") // jwt의 subject를 지정해주는데 사실 아무거나 사용해도 상관 없다
 			   .withExpiresAt(new Date(System.currentTimeMillis() + accessTokenExpirationTime)) // JWT 유효기간
-			   .withClaim("email", user.getEmail()) // 클레임으로 유저 이메일 사용
+			   .withClaim("email", email) // 클레임으로 유저 이메일 사용
 			   .sign(Algorithm.HMAC512(secretKey)); // 시크릿 키 설정
    }
    
