@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gavoyage.config.login.PrincipalDetails;
 import com.gavoyage.review.dto.request.CreateReviewReq;
 import com.gavoyage.review.dto.response.GetReviewInfoRes;
+import com.gavoyage.review.dto.sql.FindReviewInfo;
 import com.gavoyage.review.service.ReviewServiceImpl;
 
 import lombok.RequiredArgsConstructor;
@@ -37,10 +39,15 @@ public class ReviewController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@GetMapping("/{planIdx}")
-	public ResponseEntity<GetReviewInfoRes> getReviewInfo(@PathVariable Long planIdx) throws Exception{
-		
-		return new ResponseEntity<>(reviewService.getReviewInfo(planIdx), HttpStatus.OK);
+	@GetMapping
+	public ResponseEntity<GetReviewInfoRes> getReviewInfoByPlanIdx(@RequestParam(defaultValue = "0") Long planIdx) throws Exception{
+		FindReviewInfo findReviewInfo = reviewService.findReviewInfoByPlanIdx(planIdx);
+		return new ResponseEntity<>(reviewService.getReviewInfo(findReviewInfo.getReviewIdx()), HttpStatus.OK);
+	}
+	
+	@GetMapping("/{reviewIdx}")
+	public ResponseEntity<GetReviewInfoRes> getReviewInfo(@PathVariable Long reviewIdx) throws Exception{
+		return new ResponseEntity<>(reviewService.getReviewInfo(reviewIdx), HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{reviewIdx}")

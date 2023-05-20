@@ -9,6 +9,7 @@ import com.gavoyage.user.dto.request.UserJoinReq;
 import com.gavoyage.user.dto.request.UserLoginReq;
 
 public interface UserService {
+	
 	int emailCheck(String email) throws Exception;
 	Users login(UserLoginReq userLoginReq) throws Exception;
 	void join(UserJoinReq userJoinReq) throws Exception;
@@ -20,4 +21,6 @@ public interface UserService {
 	Users findByRefreshToken(String refreshToken) throws Exception;
 	Optional<Users> findBySocialIdAndSocialType(String socialId, String socialType) throws Exception;
 	Long socialJoin(SocialJoinDto socialJoinDto);
+	String findUserNicknameByReviewIdx(Long reviewIdx);
+	
 }

@@ -83,5 +83,10 @@ public class UserServiceImpl implements UserService{
 		
 		return socialJoinDto.getUserIdx();
 	}
+
+	@Override
+	public String findUserNicknameByReviewIdx(Long reviewIdx) {
+		return userMapper.findUserNameByReviewIdx(reviewIdx);
+	}
 	
 }

@@ -10,11 +10,15 @@
 		where planIdx = #{planIdx} and status = 'Y'
 	</select>
 	
-	<insert id="createReview" parameterType="CreateReviewReq">
+	<select id="findReview" parameterType="Long" resultType="review">
+		select * from review where reviewIdx = #{reveiwIdx}
+	</select>
+	
+	<insert id="createReview" parameterType="createReviewReq">
 		insert into review(userIdx, planIdx, title, contents, hit)
 		value (#{userIdx}, #{planIdx}, #{title}, #{contents}, #{hit});
 		
-		<selectKey resultType="long" keyProperty="reviewIdx" order="AFTER">
+		<selectKey resultType="Long" keyProperty="reviewIdx" order="AFTER">
             select last_insert_id()
         </selectKey>
 	</insert>
@@ -34,13 +38,13 @@
 	</select>
 	 
 	 <select id="getRecommendsAttractionInfo" parameterType="Long" resultType="attractionInfo">
-	 	select a.* from review r, recommend rc, attraction_info a 
-	 	where r.reviewIdx = rc.reviewIdx and r.planIdx = #{planIdx} and rc.content_id = a.content_id;
+	 	select a.* from recommend r, attraction_info a 
+	 	where r.content_id = a.content_id and reviewIdx = #{reviewIdx} and r.status = 'Y';
 	 </select>
 	 
 	 <select id="getUnRecommendsAttractionInfo" parameterType="Long" resultType="attractionInfo">
-	 	select a.* from review r, unrecommend urc, attraction_info a 
-	 	where r.reviewIdx = urc.reviewIdx and r.planIdx = 3 and urc.content_id = a.content_id;
+	 	select a.* from unrecommend r, attraction_info a 
+	 	where r.content_id = a.content_id and reviewIdx = #{reviewIdx} and r.status = 'Y';
 	 </select>
 	 
 	 <update id="deleteReview" parameterType="Long">

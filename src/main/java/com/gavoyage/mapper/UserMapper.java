@@ -26,4 +26,5 @@ public interface UserMapper {
 	void updateRefreshToken(String email, String refreshToken);
 	Optional<Users> findBySocialIdAndSocialType(String socialId, String socialType);
 	void socialJoin(SocialJoinDto socialJoinDto) throws SQLException;
+	String findUserNameByReviewIdx(Long reviewIdx);
 }

@@ -88,4 +88,8 @@
 		update user set refreshToken = #{refreshToken} where email = #{email};
 	</update>
 	
+	<select id="findUserNameByReviewIdx" parameterType="Long" resultType="String">
+		select u.nickname from review r, user u where r.userIdx = u.userIdx and r.reviewIdx = #{reviewIdx};
+	</select>
+	
 </mapper>
