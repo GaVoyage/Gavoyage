@@ -756,6 +756,17 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 /***/ }),
 
+/***/ "./node_modules/jwt-decode/build/jwt-decode.esm.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/jwt-decode/build/jwt-decode.esm.js ***!
+  \*********************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"InvalidTokenError\": function() { return /* binding */ n; }\n/* harmony export */ });\n/* harmony import */ var core_js_modules_web_dom_exception_stack_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-exception.stack.js */ \"./node_modules/core-js/modules/web.dom-exception.stack.js\");\n/* harmony import */ var core_js_modules_web_dom_exception_stack_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_exception_stack_js__WEBPACK_IMPORTED_MODULE_0__);\n\nfunction e(e) {\n  this.message = e;\n}\ne.prototype = new Error(), e.prototype.name = \"InvalidCharacterError\";\nvar r = \"undefined\" != typeof window && window.atob && window.atob.bind(window) || function (r) {\n  var t = String(r).replace(/=+$/, \"\");\n  if (t.length % 4 == 1) throw new e(\"'atob' failed: The string to be decoded is not correctly encoded.\");\n  for (var n, o, a = 0, i = 0, c = \"\"; o = t.charAt(i++); ~o && (n = a % 4 ? 64 * n + o : o, a++ % 4) ? c += String.fromCharCode(255 & n >> (-2 * a & 6)) : 0) o = \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=\".indexOf(o);\n  return c;\n};\nfunction t(e) {\n  var t = e.replace(/-/g, \"+\").replace(/_/g, \"/\");\n  switch (t.length % 4) {\n    case 0:\n      break;\n    case 2:\n      t += \"==\";\n      break;\n    case 3:\n      t += \"=\";\n      break;\n    default:\n      throw \"Illegal base64url string!\";\n  }\n  try {\n    return function (e) {\n      return decodeURIComponent(r(e).replace(/(.)/g, function (e, r) {\n        var t = r.charCodeAt(0).toString(16).toUpperCase();\n        return t.length < 2 && (t = \"0\" + t), \"%\" + t;\n      }));\n    }(t);\n  } catch (e) {\n    return r(t);\n  }\n}\nfunction n(e) {\n  this.message = e;\n}\nfunction o(e, r) {\n  if (\"string\" != typeof e) throw new n(\"Invalid token specified\");\n  var o = !0 === (r = r || {}).header ? 0 : 1;\n  try {\n    return JSON.parse(t(e.split(\".\")[o]));\n  } catch (e) {\n    throw new n(\"Invalid token specified: \" + e.message);\n  }\n}\nn.prototype = new Error(), n.prototype.name = \"InvalidTokenError\";\n/* harmony default export */ __webpack_exports__[\"default\"] = (o);\n\n\n//# sourceURL=webpack://gavoyage_front/./node_modules/jwt-decode/build/jwt-decode.esm.js?");
+
+/***/ }),
+
 /***/ "./node_modules/lodash.orderby/index.js":
 /*!**********************************************!*\
   !*** ./node_modules/lodash.orderby/index.js ***!
