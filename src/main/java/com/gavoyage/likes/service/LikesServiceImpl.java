@@ -1,7 +1,5 @@
 package com.gavoyage.likes.service;
 
-import java.sql.SQLException;
-
 import org.springframework.stereotype.Service;
 
 import com.gavoyage.likes.domain.Likes;

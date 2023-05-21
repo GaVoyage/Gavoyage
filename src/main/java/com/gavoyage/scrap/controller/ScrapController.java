@@ -29,6 +29,6 @@ public class ScrapController {
 								.content_id(content_id)
 								.build());
 		
-		return new ResponseEntity<Void>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

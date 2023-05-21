@@ -10,7 +10,6 @@ import com.gavoyage.user.domain.Users;
 import com.gavoyage.user.dto.SocialJoinDto;
 import com.gavoyage.user.dto.request.UserJoinReq;
 import com.gavoyage.user.dto.request.UserLoginReq;
-import com.gavoyage.user.dto.response.UserLoginRes;
 
 @Mapper
 public interface UserMapper {

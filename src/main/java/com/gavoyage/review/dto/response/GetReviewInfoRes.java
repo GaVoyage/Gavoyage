@@ -2,7 +2,6 @@ package com.gavoyage.review.dto.response;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 import com.gavoyage.region.domain.AttractionInfo;
 

@@ -1,7 +1,5 @@
 package com.gavoyage.region.domain;
 
-import com.gavoyage.config.BaseEntity;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

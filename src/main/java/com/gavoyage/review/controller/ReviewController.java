@@ -30,7 +30,7 @@ public class ReviewController {
 	private final ReviewServiceImpl reviewService;
 	
 	@PostMapping("")
-	public ResponseEntity<?> createReview(@RequestBody CreateReviewReq reviewCreateReq, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
+	public ResponseEntity<Void> createReview(@RequestBody CreateReviewReq reviewCreateReq, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
 		
 		reviewCreateReq.setUserIdx(principalDetails.getUser().getUserIdx());
 		reviewCreateReq.setHit(0);
@@ -41,7 +41,7 @@ public class ReviewController {
 	
 	@GetMapping
 	public ResponseEntity<List<GetReviewInfoRes>> getAllReviewInfos() throws Exception {
-		return new ResponseEntity<List<GetReviewInfoRes>>(reviewService.getAllReviewInfos(), HttpStatus.OK);
+		return new ResponseEntity<>(reviewService.getAllReviewInfos(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/find-by-plan")
@@ -56,7 +56,7 @@ public class ReviewController {
 	}
 	
 	@DeleteMapping("/{reviewIdx}")
-	public ResponseEntity<?> deleteReview(@PathVariable Long reviewIdx) throws Exception {
+	public ResponseEntity<Void> deleteReview(@PathVariable Long reviewIdx) throws Exception {
 		reviewService.deleteReview(reviewIdx);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

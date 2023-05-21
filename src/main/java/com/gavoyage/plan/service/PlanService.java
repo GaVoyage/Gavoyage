@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.gavoyage.plan.domain.DailyPlan;
-import com.gavoyage.plan.domain.Plan;
 import com.gavoyage.plan.dto.request.PlanCreateReq;
 import com.gavoyage.plan.dto.response.GetPlansRes;
 import com.gavoyage.region.domain.AttractionInfo;

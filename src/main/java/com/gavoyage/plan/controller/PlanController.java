@@ -36,7 +36,7 @@ public class PlanController {
 	private final PlanServiceImpl planService;
 	
 	@PostMapping("")
-	public ResponseEntity<?> createPlan(@RequestBody() PlanCreateReq planCreateReq, HttpSession session, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception{
+	public ResponseEntity<Void> createPlan(@RequestBody() PlanCreateReq planCreateReq, HttpSession session, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception{
 		log.debug(planCreateReq.toString());
 	
 		planCreateReq.setUserIdx(principalDetails.getUser().getUserIdx()); // 현재 로그인한 유저 정보 획득
@@ -61,14 +61,14 @@ public class PlanController {
 	}
 	
 	@DeleteMapping("/{planIdx}")
-	public ResponseEntity<?> deletePlan(@PathVariable Long planIdx) throws Exception {
+	public ResponseEntity<Void> deletePlan(@PathVariable Long planIdx) throws Exception {
 		planService.deletePlan(planIdx);
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/dailyplan/{dailyPlanIdx}")
-	public ResponseEntity<?> deleteDailyPlan(@PathVariable Long dailyPlanIdx) throws Exception {	
+	public ResponseEntity<Void> deleteDailyPlan(@PathVariable Long dailyPlanIdx) throws Exception {	
 		planService.deleteDailyPlan(dailyPlanIdx);
 		
 		return new ResponseEntity<>(HttpStatus.OK);
