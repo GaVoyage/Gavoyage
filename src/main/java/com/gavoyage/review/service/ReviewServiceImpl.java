@@ -1,12 +1,13 @@
 package com.gavoyage.review.service;
 
 import org.springframework.stereotype.Service;
-import com.gavoyage.mapper.ReviewMapper;
+
 import com.gavoyage.review.domain.Review;
 import com.gavoyage.review.dto.request.CreateReviewReq;
 import com.gavoyage.review.dto.response.GetReviewInfoRes;
 import com.gavoyage.review.dto.sql.CreateRecommendDto;
 import com.gavoyage.review.dto.sql.FindReviewInfo;
+import com.gavoyage.review.mapper.ReviewMapper;
 import com.gavoyage.user.service.UserServiceImpl;
 
 import lombok.RequiredArgsConstructor;

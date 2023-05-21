@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gavoyage.likes.mapper.LikesMapper">
+	
+	<select id="hasLikes" parameterType="Long" resultType="int">
+		select count(*) from likes 
+		where userIdx = #{userIdx} and reviewIdx = #{reviewIdx};
+	</select>
+	
+	<select id="findLikesByReviewIdx" parameterType="Long" resultType="likes">
+		select * from likes 
+		where userIdx = #{userIdx} and reviewIdx = #{reviewIdx};
+	</select>
+	
+	<insert id="createLikes" parameterType="Long">
+		insert into likes(userIdx, reviewIdx) 
+		value (#{userIdx}, #{reviewIdx});
+	</insert>
+	
+	<update id="like" parameterType="Long">
+		update likes set status = 'Y' where likeIdx = #{likesIdx};
+	</update>
+	
+	<update id="dislike" parameterType="Long">
+		update likes set status = 'N' where likeIdx = #{likesIdx};
+	</update>
+	 
+</mapper>

@@ -6,11 +6,11 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.gavoyage.mapper.UserMapper;
 import com.gavoyage.user.domain.Users;
 import com.gavoyage.user.dto.SocialJoinDto;
 import com.gavoyage.user.dto.request.UserJoinReq;
 import com.gavoyage.user.dto.request.UserLoginReq;
+import com.gavoyage.user.mapper.UserMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.gavoyage.mapper;
+package com.gavoyage.user.mapper;
 
 import java.sql.SQLException;
 import java.util.List;
