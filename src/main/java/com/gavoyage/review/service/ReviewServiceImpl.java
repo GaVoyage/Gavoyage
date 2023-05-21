@@ -1,5 +1,8 @@
 package com.gavoyage.review.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import com.gavoyage.review.domain.Review;
@@ -53,18 +56,7 @@ public class ReviewServiceImpl implements ReviewService{
 	
 	@Override
 	public GetReviewInfoRes getReviewInfo(Long reviewIdx) throws Exception {		
-		Review review = findReview(reviewIdx);
-		return GetReviewInfoRes.builder()
-								.reviewIdx(reviewIdx)
-								.writerName(userService.findUserNicknameByReviewIdx(reviewIdx))
-								.title(review.getTitle())
-								.contents(review.getContents())
-								.hit(review.getHit())
-								.createdAt(review.getCreatedAt())
-								.recommendsAttractionInfo(reviewMapper.getRecommendsAttractionInfo(reviewIdx))
-								.unrecommendsAttractionInfo(reviewMapper.getUnRecommendsAttractionInfo(reviewIdx))
-								.build();
-		
+		return createGetReviewInfoRes(findReview(reviewIdx));
 	}
 
 	@Override
@@ -82,6 +74,24 @@ public class ReviewServiceImpl implements ReviewService{
 	@Override
 	public Review findReview(Long reviewIdx) {
 		return reviewMapper.findReview(reviewIdx);
+	}
+
+	@Override
+	public List<GetReviewInfoRes> getAllReviewInfos() throws Exception {
+		return reviewMapper.findAllReviews().stream().map(r -> createGetReviewInfoRes(r)).collect(Collectors.toList());
+	}
+	
+	private GetReviewInfoRes createGetReviewInfoRes(Review review) {
+		return GetReviewInfoRes.builder()
+				.reviewIdx(review.getReviewIdx())
+				.writerName(userService.findUserNicknameByReviewIdx(review.getReviewIdx()))
+				.title(review.getTitle())
+				.contents(review.getContents())
+				.hit(review.getHit())
+				.createdAt(review.getCreatedAt())
+				.recommendsAttractionInfo(reviewMapper.getRecommendsAttractionInfo(review.getReviewIdx()))
+				.unrecommendsAttractionInfo(reviewMapper.getUnRecommendsAttractionInfo(review.getReviewIdx()))
+				.build();
 	}
 	
 }

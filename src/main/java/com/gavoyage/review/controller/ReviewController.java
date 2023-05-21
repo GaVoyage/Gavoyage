@@ -39,12 +39,12 @@ public class ReviewController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-//	@GetMapping
-//	public ResponseEntity<List<GetReviewInfoRes>> getAllReviewInfos() throws Exception{
-//		
-//	}
-	
 	@GetMapping
+	public ResponseEntity<List<GetReviewInfoRes>> getAllReviewInfos() throws Exception {
+		return new ResponseEntity<List<GetReviewInfoRes>>(reviewService.getAllReviewInfos(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/find-by-plan")
 	public ResponseEntity<GetReviewInfoRes> getReviewInfoByPlanIdx(@RequestParam(defaultValue = "0") Long planIdx) throws Exception{
 		FindReviewInfo findReviewInfo = reviewService.findReviewInfoByPlanIdx(planIdx);
 		return new ResponseEntity<>(reviewService.getReviewInfo(findReviewInfo.getReviewIdx()), HttpStatus.OK);

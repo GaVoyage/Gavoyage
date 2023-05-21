@@ -1,5 +1,7 @@
 package com.gavoyage.review.service;
 
+import java.util.List;
+
 import com.gavoyage.review.domain.Review;
 import com.gavoyage.review.dto.request.CreateReviewReq;
 import com.gavoyage.review.dto.response.GetReviewInfoRes;
@@ -10,6 +12,7 @@ public interface ReviewService {
 	int hasReview(Long planIdx) throws Exception;
 	void createReview(CreateReviewReq reviewCreateReq) throws Exception;
 	GetReviewInfoRes getReviewInfo(Long reviewIdx) throws Exception;
+	List<GetReviewInfoRes> getAllReviewInfos() throws Exception;
 	void deleteReview(Long reviewIdx) throws Exception;
 	FindReviewInfo findReviewInfoByPlanIdx(Long planIdx);
 	Review findReview(Long reviewIdx);
