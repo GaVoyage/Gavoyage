@@ -1,19 +1,15 @@
 package com.gavoyage.review.service;
 
-import java.util.HashMap;
-import java.util.List;
-
 import org.springframework.stereotype.Service;
-import com.gavoyage.mapper.ReviewMapper;
-import com.gavoyage.mapper.UserMapper;
-import com.gavoyage.region.domain.AttractionInfo;
-import com.gavoyage.region.service.RegionServiceImpl;
+
+import com.gavoyage.review.domain.Review;
 import com.gavoyage.review.dto.request.CreateReviewReq;
 import com.gavoyage.review.dto.response.GetReviewInfoRes;
 import com.gavoyage.review.dto.sql.CreateRecommendDto;
 import com.gavoyage.review.dto.sql.FindReviewInfo;
+import com.gavoyage.review.mapper.ReviewMapper;
+import com.gavoyage.user.service.UserServiceImpl;
 
-import io.github.classgraph.HasName;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ReviewServiceImpl implements ReviewService{
 	
 	private final ReviewMapper reviewMapper;
-	private final RegionServiceImpl regionService;
+	private final UserServiceImpl userService;
 	
 	@Override
 	public int hasReview(Long planIdx) throws Exception {
@@ -53,18 +49,20 @@ public class ReviewServiceImpl implements ReviewService{
 												.content_id(content_id)
 												.build()));
 	}
-
+	
+	
 	@Override
-	public GetReviewInfoRes getReviewInfo(Long planIdx) throws Exception {		
-		FindReviewInfo findReviewInfo = reviewMapper.findReviewInfoByPlanIdx(planIdx);
-		
+	public GetReviewInfoRes getReviewInfo(Long reviewIdx) throws Exception {		
+		Review review = findReview(reviewIdx);
 		return GetReviewInfoRes.builder()
-								.reviewIdx(findReviewInfo.getReviewIdx())
-								.title(findReviewInfo.getTitle())
-								.contents(findReviewInfo.getContents())
-								.hit(findReviewInfo.getHit())
-								.recommendsAttractionInfo(reviewMapper.getRecommendsAttractionInfo(planIdx))
-								.unrecommendsAttractionInfo(reviewMapper.getUnRecommendsAttractionInfo(planIdx))
+								.reviewIdx(reviewIdx)
+								.writerName(userService.findUserNicknameByReviewIdx(reviewIdx))
+								.title(review.getTitle())
+								.contents(review.getContents())
+								.hit(review.getHit())
+								.createdAt(review.getCreatedAt())
+								.recommendsAttractionInfo(reviewMapper.getRecommendsAttractionInfo(reviewIdx))
+								.unrecommendsAttractionInfo(reviewMapper.getUnRecommendsAttractionInfo(reviewIdx))
 								.build();
 		
 	}
@@ -74,6 +72,16 @@ public class ReviewServiceImpl implements ReviewService{
 		reviewMapper.deleteReview(reviewIdx);
 		reviewMapper.deleteRecommend(reviewIdx);
 		reviewMapper.deleteUnRecommend(reviewIdx);
+	}
+
+	@Override
+	public FindReviewInfo findReviewInfoByPlanIdx(Long planIdx) {
+		return reviewMapper.findReviewInfoByPlanIdx(planIdx);
+	}
+
+	@Override
+	public Review findReview(Long reviewIdx) {
+		return reviewMapper.findReview(reviewIdx);
 	}
 	
 }

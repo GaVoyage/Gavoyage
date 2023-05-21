@@ -35,7 +35,11 @@ public class PrincipalDetails implements UserDetails{ // 스프링 세큐리티�
 	
 	public Users getUser() {
 		return user;
-	}	
+	}
+	
+	public Long getUserIdx() {
+		return user.getUserIdx();
+	}
 
 	@Override
 	public String getPassword() {

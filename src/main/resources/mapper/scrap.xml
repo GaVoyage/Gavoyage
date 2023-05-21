@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gavoyage.scrap.mapper.ScrapMapper">
+	
+	<select id="hasScrap" parameterType="scrapDto" resultType="int">
+		select count(*) from scrap 
+		where userIdx = #{userIdx} and content_id = #{content_id};
+	</select>
+	
+	<select id="findScrapByContentId" parameterType="scrapDto" resultType="scrap">
+		select * from scrap 
+		where userIdx = #{userIdx} and content_id = #{content_id};
+	</select>
+	
+	<insert id="createScrap" parameterType="scrapDto">
+		insert into scrap(userIdx, content_id) 
+		value (#{userIdx}, #{content_id});
+	</insert>
+	
+	<update id="scrap" parameterType="Long">
+		update scrap set status = 'Y' where scrapIdx = #{scrapIdx};
+	</update>
+	
+	<update id="unscrap" parameterType="Long">
+		update scrap set status = 'N' where scrapIdx = #{scrapIdx};
+	</update>
+	 
+</mapper>

@@ -15,7 +15,6 @@ public class KakaoOAuth2UserInfo extends OAuth2UserInfo{
 
 	@Override
 	public String getId() {
-//		log.debug("id : " + String.valueOf(attributes.get("id")));
 		return String.valueOf(attributes.get("id")); // 카카오는 Long type을 return하기 때문에 String.valueOf()로 캐스팅
 	}
 

@@ -1,4 +1,4 @@
-package com.gavoyage.mapper;
+package com.gavoyage.plan.mapper;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -17,7 +17,7 @@ public interface PlanMapper {
 	void createDailyPlan(DailyPlanCreateDto dailyPlanCreateDto) throws SQLException;
 	List<Plan> getPlans(Long userIdx) throws SQLException;
 	List<DailyPlan> getDailyPlans(Long planIdx) throws SQLException;
-	void deletePlan(Long planIdx);
-	void deleteDailyPlan(Long dailyPlanIdx);
+	void deletePlan(Long planIdx) throws SQLException;
+	void deleteDailyPlan(Long dailyPlanIdx) throws SQLException;
 	
 }

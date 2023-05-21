@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.gavoyage.mapper.RegionMapper;
 import com.gavoyage.region.domain.AttractionDescription;
 import com.gavoyage.region.domain.AttractionDetail;
 import com.gavoyage.region.domain.AttractionInfo;
 import com.gavoyage.region.domain.Gugun;
 import com.gavoyage.region.domain.Sido;
 import com.gavoyage.region.dto.request.RegionSearchReq;
+import com.gavoyage.region.mapper.RegionMapper;
 
 import lombok.RequiredArgsConstructor;
 

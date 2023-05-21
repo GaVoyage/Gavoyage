@@ -29,7 +29,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 	private final UserServiceImpl userService;
 
 	private SocialJoinDto socialJoinDto;
-	
 	private static final String NAVER = "naver";
 	private static final String KAKAO = "kakao";
 	
@@ -44,17 +43,19 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		String socialType = userRequest.getClientRegistration().getRegistrationId();
 		
 		// 2. authorization server에서 사용하는 pk
-		String socialId = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName(); 
-        
-        // 3. authorization server에서 가져온 사용자 정보를 소셜 도메인에 따라 구분하여 OAuthAttributes에 담아줌
-        OAuthAttributes oAuthAttributes = OAuthAttributes.of(socialType, socialId, oAuth2User.getAttributes());
+		String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName(); 
+		
+		
+		// 3. authorization server에서 가져온 사용자 정보를 소셜 도메인에 따라 구분하여 OAuthAttributes에 담아줌
+        OAuthAttributes oAuthAttributes = OAuthAttributes.of(socialType, userNameAttributeName, oAuth2User.getAttributes());
 
         log.debug("socialType : " + socialType);
-        log.debug("socialId : " + socialId);
-        log.debug(oAuthAttributes.getOAuthUserInfo().toString());
+        log.debug("userNameAttributeName : " + userNameAttributeName);
+        log.debug("social key : {}", oAuthAttributes.getOAuth2UserInfo().getId());
+        log.debug(oAuthAttributes.getOAuth2UserInfo().toString());
         
         // 4. 소셜 로그인을 시도하는 사용자가 기존에 있던 사용자인지 유무 확인
-        Users user = userService.findBySocialIdAndSocialType(socialId, socialType).orElse(null);
+        Users user = userService.findBySocialIdAndSocialType(oAuthAttributes.getOAuth2UserInfo().getId(), socialType).orElse(null);
         
         
         // 5. 처음 로그인한 사용자라면 회원 가입 진행
@@ -74,7 +75,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         return new CustomOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(user.getUserRole())),
                 oAuth2User.getAttributes(),
-                oAuthAttributes.getSocialKey(),
+                oAuthAttributes.getNameAttributeKey(),
                 user.getEmail(),
                 user.getUserRole(),
                 user.getNickname()
@@ -91,7 +92,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 	 * @return
 	 */
 	private SocialJoinDto createSocialJoinDto(String socialType, OAuthAttributes oAuthAttributes) {
-		OAuth2UserInfo oAuth2UserInfo = oAuthAttributes.getOAuthUserInfo();
+		OAuth2UserInfo oAuth2UserInfo = oAuthAttributes.getOAuth2UserInfo();
 		log.debug("oAuth2User : " + oAuth2UserInfo.toString());
 		log.debug("id : {} ", oAuth2UserInfo.getId());
 		log.debug("nickname : ", oAuth2UserInfo.getNickName());

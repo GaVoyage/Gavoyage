@@ -1,4 +1,4 @@
-package com.gavoyage.mapper;
+package com.gavoyage.user.mapper;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -26,4 +26,5 @@ public interface UserMapper {
 	void updateRefreshToken(String email, String refreshToken);
 	Optional<Users> findBySocialIdAndSocialType(String socialId, String socialType);
 	void socialJoin(SocialJoinDto socialJoinDto) throws SQLException;
+	String findUserNameByReviewIdx(Long reviewIdx);
 }

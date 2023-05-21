@@ -1,4 +1,4 @@
-package com.gavoyage.review.domain;
+package com.gavoyage.scrap.domain;
 
 import com.gavoyage.config.BaseEntity;
 
@@ -10,11 +10,8 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Review extends BaseEntity{
-	private String reviewIdx;
+public class Scrap extends BaseEntity{
+	private Long scrapIdx;
 	private Long userIdx;
-	private Long planIdx;
-	private String title;
-	private String contents;
-	private Integer hit;
+	private Integer content_id;
 }

@@ -1,4 +1,4 @@
-package com.gavoyage.review.domain;
+package com.gavoyage.comment.domain;
 
 import com.gavoyage.config.BaseEntity;
 
@@ -8,13 +8,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class Review extends BaseEntity{
-	private String reviewIdx;
+@AllArgsConstructor
+public class Comment extends BaseEntity{
+	private Long commentIdx;
 	private Long userIdx;
-	private Long planIdx;
-	private String title;
+	private Long reviewIdx;
 	private String contents;
-	private Integer hit;
 }
