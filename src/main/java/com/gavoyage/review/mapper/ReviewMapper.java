@@ -20,6 +20,7 @@ public interface ReviewMapper {
 	void createUnRecommend(CreateRecommendDto createRecommendDto);
 	
 	Review findReview(Long reviewIdx);
+	List<Review> findAllReviews();
 	FindReviewInfo findReviewInfoByPlanIdx(Long planIdx);
 	List<AttractionInfo> getRecommendsAttractionInfo(Long reviewIdx);
 	List<AttractionInfo> getUnRecommendsAttractionInfo(Long reviewIdx);

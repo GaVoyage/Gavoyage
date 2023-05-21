@@ -13,6 +13,10 @@
 	<select id="findReview" parameterType="Long" resultType="review">
 		select * from review where reviewIdx = #{reveiwIdx}
 	</select>
+
+	<select id="findAllReviews" resultType="review">
+		select * from review;
+	</select>
 	
 	<insert id="createReview" parameterType="createReviewReq">
 		insert into review(userIdx, planIdx, title, contents, hit)

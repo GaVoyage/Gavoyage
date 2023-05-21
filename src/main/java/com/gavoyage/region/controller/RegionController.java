@@ -5,7 +5,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,57 +22,48 @@ import com.gavoyage.region.dto.request.RegionSearchReq;
 import com.gavoyage.region.service.RegionService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController()
-@Slf4j
 @RequiredArgsConstructor
-//@CrossOrigin("*")
 @RequestMapping("/regions")
 public class RegionController {
 	
 	private final RegionService regionService;
 	
-	@PostMapping("/token")
-	public String token() {
-		return "<h1>toekn<h1>";
-	}
-	
 	@PostMapping("/search")
-	public List<AttractionInfo> search(@RequestBody RegionSearchReq regionSearchReq, HttpServletRequest request,  HttpServletResponse response) throws Exception {
-		log.debug("RegionSearchReq : " + regionSearchReq);
+	public ResponseEntity<List<AttractionInfo>> search(@RequestBody RegionSearchReq regionSearchReq, HttpServletRequest request,  HttpServletResponse response) throws Exception {
 		List<AttractionInfo> result = regionService.getAttractionInfos(regionSearchReq);
-		return result;
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
 	@GetMapping("/sido")
-	public List<Sido> getSido() throws Exception {
+	public ResponseEntity<List<Sido>> getSido() throws Exception {
 		List<Sido> result = regionService.getSido();
-		return result;
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
 	@GetMapping("/gugun")
-	public List<Gugun> getSiGugun(int sidoCode) throws Exception {
+	public ResponseEntity<List<Gugun>> getSiGugun(int sidoCode) throws Exception {
 		List<Gugun> result = regionService.getGugun(sidoCode);
-		return result;
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
 	@GetMapping("/detail")
-	public AttractionDetail getAttractionDetail(int contentId) throws Exception {
+	public ResponseEntity<AttractionDetail> getAttractionDetail(int contentId) throws Exception {
 		AttractionDetail result = regionService.getAttractionDetail(contentId);
-		return result;
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
 	@GetMapping("/description")
-	public AttractionDescription getAttractionDescription(int contentId) throws Exception {
+	public ResponseEntity<AttractionDescription> getAttractionDescription(int contentId) throws Exception {
 		AttractionDescription result = regionService.getAttractionDescription(contentId);
-		return result;
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
 	@GetMapping("/info")
-	public AttractionInfo getAttractionInfo(int contentId) throws Exception {
+	public ResponseEntity<AttractionInfo> getAttractionInfo(int contentId) throws Exception {
 		AttractionInfo result = regionService.getAttractionInfosByContentId(contentId);
-		return result;
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 		
 }

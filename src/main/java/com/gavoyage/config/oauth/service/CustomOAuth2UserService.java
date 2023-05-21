@@ -13,10 +13,8 @@ import org.springframework.stereotype.Service;
 import com.gavoyage.config.oauth.CustomOAuth2User;
 import com.gavoyage.config.oauth.OAuth2UserInfo;
 import com.gavoyage.config.oauth.OAuthAttributes;
-import com.gavoyage.config.oauth.userinfo.KakaoOAuth2UserInfo;
 import com.gavoyage.user.domain.Users;
 import com.gavoyage.user.dto.SocialJoinDto;
-import com.gavoyage.user.dto.request.UserJoinReq;
 import com.gavoyage.user.service.UserServiceImpl;
 
 import lombok.RequiredArgsConstructor;

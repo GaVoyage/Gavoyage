@@ -11,11 +11,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gavoyage.config.jwt.service.JwtService;
-import com.gavoyage.config.login.UserResponse;
 import com.gavoyage.config.oauth.CustomOAuth2User;
-import com.gavoyage.user.service.UserServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.gavoyage.config.login.PrincipalDetails;
-import com.gavoyage.user.domain.Users;
 import com.gavoyage.user.service.UserServiceImpl;
 
 import lombok.RequiredArgsConstructor;

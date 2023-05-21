@@ -12,9 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.gavoyage.config.jwt.JwtProperties;
 import com.gavoyage.config.jwt.service.JwtService;
 import com.gavoyage.config.login.PrincipalDetails;
 import com.gavoyage.user.domain.Users;

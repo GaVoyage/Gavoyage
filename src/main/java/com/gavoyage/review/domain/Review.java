@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Review extends BaseEntity{
-	private String reviewIdx;
+	private Long reviewIdx;
 	private Long userIdx;
 	private Long planIdx;
 	private String title;

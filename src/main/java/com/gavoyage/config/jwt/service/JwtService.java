@@ -3,7 +3,6 @@ package com.gavoyage.config.jwt.service;
 import java.util.Date;
 import java.util.Optional;
 
-import javax.management.RuntimeErrorException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
