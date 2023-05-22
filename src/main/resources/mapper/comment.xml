@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gavoyage.comment.mapper.CommentMapper">
+	
+	<insert id="createComment" parameterType="createCommentReq">
+		insert into comment(userIdx, reviewIdx, contents) value (#{userIdx}, #{reviewIdx}, #{contents});
+	</insert>
+	 
+	 <select id="findComment" parameterType="Long" resultType="Comment">
+	 	select * from comment where commentIdx = #{commentIdx} and status = 'Y';
+	 </select>
+	 
+	 <select id="findAllComments" resultType="Comment">
+	 	select * from comment where status = 'Y';
+	 </select>
+	 
+	 <update id="deleteComment" parameterType="Long">
+	 	update comment set status = 'N' where commentIdx = #{commentIdx};
+	 </update>
+	 
+</mapper>

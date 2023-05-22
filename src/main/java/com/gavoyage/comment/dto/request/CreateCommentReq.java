@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateCommentReq {
 	private Long reviewIdx;
+	private Long userIdx;
 	private String contents;
 }
