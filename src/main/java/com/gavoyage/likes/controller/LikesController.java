@@ -26,11 +26,7 @@ public class LikesController {
 	public ResponseEntity<?> pushLikes(@PathVariable Long reviewIdx, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception{
 		log.debug("좋아요 버튼 눌림");
 		
-		log.debug("reviewIdx : {}", reviewIdx);
-		
-		
-		likesService.pushLikes(reviewIdx, principalDetails.getUserIdx());
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(likesService.pushLikes(reviewIdx, principalDetails.getUserIdx()), HttpStatus.OK);
 	}
 	
 }
