@@ -91,7 +91,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter{
 		PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
 		Users user = principalDetails.getUser();
 		
-		String accessToken = jwtService.createAccessToken(user.getEmail());
+		String accessToken = jwtService.createAccessToken(user.getEmail(), user.getNickname());
 		String refreshToken = jwtService.createRefreshToken();
 		
 		log.debug("refreshToken : " + refreshToken);

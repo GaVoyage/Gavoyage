@@ -37,12 +37,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	private final JwtService jwtService;
 	private final UserServiceImpl userService;
 	
-//	public JwtAuthorizationFilter(JwtService jwtService, UserServiceImpl userService) {
-//		super();
-//		this.jwtService = jwtService;
-//		this.userService = userService;
-//	}
-
 	public JwtAuthorizationFilter(AuthenticationManager authenticationManager, JwtService jwtService, UserServiceImpl userService) {
 		super(authenticationManager);
 		this.userService = userService;
@@ -91,7 +85,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 			userService.updateRefreshToken(findUser.getEmail(), reIssuedRefreshToken);
 			
 			jwtService.sendAccessAndRefreshToken(response,
-								jwtService.createAccessToken(findUser.getEmail()),
+								jwtService.createAccessToken(findUser.getEmail(), findUser.getNickname()),
 								reIssuedRefreshToken);
 		}
 		
