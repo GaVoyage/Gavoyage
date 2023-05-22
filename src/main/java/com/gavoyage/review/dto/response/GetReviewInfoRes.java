@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.gavoyage.region.domain.AttractionInfo;
+import com.gavoyage.review.dto.sql.AttractionInfoWithIsScrab;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +21,8 @@ public class GetReviewInfoRes {
 	private String title;
 	private String contents;
 	private int hit;
+	private int isLiked;
 	private LocalDate createdAt;
-	private List<AttractionInfo> recommendsAttractionInfo;
-	private List<AttractionInfo> unrecommendsAttractionInfo;
+	private List<AttractionInfoWithIsScrab> recommendsAttractionInfo;
+	private List<AttractionInfoWithIsScrab> unrecommendsAttractionInfo;
 }

@@ -213,13 +213,13 @@ ALTER TABLE Comment
 -- 테이블 생성 SQL - Recommend
 CREATE TABLE Recommend
 (
-    `unrecommendIdx`  BIGINT       NOT NULL    AUTO_INCREMENT,
+    `recommendIdx`  BIGINT       NOT NULL    AUTO_INCREMENT,
     `reviewIdx`       BIGINT       NOT NULL,
     `content_id`      INT          NOT NULL,
     `status`          CHAR(1)      NOT NULL    DEFAULT 'Y',
     `createdAt`       TIMESTAMP    NOT NULL    DEFAULT current_timestamp,
     `modifiedAt`      TIMESTAMP    NULL        DEFAULT current_timestamp on update current_timestamp,
-    CONSTRAINT PK_RECOMMEND PRIMARY KEY (unrecommendIdx)
+    CONSTRAINT PK_RECOMMEND PRIMARY KEY (recommendIdx)
 );
 
 -- 테이블 Comment 설정 SQL - Recommend

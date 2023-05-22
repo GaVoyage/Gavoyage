@@ -1,6 +1,7 @@
 package com.gavoyage.review.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +22,11 @@ import com.gavoyage.review.dto.sql.FindReviewInfo;
 import com.gavoyage.review.service.ReviewServiceImpl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/reviews")
 public class ReviewController {
 	
@@ -31,6 +34,11 @@ public class ReviewController {
 	
 	@PostMapping("")
 	public ResponseEntity<Void> createReview(@RequestBody CreateReviewReq reviewCreateReq, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
+		
+		if(principalDetails == null) {
+			log.error("로그인 후 이용해주세요");
+			throw new Exception();
+		}
 		
 		reviewCreateReq.setUserIdx(principalDetails.getUser().getUserIdx());
 		reviewCreateReq.setHit(0);
@@ -40,19 +48,40 @@ public class ReviewController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<GetReviewInfoRes>> getAllReviewInfos() throws Exception {
-		return new ResponseEntity<>(reviewService.getAllReviewInfos(), HttpStatus.OK);
+	public ResponseEntity<List<GetReviewInfoRes>> getAllReviewInfos(@AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
+		
+		// 로그인 하지 않은 경우
+		if(principalDetails == null) {
+			return new ResponseEntity<>(reviewService.getAllReviewInfos(-1L), HttpStatus.OK);
+		}
+		
+		// 로그인 한 경우
+		return new ResponseEntity<>(reviewService.getAllReviewInfos(principalDetails.getUserIdx()), HttpStatus.OK);
 	}
 	
 	@GetMapping("/find-by-plan")
-	public ResponseEntity<GetReviewInfoRes> getReviewInfoByPlanIdx(@RequestParam(defaultValue = "0") Long planIdx) throws Exception{
+	public ResponseEntity<GetReviewInfoRes> getReviewInfoByPlanIdx(@RequestParam(defaultValue = "0") Long planIdx, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception{
 		FindReviewInfo findReviewInfo = reviewService.findReviewInfoByPlanIdx(planIdx);
-		return new ResponseEntity<>(reviewService.getReviewInfo(findReviewInfo.getReviewIdx()), HttpStatus.OK);
+		
+		// 로그인 하지 않은 경우
+		if(principalDetails == null) {
+			return new ResponseEntity<>(reviewService.getReviewInfo(findReviewInfo.getReviewIdx(), -1L), HttpStatus.OK);	
+		}
+		
+		// 로그인 한 경우
+		return new ResponseEntity<>(reviewService.getReviewInfo(findReviewInfo.getReviewIdx(), principalDetails.getUserIdx()), HttpStatus.OK);
 	}
 	
 	@GetMapping("/{reviewIdx}")
-	public ResponseEntity<GetReviewInfoRes> getReviewInfo(@PathVariable Long reviewIdx) throws Exception{
-		return new ResponseEntity<>(reviewService.getReviewInfo(reviewIdx), HttpStatus.OK);
+	public ResponseEntity<GetReviewInfoRes> getReviewInfo(@PathVariable Long reviewIdx, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception{
+		
+		// 로그인 하지 않은 경우
+		if(principalDetails == null) {
+			return new ResponseEntity<>(reviewService.getReviewInfo(reviewIdx, -1L), HttpStatus.OK);
+		}
+		
+		// 로그인 한 경우
+		return new ResponseEntity<>(reviewService.getReviewInfo(reviewIdx, principalDetails.getUserIdx()), HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{reviewIdx}")

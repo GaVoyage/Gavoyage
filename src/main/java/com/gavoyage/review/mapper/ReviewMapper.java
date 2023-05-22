@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.gavoyage.region.domain.AttractionInfo;
 import com.gavoyage.review.domain.Review;
 import com.gavoyage.review.dto.request.CreateReviewReq;
+import com.gavoyage.review.dto.sql.AttractionInfoWithIsScrab;
 import com.gavoyage.review.dto.sql.CreateRecommendDto;
 import com.gavoyage.review.dto.sql.FindReviewInfo;
 
@@ -22,8 +22,8 @@ public interface ReviewMapper {
 	Review findReview(Long reviewIdx);
 	List<Review> findAllReviews();
 	FindReviewInfo findReviewInfoByPlanIdx(Long planIdx);
-	List<AttractionInfo> getRecommendsAttractionInfo(Long reviewIdx);
-	List<AttractionInfo> getUnRecommendsAttractionInfo(Long reviewIdx);
+	List<AttractionInfoWithIsScrab> getRecommendsAttractionInfo(Long reviewIdx, Long userIdx);
+	List<AttractionInfoWithIsScrab> getUnRecommendsAttractionInfo(Long reviewIdx, Long userIdx);
 	
 	void deleteReview(Long reviewIdx);
 	void deleteRecommend(Long reviewIdx);

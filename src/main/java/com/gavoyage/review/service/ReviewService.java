@@ -11,8 +11,8 @@ public interface ReviewService {
 	
 	int hasReview(Long planIdx) throws Exception;
 	void createReview(CreateReviewReq reviewCreateReq) throws Exception;
-	GetReviewInfoRes getReviewInfo(Long reviewIdx) throws Exception;
-	List<GetReviewInfoRes> getAllReviewInfos() throws Exception;
+	GetReviewInfoRes getReviewInfo(Long reviewIdx, Long userIdx) throws Exception;
+	List<GetReviewInfoRes> getAllReviewInfos(Long userIdx) throws Exception;
 	void deleteReview(Long reviewIdx) throws Exception;
 	FindReviewInfo findReviewInfoByPlanIdx(Long planIdx);
 	Review findReview(Long reviewIdx);
