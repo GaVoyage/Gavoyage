@@ -1,7 +1,6 @@
 package com.gavoyage.review.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gavoyage.config.login.PrincipalDetails;
+import com.gavoyage.review.domain.Review;
 import com.gavoyage.review.dto.request.CreateReviewReq;
 import com.gavoyage.review.dto.response.GetReviewInfoRes;
 import com.gavoyage.review.dto.sql.FindReviewInfo;

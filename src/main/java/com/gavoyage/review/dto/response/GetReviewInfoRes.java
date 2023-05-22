@@ -3,7 +3,7 @@ package com.gavoyage.review.dto.response;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.gavoyage.region.domain.AttractionInfo;
+import com.gavoyage.review.domain.Review;
 import com.gavoyage.review.dto.sql.AttractionInfoWithIsScrab;
 
 import lombok.AllArgsConstructor;
@@ -25,4 +25,8 @@ public class GetReviewInfoRes {
 	private LocalDate createdAt;
 	private List<AttractionInfoWithIsScrab> recommendsAttractionInfo;
 	private List<AttractionInfoWithIsScrab> unrecommendsAttractionInfo;
+	
+	public GetReviewInfoRes(Review review) {
+		this.reviewIdx = review.getReviewIdx();
+	}
 }
