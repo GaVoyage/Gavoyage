@@ -1,4 +1,4 @@
-package com.gavoyage.comment.dto.request;
+package com.gavoyage.follow.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateCommentReq {
-	private Long reviewIdx;
+public class CreateFollowReq {
 	private Long userIdx;
-	private String contents;
+	private Long targetUserIdx;
 }

@@ -11,11 +11,11 @@
 	</select>
 	
 	<select id="findReview" parameterType="Long" resultType="review">
-		select * from review where reviewIdx = #{reveiwIdx}
+		select * from review where reviewIdx = #{reveiwIdx} and status = 'Y'
 	</select>
 
 	<select id="findAllReviews" resultType="review">
-		select * from review;
+		select * from review where status = 'Y';
 	</select>
 	
 	<insert id="createReview" parameterType="createReviewReq">
@@ -41,14 +41,16 @@
 		select reviewIdx, title, contents, hit from review where planIdx = #{planIdx} and status = 'Y';
 	</select>
 	 
-	 <select id="getRecommendsAttractionInfo" parameterType="Long" resultType="attractionInfo">
-	 	select a.* from recommend r, attraction_info a 
-	 	where r.content_id = a.content_id and reviewIdx = #{reviewIdx} and r.status = 'Y';
+	 <select id="getRecommendsAttractionInfo" parameterType="Long" resultType="attractionInfoWithIsScrab">
+	 	select a.*, ifnull((select scrapIdx from scrap s, user u where s.userIdx = #{userIdx} and s.content_id = r.content_id), 0) as isScrab
+       	from recommend r, attraction_info a
+		where r.content_id = a.content_id and reviewIdx = #{reviewIdx} and r.status = 'Y';
 	 </select>
 	 
 	 <select id="getUnRecommendsAttractionInfo" parameterType="Long" resultType="attractionInfo">
-	 	select a.* from unrecommend r, attraction_info a 
-	 	where r.content_id = a.content_id and reviewIdx = #{reviewIdx} and r.status = 'Y';
+	 	select a.*, ifnull((select scrapIdx from scrap s, user u where s.userIdx = #{userIdx} and s.content_id = r.content_id), 0) as isScrab
+       	from unrecommend r, attraction_info a
+		where r.content_id = a.content_id and reviewIdx = #{reviewIdx} and r.status = 'Y';
 	 </select>
 	 
 	 <update id="deleteReview" parameterType="Long">
