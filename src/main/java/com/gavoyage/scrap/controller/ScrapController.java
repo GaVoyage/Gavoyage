@@ -22,13 +22,11 @@ public class ScrapController {
 	private final ScrapServiceImpl scrapService;
 	
 	@PostMapping("/{content_id}")
-	public ResponseEntity<Void> scrapAttraction(@PathVariable Integer content_id, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception{
+	public ResponseEntity<Character> scrapAttraction(@PathVariable Integer content_id, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception{
 		
-		scrapService.pushScrap(ScrapDto.builder().
-								userIdx(principalDetails.getUserIdx())
-								.content_id(content_id)
-								.build());
-		
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(scrapService.pushScrap(ScrapDto.builder().
+				userIdx(principalDetails.getUserIdx())
+				.content_id(content_id)
+				.build()), HttpStatus.OK);
 	}
 }

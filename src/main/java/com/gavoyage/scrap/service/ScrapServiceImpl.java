@@ -15,24 +15,27 @@ public class ScrapServiceImpl implements ScrapService{
 	private final ScrapMapper scrapMapper;
 	
 	@Override
-	public void pushScrap(ScrapDto scrapDto) throws Exception {
+	public Character pushScrap(ScrapDto scrapDto) throws Exception {
 		
 		// 처음 스크랩한 경우
 		if(hasScrap(scrapDto) == 0) {
 			scrapMapper.createScrap(scrapDto);	
-			return;
+			return 'Y';
 		}
 		
 		Scrap scrap = scrapMapper.findScrapByContentId(scrapDto);
 		
 		if(scrap.getStatus() == 'Y') { // 좋아요가 이미 눌린 경우
 			scrapMapper.unscrap(scrap.getScrapIdx());
-			return;
+			return 'N';
 		}
 		
 		if(scrap.getStatus() == 'N') { // 좋아요가 눌러저 있지 않은 경우
 			scrapMapper.scrap(scrap.getScrapIdx());
+			return 'Y';
 		}
+		
+		return null;
 	}
 
 	@Override
