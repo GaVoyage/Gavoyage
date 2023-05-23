@@ -8,16 +8,26 @@
 		insert into comment(userIdx, reviewIdx, contents) value (#{userIdx}, #{reviewIdx}, #{contents});
 	</insert>
 	 
-	 <select id="findComment" parameterType="Long" resultType="Comment">
-	 	select * from comment where commentIdx = #{commentIdx} and status = 'Y';
+	 <select id="findComment" parameterType="Long" resultType="commentRes">
+	 	select c.commentIdx, c.reviewIdx, u.userIdx, u.nickname, c.createdAt
+    	from comment c, user u 
+    	where c.userIdx = u.userIdx and c.commentIdx = #{commentIdx} and c.status = 'Y';
 	 </select>
 	 
-	 <select id="findAllComments" resultType="Comment">
-	 	select * from comment where status = 'Y';
+	 <select id="findAllComments" resultType="commentRes">
+	 	select c.commentIdx, c.reviewIdx, u.userIdx, u.nickname, c.createdAt
+    	from comment c, user u 
+    	where c.userIdx = u.userIdx and c.status = 'Y';
 	 </select>
 	 
 	 <update id="deleteComment" parameterType="Long">
 	 	update comment set status = 'N' where commentIdx = #{commentIdx};
 	 </update>
+	 
+	 <select id="findCommentsByReviewIdx" parameterType="Long" resultType="commentRes">
+	 	select c.commentIdx, c.reviewIdx, u.userIdx, u.nickname, c.createdAt
+		from comment c, user u, review r
+		where c.userIdx = u.userIdx and c.reviewIdx = r.reviewIdx and r.reviewIdx = #{reviewIdx} and c.status = 'Y';
+	 </select>
 	 
 </mapper>

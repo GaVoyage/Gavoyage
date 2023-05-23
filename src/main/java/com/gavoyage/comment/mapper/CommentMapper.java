@@ -7,13 +7,16 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.gavoyage.comment.domain.Comment;
 import com.gavoyage.comment.dto.request.CreateCommentReq;
+import com.gavoyage.comment.dto.response.CommentRes;
 
 @Mapper
 public interface CommentMapper {
 	
-	void createComment(CreateCommentReq createCommentReq) throws SQLException;
-	Comment findComment(Long commentIdx) throws SQLException;
-	List<Comment> findAllComments() throws SQLException;
-	void deleteComment(Long commentIdx) throws SQLException;
+	void createComment(CreateCommentReq createCommentReq);
+	CommentRes findComment(Long commentIdx);
+	CommentRes findByReveiwIdx(Long reviewIdx);
+	List<CommentRes> findAllComments();
+	void deleteComment(Long commentIdx);
+	List<CommentRes> findCommentsByReviewIdx(Long reviewIdx);
 	
 }

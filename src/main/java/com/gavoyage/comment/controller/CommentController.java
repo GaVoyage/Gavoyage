@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gavoyage.comment.domain.Comment;
 import com.gavoyage.comment.dto.request.CreateCommentReq;
+import com.gavoyage.comment.dto.response.CommentRes;
 import com.gavoyage.comment.service.CommentServiceImpl;
 import com.gavoyage.config.login.PrincipalDetails;
 
@@ -36,7 +37,7 @@ public class CommentController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<Comment>> findAllComments() throws SQLException {
+	public ResponseEntity<List<CommentRes>> findAllComments() throws SQLException {
 		return new ResponseEntity<>(commentService.findAllComments(), HttpStatus.OK);
 	}
 	
@@ -44,5 +45,10 @@ public class CommentController {
 	public ResponseEntity<List<Comment>> deleteComment(@PathVariable Long commentIdx) throws SQLException {
 		commentService.deleteComment(commentIdx);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+		
+	@GetMapping("/by-reviewIdx/{reviewIdx}")
+	public ResponseEntity<List<CommentRes>> findCommentsByReviewIdx(@PathVariable Long reviewIdx) {
+		return new ResponseEntity<>(commentService.findCommentsByReviewIdx(reviewIdx), HttpStatus.OK); 
 	}
 }
