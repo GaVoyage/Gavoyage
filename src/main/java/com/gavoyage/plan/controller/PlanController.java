@@ -36,7 +36,7 @@ public class PlanController {
 	private final PlanServiceImpl planService;
 	
 	@PostMapping("")
-	public ResponseEntity<Void> createPlan(@RequestBody() PlanCreateReq planCreateReq, HttpSession session, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception{
+	public ResponseEntity<Void> createPlan(@RequestBody() PlanCreateReq planCreateReq, HttpSession session, @AuthenticationPrincipal PrincipalDetails principalDetails) {
 		log.debug(planCreateReq.toString());
 	
 		planCreateReq.setUserIdx(principalDetails.getUser().getUserIdx()); // 현재 로그인한 유저 정보 획득
@@ -46,7 +46,7 @@ public class PlanController {
 	}
 
 	@GetMapping("")
-	public ResponseEntity<List<GetPlansRes>> getPlans(@AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
+	public ResponseEntity<List<GetPlansRes>> getPlans(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 		log.debug("getPlans Called");
 		
 		List<GetPlansRes> findPlans = planService.findPlans(principalDetails.getUser().getUserIdx());
@@ -54,21 +54,21 @@ public class PlanController {
 	}
 	
 	@GetMapping("/{planIdx}")
-	public ResponseEntity<Map<LocalDate, List<AttractionInfo>>> getDailyPlans(@PathVariable Long planIdx) throws Exception {
+	public ResponseEntity<Map<LocalDate, List<AttractionInfo>>> getDailyPlans(@PathVariable Long planIdx) {
 		Map<LocalDate, List<AttractionInfo>> attractionInfos = planService.findAllAttractionInfos(planIdx);
 		
 		return new ResponseEntity<>(attractionInfos, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{planIdx}")
-	public ResponseEntity<Void> deletePlan(@PathVariable Long planIdx) throws Exception {
+	public ResponseEntity<Void> deletePlan(@PathVariable Long planIdx) {
 		planService.deletePlan(planIdx);
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/dailyplan/{dailyPlanIdx}")
-	public ResponseEntity<Void> deleteDailyPlan(@PathVariable Long dailyPlanIdx) throws Exception {	
+	public ResponseEntity<Void> deleteDailyPlan(@PathVariable Long dailyPlanIdx) {	
 		planService.deleteDailyPlan(dailyPlanIdx);
 		
 		return new ResponseEntity<>(HttpStatus.OK);

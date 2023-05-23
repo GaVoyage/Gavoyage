@@ -16,7 +16,7 @@ public class LikesServiceImpl implements LikesService{
 	private final LikesMapper likesMapper;
 	
 	@Override
-	public Character pushLikes(Long reviewIdx, Long userIdx) throws Exception{
+	public Character pushLikes(Long reviewIdx, Long userIdx){
 		
 		log.debug("pushlikes in service");
 		
@@ -43,12 +43,12 @@ public class LikesServiceImpl implements LikesService{
 	}
 
 	@Override
-	public Likes findLikesByReviewIdx(Long reviewIdx, Long userIdx) throws Exception {
+	public Likes findLikesByReviewIdx(Long reviewIdx, Long userIdx) {
 		return likesMapper.findLikesByReviewIdx(reviewIdx, userIdx);
 	}
 
 	@Override
-	public int hasLikes(Long reviewIdx, Long userIdx) throws Exception {
+	public int hasLikes(Long reviewIdx, Long userIdx) {
 		return likesMapper.hasLikes(reviewIdx, userIdx);
 	}
 	

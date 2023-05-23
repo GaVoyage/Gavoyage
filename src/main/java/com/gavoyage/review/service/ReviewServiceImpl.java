@@ -1,6 +1,5 @@
 package com.gavoyage.review.service;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,12 +27,12 @@ public class ReviewServiceImpl implements ReviewService{
 	private final LikesMapper likesMapper;
 	
 	@Override
-	public int hasReview(Long planIdx) throws Exception {
+	public int hasReview(Long planIdx) {
 		return reviewMapper.hasReview(planIdx);
 	}
 
 	@Override
-	public void createReview(CreateReviewReq reviewCreateReq) throws Exception {
+	public void createReview(CreateReviewReq reviewCreateReq) {
 		reviewMapper.createReview(reviewCreateReq);
 				
 		log.debug("reviewIdx : {}", reviewCreateReq.getReviewIdx());
@@ -57,12 +56,12 @@ public class ReviewServiceImpl implements ReviewService{
 	}
 	
 	@Override
-	public GetReviewInfoRes getReviewInfo(Long reviewIdx, Long userIdx) throws Exception {		
+	public GetReviewInfoRes getReviewInfo(Long reviewIdx, Long userIdx) {		
 		return createGetReviewInfoRes(findReview(reviewIdx), userIdx);
 	}
 
 	@Override
-	public void deleteReview(Long reviewIdx) throws Exception {
+	public void deleteReview(Long reviewIdx) {
 		reviewMapper.deleteReview(reviewIdx);
 		reviewMapper.deleteRecommend(reviewIdx);
 		reviewMapper.deleteUnRecommend(reviewIdx);
@@ -79,27 +78,21 @@ public class ReviewServiceImpl implements ReviewService{
 	}
 
 	@Override
-	public List<GetReviewInfoRes> getAllReviewInfos(Long userIdx) throws Exception {
+	public List<GetReviewInfoRes> getAllReviewInfos(Long userIdx) {
 		return reviewMapper.findAllReviews().stream().map(r -> createGetReviewInfoRes(r, userIdx)).collect(Collectors.toList());
 	}
 	
 	private GetReviewInfoRes createGetReviewInfoRes(Review review, Long userIdx) {
-		try {
-			return GetReviewInfoRes.builder()
-					.reviewIdx(review.getReviewIdx())
-					.writerName(userService.findUserNicknameByReviewIdx(review.getReviewIdx()))
-					.title(review.getTitle())
-					.contents(review.getContents())
-					.hit(review.getHit())
-					.isLiked(likesMapper.hasLikes(review.getReviewIdx(), userIdx))
-					.createdAt(review.getCreatedAt())
-					.recommendsAttractionInfo(reviewMapper.getRecommendsAttractionInfo(review.getReviewIdx(), userIdx))
-					.unrecommendsAttractionInfo(reviewMapper.getUnRecommendsAttractionInfo(review.getReviewIdx(), userIdx))
-					.build();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
+		return GetReviewInfoRes.builder()
+				.reviewIdx(review.getReviewIdx())
+				.writerName(userService.findUserNicknameByReviewIdx(review.getReviewIdx()))
+				.title(review.getTitle())
+				.contents(review.getContents())
+				.hit(review.getHit())
+				.isLiked(likesMapper.hasLikes(review.getReviewIdx(), userIdx))
+				.createdAt(review.getCreatedAt())
+				.recommendsAttractionInfo(reviewMapper.getRecommendsAttractionInfo(review.getReviewIdx(), userIdx))
+				.unrecommendsAttractionInfo(reviewMapper.getUnRecommendsAttractionInfo(review.getReviewIdx(), userIdx))
+				.build();
 	}
-	
 }

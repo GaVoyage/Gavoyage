@@ -22,35 +22,35 @@ public class RegionServiceImpl implements RegionService {
 	private final RegionMapper regionMapper;
 
 	@Override
-	public List<Sido> getSido() throws Exception {
+	public List<Sido> getSido() {
 		
 		return regionMapper.getSido();
 	}
 
 	@Override
-	public List<Gugun> getGugun(int sidoCode) throws Exception {
+	public List<Gugun> getGugun(int sidoCode) {
 		return regionMapper.getGugun(sidoCode);
 	}
 
 	@Override
-	public AttractionDescription getAttractionDescription(int contentId) throws Exception {
+	public AttractionDescription getAttractionDescription(int contentId) {
 
 		return regionMapper.getAttractionDescription(contentId);
 	}
 
 	@Override
-	public AttractionDetail getAttractionDetail(int contentId) throws Exception {
+	public AttractionDetail getAttractionDetail(int contentId) {
 
 		return regionMapper.getAttractionDetail(contentId);
 	}
 
 	@Override
-	public List<AttractionInfo> getAttractionInfos(RegionSearchReq regionSearchReq) throws Exception {
+	public List<AttractionInfo> getAttractionInfos(RegionSearchReq regionSearchReq) {
 		return regionMapper.getAttractionInfos(regionSearchReq);
 	}
 
 	@Override
-	public AttractionInfo getAttractionInfosByContentId(int contentId) throws Exception {
+	public AttractionInfo getAttractionInfosByContentId(int contentId) {
 		return regionMapper.getAttractionInfosByContentId(contentId);
 	}
 

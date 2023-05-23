@@ -32,12 +32,7 @@ public class ReviewController {
 	private final ReviewServiceImpl reviewService;
 	
 	@PostMapping("")
-	public ResponseEntity<Void> createReview(@RequestBody CreateReviewReq reviewCreateReq, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
-		
-		if(principalDetails == null) {
-			log.error("로그인 후 이용해주세요");
-			throw new Exception();
-		}
+	public ResponseEntity<Void> createReview(@RequestBody CreateReviewReq reviewCreateReq, @AuthenticationPrincipal PrincipalDetails principalDetails) {
 		
 		reviewCreateReq.setUserIdx(principalDetails.getUser().getUserIdx());
 		reviewCreateReq.setHit(0);
@@ -47,7 +42,7 @@ public class ReviewController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<GetReviewInfoRes>> getAllReviewInfos(@AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
+	public ResponseEntity<List<GetReviewInfoRes>> getAllReviewInfos(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 		
 		// 로그인 하지 않은 경우
 		if(principalDetails == null) {
@@ -59,7 +54,7 @@ public class ReviewController {
 	}
 	
 	@GetMapping("/find-by-plan")
-	public ResponseEntity<GetReviewInfoRes> getReviewInfoByPlanIdx(@RequestParam(defaultValue = "0") Long planIdx, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception{
+	public ResponseEntity<GetReviewInfoRes> getReviewInfoByPlanIdx(@RequestParam(defaultValue = "0") Long planIdx, @AuthenticationPrincipal PrincipalDetails principalDetails){
 		FindReviewInfo findReviewInfo = reviewService.findReviewInfoByPlanIdx(planIdx);
 		
 		// 로그인 하지 않은 경우
@@ -72,7 +67,7 @@ public class ReviewController {
 	}
 	
 	@GetMapping("/{reviewIdx}")
-	public ResponseEntity<GetReviewInfoRes> getReviewInfo(@PathVariable Long reviewIdx, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception{
+	public ResponseEntity<GetReviewInfoRes> getReviewInfo(@PathVariable Long reviewIdx, @AuthenticationPrincipal PrincipalDetails principalDetails){
 		
 		// 로그인 하지 않은 경우
 		if(principalDetails == null) {
@@ -84,7 +79,7 @@ public class ReviewController {
 	}
 	
 	@DeleteMapping("/{reviewIdx}")
-	public ResponseEntity<Void> deleteReview(@PathVariable Long reviewIdx) throws Exception {
+	public ResponseEntity<Void> deleteReview(@PathVariable Long reviewIdx) {
 		reviewService.deleteReview(reviewIdx);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

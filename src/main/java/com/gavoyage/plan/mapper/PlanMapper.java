@@ -13,11 +13,11 @@ import com.gavoyage.plan.dto.request.PlanCreateReq;
 @Mapper
 public interface PlanMapper {
 	
-	void createPlan(PlanCreateReq planCreateReq) throws SQLException;
-	void createDailyPlan(DailyPlanCreateDto dailyPlanCreateDto) throws SQLException;
-	List<Plan> getPlans(Long userIdx) throws SQLException;
-	List<DailyPlan> getDailyPlans(Long planIdx) throws SQLException;
-	void deletePlan(Long planIdx) throws SQLException;
-	void deleteDailyPlan(Long dailyPlanIdx) throws SQLException;
+	void createPlan(PlanCreateReq planCreateReq);
+	void createDailyPlan(DailyPlanCreateDto dailyPlanCreateDto);
+	List<Plan> getPlans(Long userIdx);
+	List<DailyPlan> getDailyPlans(Long planIdx);
+	void deletePlan(Long planIdx);
+	void deleteDailyPlan(Long dailyPlanIdx);
 	
 }

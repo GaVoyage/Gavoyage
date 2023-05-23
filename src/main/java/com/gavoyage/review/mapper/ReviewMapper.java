@@ -14,7 +14,7 @@ import com.gavoyage.review.dto.sql.FindReviewInfo;
 @Mapper
 public interface ReviewMapper {
 	
-	int hasReview(Long planIdx) throws SQLException;
+	int hasReview(Long planIdx);
 	void createReview(CreateReviewReq createReviewReq);
 	void createRecommend(CreateRecommendDto createRecommendDto);
 	void createUnRecommend(CreateRecommendDto createRecommendDto);

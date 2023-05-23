@@ -15,7 +15,7 @@ public class ScrapServiceImpl implements ScrapService{
 	private final ScrapMapper scrapMapper;
 	
 	@Override
-	public Character pushScrap(ScrapDto scrapDto) throws Exception {
+	public Character pushScrap(ScrapDto scrapDto) {
 		
 		// 처음 스크랩한 경우
 		if(hasScrap(scrapDto) == 0) {
@@ -39,12 +39,12 @@ public class ScrapServiceImpl implements ScrapService{
 	}
 
 	@Override
-	public Scrap findScrapByContentId(ScrapDto scrapDto) throws Exception {
+	public Scrap findScrapByContentId(ScrapDto scrapDto) {
 		return scrapMapper.findScrapByContentId(scrapDto);
 	}
 
 	@Override
-	public int hasScrap(ScrapDto scrapDto) throws Exception {
+	public int hasScrap(ScrapDto scrapDto) {
 		return scrapMapper.hasScrap(scrapDto);
 	}
 

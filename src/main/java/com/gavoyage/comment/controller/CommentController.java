@@ -1,6 +1,5 @@
 package com.gavoyage.comment.controller;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -30,19 +29,19 @@ public class CommentController {
 	private final CommentServiceImpl commentService;
 	
 	@PostMapping
-	public ResponseEntity<Void> createComment(@RequestBody CreateCommentReq createCommentReq, @AuthenticationPrincipal PrincipalDetails principalDetails) throws SQLException{
+	public ResponseEntity<Void> createComment(@RequestBody CreateCommentReq createCommentReq, @AuthenticationPrincipal PrincipalDetails principalDetails) {
 		createCommentReq.setUserIdx(principalDetails.getUserIdx());
 		commentService.createComment(createCommentReq);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<CommentRes>> findAllComments() throws SQLException {
+	public ResponseEntity<List<CommentRes>> findAllComments() {
 		return new ResponseEntity<>(commentService.findAllComments(), HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{commentIdx}")
-	public ResponseEntity<List<Comment>> deleteComment(@PathVariable Long commentIdx) throws SQLException {
+	public ResponseEntity<List<Comment>> deleteComment(@PathVariable Long commentIdx) {
 		commentService.deleteComment(commentIdx);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

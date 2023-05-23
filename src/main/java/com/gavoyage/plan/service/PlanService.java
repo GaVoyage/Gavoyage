@@ -11,11 +11,11 @@ import com.gavoyage.region.domain.AttractionInfo;
 
 public interface PlanService {
 	
-	void createPlan(PlanCreateReq planCreateReq) throws Exception;
-	List<GetPlansRes> findPlans(Long userIdx) throws Exception;
-	List<DailyPlan> findDailyPlans(Long planIdx) throws Exception;
-	Map<LocalDate, List<AttractionInfo>> findAllAttractionInfos(Long planIdx) throws Exception;
-	void deletePlan(Long planIdx) throws Exception;
-	void deleteDailyPlan(Long dailyPlanIdx) throws Exception;
+	void createPlan(PlanCreateReq planCreateReq);
+	List<GetPlansRes> findPlans(Long userIdx);
+	List<DailyPlan> findDailyPlans(Long planIdx);
+	Map<LocalDate, List<AttractionInfo>> findAllAttractionInfos(Long planIdx);
+	void deletePlan(Long planIdx);
+	void deleteDailyPlan(Long dailyPlanIdx);
 	
 }

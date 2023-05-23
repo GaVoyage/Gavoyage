@@ -1,7 +1,5 @@
 package com.gavoyage.comment.domain;
 
-import java.time.LocalDate;
-
 import com.gavoyage.config.BaseEntity;
 
 import lombok.AllArgsConstructor;

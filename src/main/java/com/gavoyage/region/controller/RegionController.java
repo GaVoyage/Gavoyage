@@ -31,37 +31,37 @@ public class RegionController {
 	private final RegionService regionService;
 	
 	@PostMapping("/search")
-	public ResponseEntity<List<AttractionInfo>> search(@RequestBody RegionSearchReq regionSearchReq, HttpServletRequest request,  HttpServletResponse response) throws Exception {
+	public ResponseEntity<List<AttractionInfo>> search(@RequestBody RegionSearchReq regionSearchReq, HttpServletRequest request,  HttpServletResponse response) {
 		List<AttractionInfo> result = regionService.getAttractionInfos(regionSearchReq);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
 	@GetMapping("/sido")
-	public ResponseEntity<List<Sido>> getSido() throws Exception {
+	public ResponseEntity<List<Sido>> getSido() {
 		List<Sido> result = regionService.getSido();
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
 	@GetMapping("/gugun")
-	public ResponseEntity<List<Gugun>> getSiGugun(int sidoCode) throws Exception {
+	public ResponseEntity<List<Gugun>> getSiGugun(int sidoCode) {
 		List<Gugun> result = regionService.getGugun(sidoCode);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
 	@GetMapping("/detail")
-	public ResponseEntity<AttractionDetail> getAttractionDetail(int contentId) throws Exception {
+	public ResponseEntity<AttractionDetail> getAttractionDetail(int contentId) {
 		AttractionDetail result = regionService.getAttractionDetail(contentId);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
 	@GetMapping("/description")
-	public ResponseEntity<AttractionDescription> getAttractionDescription(int contentId) throws Exception {
+	public ResponseEntity<AttractionDescription> getAttractionDescription(int contentId) {
 		AttractionDescription result = regionService.getAttractionDescription(contentId);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
 	@GetMapping("/info")
-	public ResponseEntity<AttractionInfo> getAttractionInfo(int contentId) throws Exception {
+	public ResponseEntity<AttractionInfo> getAttractionInfo(int contentId) {
 		AttractionInfo result = regionService.getAttractionInfosByContentId(contentId);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}

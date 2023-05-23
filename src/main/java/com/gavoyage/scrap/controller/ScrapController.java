@@ -22,7 +22,7 @@ public class ScrapController {
 	private final ScrapServiceImpl scrapService;
 	
 	@PostMapping("/{content_id}")
-	public ResponseEntity<Character> scrapAttraction(@PathVariable Integer content_id, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception{
+	public ResponseEntity<Character> scrapAttraction(@PathVariable Integer content_id, @AuthenticationPrincipal PrincipalDetails principalDetails) {
 		
 		return new ResponseEntity<>(scrapService.pushScrap(ScrapDto.builder().
 				userIdx(principalDetails.getUserIdx())

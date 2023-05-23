@@ -33,7 +33,7 @@ public class PlanServiceImpl implements PlanService{
 	
 	@Override
 	@Transactional
-	public void createPlan(PlanCreateReq planCreateReq) throws Exception{
+	public void createPlan(PlanCreateReq planCreateReq) {
 		
 		planMapper.createPlan(planCreateReq);
 		
@@ -53,7 +53,7 @@ public class PlanServiceImpl implements PlanService{
 	}
 
 	@Override
-	public List<GetPlansRes> findPlans(Long userIdx) throws Exception{
+	public List<GetPlansRes> findPlans(Long userIdx) {
 		
 		List<Plan> plans = planMapper.getPlans(userIdx);
 		List<GetPlansRes> getPlansReses = new ArrayList<GetPlansRes>();
@@ -66,12 +66,12 @@ public class PlanServiceImpl implements PlanService{
 	}
 
 	@Override
-	public List<DailyPlan> findDailyPlans(Long planIdx) throws Exception{
+	public List<DailyPlan> findDailyPlans(Long planIdx) {
 		return planMapper.getDailyPlans(planIdx);
 	}
 	
 	@Override
-	public Map<LocalDate, List<AttractionInfo>> findAllAttractionInfos(Long planIdx) throws Exception{
+	public Map<LocalDate, List<AttractionInfo>> findAllAttractionInfos(Long planIdx) {
 		Map<LocalDate, List<AttractionInfo>> attractionInfos = new ConcurrentHashMap<>();
 		
 		for(DailyPlan dplan : findDailyPlans(planIdx)) {
@@ -91,7 +91,7 @@ public class PlanServiceImpl implements PlanService{
 	}
 
 	@Override
-	public void deletePlan(Long planIdx) throws Exception {
+	public void deletePlan(Long planIdx) {
 		planMapper.deletePlan(planIdx);
 		for(DailyPlan dailyPlans : findDailyPlans(planIdx)) {
 			deleteDailyPlan(dailyPlans.getDailyPlanIdx());
@@ -99,7 +99,7 @@ public class PlanServiceImpl implements PlanService{
 	}
 
 	@Override
-	public void deleteDailyPlan(Long dailyPlanIdx) throws Exception {
+	public void deleteDailyPlan(Long dailyPlanIdx) {
 		planMapper.deleteDailyPlan(dailyPlanIdx);
 	}
 
