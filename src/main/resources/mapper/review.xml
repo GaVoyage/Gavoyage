@@ -43,7 +43,7 @@
 	
 	<select id="findReviewInfoByPlanIdx" parameterType="Long" resultType="findReviewInfo">
 		select reviewIdx, title, contents, hit from review where planIdx = #{planIdx} and status = 'Y';
-	</select>
+	</select> 
 	 
 	 <select id="getRecommendsAttractionInfo" parameterType="Long" resultType="attractionInfoWithIsScrab">
 	 	select a.* from attraction_info a, recommend r where a.content_id = r.content_id and r.reviewIdx = #{reviewIdx} and r.status = 'Y';
