@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gavoyage.user.domain.Users;
@@ -63,6 +64,11 @@ public class UserController {
 		log.debug("emailCheck email : {}", email);
 		int cnt = userService.emailCheck(email);
 		return new ResponseEntity<>(cnt, HttpStatus.OK);
+	}
+	
+	@GetMapping("/nicknameCheck/{nickname}")
+	public ResponseEntity<Integer> nicknameCheck(@PathVariable String nickname) {
+		return new ResponseEntity<>(userService.nicknameCheck(nickname), HttpStatus.OK);
 	}
 	
 	/**

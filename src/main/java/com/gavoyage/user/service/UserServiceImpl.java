@@ -79,5 +79,10 @@ public class UserServiceImpl implements UserService{
 	public String findUserNicknameByReviewIdx(Long reviewIdx) {
 		return userMapper.findUserNameByReviewIdx(reviewIdx);
 	}
+
+	@Override
+	public int nicknameCheck(String nickname) {
+		return userMapper.nicknameCheck(nickname);
+	}
 	
 }

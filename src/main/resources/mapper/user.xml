@@ -29,6 +29,12 @@
 		where email = #{email}
 	</select>
 	
+	<select id="nicknameCheck" parameterType="String" resultType="int">
+		select count(nickname)
+		from user
+		where nickname = #{nickname}
+	</select>
+	
 	<select id="findByUserIdx" parameterType="Long" resultMap="user">
 		select *
 		from user

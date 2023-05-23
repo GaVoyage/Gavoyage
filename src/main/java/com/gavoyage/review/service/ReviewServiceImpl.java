@@ -8,10 +8,14 @@ import org.springframework.stereotype.Service;
 import com.gavoyage.likes.mapper.LikesMapper;
 import com.gavoyage.review.domain.Review;
 import com.gavoyage.review.dto.request.CreateReviewReq;
+import com.gavoyage.review.dto.response.GetReviewInfoLikesRes;
 import com.gavoyage.review.dto.response.GetReviewInfoRes;
+import com.gavoyage.review.dto.sql.AttractionInfoWithIsScrab;
 import com.gavoyage.review.dto.sql.CreateRecommendDto;
 import com.gavoyage.review.dto.sql.FindReviewInfo;
 import com.gavoyage.review.mapper.ReviewMapper;
+import com.gavoyage.scrap.dto.ScrapDto;
+import com.gavoyage.scrap.mapper.ScrapMapper;
 import com.gavoyage.user.service.UserServiceImpl;
 
 import lombok.RequiredArgsConstructor;
@@ -25,6 +29,7 @@ public class ReviewServiceImpl implements ReviewService{
 	private final ReviewMapper reviewMapper;
 	private final UserServiceImpl userService;
 	private final LikesMapper likesMapper;
+	private final ScrapMapper scrapMapper;
 	
 	@Override
 	public int hasReview(Long planIdx) {
@@ -83,6 +88,15 @@ public class ReviewServiceImpl implements ReviewService{
 	}
 	
 	private GetReviewInfoRes createGetReviewInfoRes(Review review, Long userIdx) {
+
+		List<AttractionInfoWithIsScrab> recommendAttractionInfoWithIsScrabs =  reviewMapper.getRecommendsAttractionInfo(review.getReviewIdx());
+		recommendAttractionInfoWithIsScrabs.stream().
+				forEach(a -> a.setIsScrab(scrapMapper.hasScrap(new ScrapDto(userIdx, a.getContent_id()))));
+		
+		List<AttractionInfoWithIsScrab> unrecommendAttractionInfoWithIsScrabs =  reviewMapper.getUnRecommendsAttractionInfo(review.getReviewIdx());
+		unrecommendAttractionInfoWithIsScrabs.stream().
+				forEach(a -> a.setIsScrab(scrapMapper.hasScrap(new ScrapDto(userIdx, a.getContent_id()))));
+		
 		return GetReviewInfoRes.builder()
 				.reviewIdx(review.getReviewIdx())
 				.writerName(userService.findUserNicknameByReviewIdx(review.getReviewIdx()))
@@ -91,8 +105,18 @@ public class ReviewServiceImpl implements ReviewService{
 				.hit(review.getHit())
 				.isLiked(likesMapper.hasLikes(review.getReviewIdx(), userIdx))
 				.createdAt(review.getCreatedAt())
-				.recommendsAttractionInfo(reviewMapper.getRecommendsAttractionInfo(review.getReviewIdx(), userIdx))
-				.unrecommendsAttractionInfo(reviewMapper.getUnRecommendsAttractionInfo(review.getReviewIdx(), userIdx))
+				.recommendsAttractionInfo(recommendAttractionInfoWithIsScrabs)
+				.unrecommendsAttractionInfo(unrecommendAttractionInfoWithIsScrabs)
 				.build();
+	}
+
+	@Override
+	public List<GetReviewInfoLikesRes> getReviewInfoLikes(Long userIdx) {
+		return reviewMapper.getReviewInfoLikes(userIdx);
+	}
+
+	@Override
+	public List<GetReviewInfoRes> getReviewInfosByUserIdx(Long userIdx) {
+		return reviewMapper.findReviewsByUserIdx(userIdx).stream().map(r -> createGetReviewInfoRes(r, userIdx)).collect(Collectors.toList());
 	}
 }

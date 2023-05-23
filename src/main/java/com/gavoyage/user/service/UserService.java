@@ -10,17 +10,17 @@ import com.gavoyage.user.dto.request.UserLoginReq;
 
 public interface UserService {
 	
-	int emailCheck(String email) throws Exception;
-	Users login(UserLoginReq userLoginReq) throws Exception;
-	void join(UserJoinReq userJoinReq) throws Exception;
-	Users findByUserIdx(Long userIdx) throws Exception;
-	List<Users> findAll() throws Exception;
-	void deleteUser(Long userIdx) throws Exception;
-	Optional<Users> findByUserEmail(String email) throws Exception;
-	void updateRefreshToken(String email, String refreshToken) throws Exception;	
-	Users findByRefreshToken(String refreshToken) throws Exception;
-	Optional<Users> findBySocialIdAndSocialType(String socialId, String socialType) throws Exception;
+	int emailCheck(String email);
+	int nicknameCheck(String nickname);
+	Users login(UserLoginReq userLoginReq);
+	void join(UserJoinReq userJoinReq);
+	Users findByUserIdx(Long userIdx);
+	List<Users> findAll();
+	void deleteUser(Long userIdx);
+	Optional<Users> findByUserEmail(String email);
+	void updateRefreshToken(String email, String refreshToken);
+	Users findByRefreshToken(String refreshToken);
+	Optional<Users> findBySocialIdAndSocialType(String socialId, String socialType);
 	Long socialJoin(SocialJoinDto socialJoinDto);
 	String findUserNicknameByReviewIdx(Long reviewIdx);
-	
 }

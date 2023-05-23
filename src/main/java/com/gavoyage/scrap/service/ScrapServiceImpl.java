@@ -1,9 +1,12 @@
 package com.gavoyage.scrap.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.gavoyage.scrap.domain.Scrap;
 import com.gavoyage.scrap.dto.ScrapDto;
+import com.gavoyage.scrap.dto.response.ScrapAttractionRes;
 import com.gavoyage.scrap.mapper.ScrapMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -46,6 +49,11 @@ public class ScrapServiceImpl implements ScrapService{
 	@Override
 	public int hasScrap(ScrapDto scrapDto) {
 		return scrapMapper.hasScrap(scrapDto);
+	}
+
+	@Override
+	public List<ScrapAttractionRes> scrapAttractionByUserIdx(Long userIdx) {
+		return scrapMapper.scrapAttractionByUserIdx(userIdx);
 	}
 
 }

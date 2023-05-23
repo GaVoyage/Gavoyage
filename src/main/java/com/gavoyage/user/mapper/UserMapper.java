@@ -14,6 +14,7 @@ import com.gavoyage.user.dto.request.UserLoginReq;
 public interface UserMapper {
 	
 	int emailCheck(String email);
+	int nicknameCheck(String nickname);
 	Users login(UserLoginReq userLoginReq);
 	Users findByUserIdx(Long userIdx);
 	List<Users> findAll();

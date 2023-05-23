@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gavoyage.config.login.PrincipalDetails;
 import com.gavoyage.review.dto.request.CreateReviewReq;
+import com.gavoyage.review.dto.response.GetReviewInfoLikesRes;
 import com.gavoyage.review.dto.response.GetReviewInfoRes;
 import com.gavoyage.review.dto.sql.FindReviewInfo;
 import com.gavoyage.review.service.ReviewServiceImpl;
@@ -78,9 +79,23 @@ public class ReviewController {
 		return new ResponseEntity<>(reviewService.getReviewInfo(reviewIdx, principalDetails.getUserIdx()), HttpStatus.OK);
 	}
 	
+	@GetMapping("/users")
+	public ResponseEntity<List<GetReviewInfoRes>> getReviewInfosByUserIdx(@AuthenticationPrincipal PrincipalDetails principalDetails){
+		
+		log.debug("userIdx : {}", principalDetails.getUserIdx()); 
+		
+		// 로그인 한 경우
+		return new ResponseEntity<>(reviewService.getReviewInfosByUserIdx(principalDetails.getUserIdx()), HttpStatus.OK);
+	} 
+	
 	@DeleteMapping("/{reviewIdx}")
 	public ResponseEntity<Void> deleteReview(@PathVariable Long reviewIdx) {
 		reviewService.deleteReview(reviewIdx);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping("/likes")
+	public ResponseEntity<List<GetReviewInfoLikesRes>> getReviewInfoLikes(@AuthenticationPrincipal PrincipalDetails principalDetails){
+		return new ResponseEntity<>(reviewService.getReviewInfoLikes(principalDetails.getUserIdx()), HttpStatus.OK);
 	}
 }
