@@ -42,13 +42,13 @@
 	</select>
 	 
 	 <select id="getRecommendsAttractionInfo" parameterType="Long" resultType="attractionInfoWithIsScrab">
-	 	select a.*, ifnull((select scrapIdx from scrap s, user u where s.userIdx = #{userIdx} and s.content_id = r.content_id), 0) as isScrab
+	 	select a.*, ifnull((select scrapIdx from scrap s, user u where s.userIdx = #{userIdx} and s.content_id = r.content_id and s.status = 'Y'), 0) as isScrab
        	from recommend r, attraction_info a
 		where r.content_id = a.content_id and reviewIdx = #{reviewIdx} and r.status = 'Y';
 	 </select>
 	 
 	 <select id="getUnRecommendsAttractionInfo" parameterType="Long" resultType="attractionInfoWithIsScrab">
-	 	select a.*, ifnull((select scrapIdx from scrap s, user u where s.userIdx = #{userIdx} and s.content_id = r.content_id), 0) as isScrab
+	 	select a.*, ifnull((select scrapIdx from scrap s, user u where s.userIdx = #{userIdx} and s.content_id = r.content_id and s.status = 'Y'), 0) as isScrab
        	from unrecommend r, attraction_info a
 		where r.content_id = a.content_id and reviewIdx = #{reviewIdx} and r.status = 'Y';
 	 </select>

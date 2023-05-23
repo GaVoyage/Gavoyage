@@ -1,12 +1,11 @@
 package com.gavoyage.comment.service;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.gavoyage.comment.domain.Comment;
 import com.gavoyage.comment.dto.request.CreateCommentReq;
+import com.gavoyage.comment.dto.response.CommentRes;
 import com.gavoyage.comment.mapper.CommentMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -18,25 +17,28 @@ public class CommentServiceImpl implements CommentService{
 	private final CommentMapper commentMapper;
 
 	@Override
-	public void createComment(CreateCommentReq createCommentReq) throws SQLException {
+	public void createComment(CreateCommentReq createCommentReq) {
 		commentMapper.createComment(createCommentReq);
 	}
 
 	@Override
-	public Comment findComment(Long commentIdx) throws SQLException {
+	public CommentRes findComment(Long commentIdx) {
 		return commentMapper.findComment(commentIdx);
 	}
 
 	@Override
-	public List<Comment> findAllComments() throws SQLException {
+	public List<CommentRes> findAllComments() {
 		return commentMapper.findAllComments();
 	}
 
 	@Override
-	public void deleteComment(Long commentIdx) throws SQLException {
+	public void deleteComment(Long commentIdx) {
 		commentMapper.deleteComment(commentIdx);
 	}
-	
-	
+
+	@Override
+	public List<CommentRes> findCommentsByReviewIdx(Long reviewIdx) {
+		return commentMapper.findCommentsByReviewIdx(reviewIdx);
+	}
 	
 }
