@@ -23,7 +23,7 @@ public class LikesController {
 	private final LikesServiceImpl likesService;
 	
 	@PostMapping("/{reviewIdx}")
-	public ResponseEntity<?> pushLikes(@PathVariable Long reviewIdx, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception{
+	public ResponseEntity<?> pushLikes(@PathVariable Long reviewIdx, @AuthenticationPrincipal PrincipalDetails principalDetails) {
 		log.debug("좋아요 버튼 눌림");
 		
 		return new ResponseEntity<>(likesService.pushLikes(reviewIdx, principalDetails.getUserIdx()), HttpStatus.OK);

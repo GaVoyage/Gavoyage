@@ -18,6 +18,10 @@
 		select * from review where status = 'Y';
 	</select>
 	
+	<select id="findReviewsByUserIdx" parameterType="Long" resultType="review">
+		select * from review where status = 'Y' and userIdx = #{userIdx};
+	</select>
+	
 	<insert id="createReview" parameterType="createReviewReq">
 		insert into review(userIdx, planIdx, title, contents, hit)
 		value (#{userIdx}, #{planIdx}, #{title}, #{contents}, #{hit});
@@ -42,15 +46,11 @@
 	</select>
 	 
 	 <select id="getRecommendsAttractionInfo" parameterType="Long" resultType="attractionInfoWithIsScrab">
-	 	select a.*, ifnull((select scrapIdx from scrap s, user u where s.userIdx = #{userIdx} and s.content_id = r.content_id and s.status = 'Y'), 0) as isScrab
-       	from recommend r, attraction_info a
-		where r.content_id = a.content_id and reviewIdx = #{reviewIdx} and r.status = 'Y';
+	 	select a.* from attraction_info a, recommend r where a.content_id = r.content_id and r.reviewIdx = #{reviewIdx} and r.status = 'Y';
 	 </select>
 	 
 	 <select id="getUnRecommendsAttractionInfo" parameterType="Long" resultType="attractionInfoWithIsScrab">
-	 	select a.*, ifnull((select scrapIdx from scrap s, user u where s.userIdx = #{userIdx} and s.content_id = r.content_id and s.status = 'Y'), 0) as isScrab
-       	from unrecommend r, attraction_info a
-		where r.content_id = a.content_id and reviewIdx = #{reviewIdx} and r.status = 'Y';
+	 	select a.* from attraction_info a, recommend r where a.content_id = r.content_id and r.reviewIdx = #{reviewIdx} and r.status = 'Y';
 	 </select>
 	 
 	 <update id="deleteReview" parameterType="Long">
@@ -64,5 +64,11 @@
 	 <update id="deleteUnRecommend" parameterType="Long">
 	 	update unrecommend set status = 'N' where reviewIdx = #{reviewIdx};
 	 </update>
+	 
+	 <select id="getReviewInfoLikes" parameterType="Long" resultType="GetReviewInfoLikesRes">
+	 	select u.nickname, r.reviewIdx, r.planIdx, r.title, r.contents, r.createdAt, l.status
+		from user u, review r, likes l
+		where l.userIdx = u.userIdx and l.reviewIdx = r.reviewIdx and u.userIdx = #{userIdx} and l.status = 'Y' and r.status = 'Y';
+	 </select>
 	 
 </mapper>

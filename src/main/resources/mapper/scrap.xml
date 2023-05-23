@@ -26,5 +26,12 @@
 	<update id="unscrap" parameterType="Long">
 		update scrap set status = 'N' where scrapIdx = #{scrapIdx};
 	</update>
+	
+	<select id="scrapAttractionByUserIdx" parameterType="Long" resultType="ScrapAttractionRes">
+		select a.content_id, a.content_type_id, a.title, a.addr1, a.first_image
+		from user u, scrap s, attraction_info a
+		where u.userIdx = s.userIdx and s.content_id = a.content_id and u.userIdx = #{userIdx} and s.status = 'Y';
+	</select>
+	
 	 
 </mapper>

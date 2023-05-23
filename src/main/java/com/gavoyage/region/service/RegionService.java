@@ -11,11 +11,11 @@ import com.gavoyage.region.dto.request.RegionSearchReq;
 
 public interface RegionService {
 	
-	List<Sido> getSido() throws Exception;
-	List<Gugun> getGugun(int sidoCode) throws Exception;
-	List<AttractionInfo> getAttractionInfos(RegionSearchReq regionSearchReq) throws Exception;
-	AttractionInfo getAttractionInfosByContentId(int contentId) throws Exception;
-	AttractionDescription getAttractionDescription(int contentId) throws Exception;
-	AttractionDetail getAttractionDetail(int contentId) throws Exception;
+	List<Sido> getSido();
+	List<Gugun> getGugun(int sidoCode);
+	List<AttractionInfo> getAttractionInfos(RegionSearchReq regionSearchReq);
+	AttractionInfo getAttractionInfosByContentId(int contentId);
+	AttractionDescription getAttractionDescription(int contentId);
+	AttractionDetail getAttractionDetail(int contentId);
 	
 }

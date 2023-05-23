@@ -1,6 +1,5 @@
 package com.gavoyage.user.mapper;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,16 +13,17 @@ import com.gavoyage.user.dto.request.UserLoginReq;
 @Mapper
 public interface UserMapper {
 	
-	int emailCheck(String email) throws SQLException;
-	Users login(UserLoginReq userLoginReq) throws SQLException;
-	Users findByUserIdx(Long userIdx) throws SQLException;
-	List<Users> findAll() throws SQLException;
-	void join(UserJoinReq userJoinReq)  throws SQLException;
+	int emailCheck(String email);
+	int nicknameCheck(String nickname);
+	Users login(UserLoginReq userLoginReq);
+	Users findByUserIdx(Long userIdx);
+	List<Users> findAll();
+	void join(UserJoinReq userJoinReq);
 	void deleteUser(Long userIdx);
 	Users findByUserEmail(String email);
 	Users findByRefreshToken(String refreshToken);
 	void updateRefreshToken(String email, String refreshToken);
 	Optional<Users> findBySocialIdAndSocialType(String socialId, String socialType);
-	void socialJoin(SocialJoinDto socialJoinDto) throws SQLException;
+	void socialJoin(SocialJoinDto socialJoinDto);
 	String findUserNameByReviewIdx(Long reviewIdx);
 }

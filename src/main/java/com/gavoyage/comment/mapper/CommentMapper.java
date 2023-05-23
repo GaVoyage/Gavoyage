@@ -1,11 +1,9 @@
 package com.gavoyage.comment.mapper;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.gavoyage.comment.domain.Comment;
 import com.gavoyage.comment.dto.request.CreateCommentReq;
 import com.gavoyage.comment.dto.response.CommentRes;
 

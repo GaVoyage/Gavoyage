@@ -1,6 +1,5 @@
 package com.gavoyage.user.service;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,9 +12,7 @@ import com.gavoyage.user.dto.request.UserLoginReq;
 import com.gavoyage.user.mapper.UserMapper;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
@@ -23,32 +20,32 @@ public class UserServiceImpl implements UserService{
 	private final UserMapper userMapper;
 
 	@Override
-	public Users login(UserLoginReq userLoginReq) throws Exception {
+	public Users login(UserLoginReq userLoginReq) {
 		return userMapper.login(userLoginReq);
 	}
 
 	@Override
-	public int emailCheck(String email) throws Exception {
+	public int emailCheck(String email) {
 		return userMapper.emailCheck(email);
 	}
 
 	@Override
-	public Users findByUserIdx(Long userIdx) throws Exception {
+	public Users findByUserIdx(Long userIdx) {
 		return userMapper.findByUserIdx(userIdx);
 	}
 
 	@Override
-	public List<Users> findAll() throws Exception {
+	public List<Users> findAll() {
 		return userMapper.findAll();
 	}
 
 	@Override
-	public void join(UserJoinReq userJoinReq) throws Exception {
+	public void join(UserJoinReq userJoinReq) {
 		userMapper.join(userJoinReq);
 	}
 
 	@Override
-	public void deleteUser(Long userIdx) throws Exception {
+	public void deleteUser(Long userIdx) {
 		userMapper.deleteUser(userIdx);
 	}
 
@@ -74,19 +71,18 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public Long socialJoin(SocialJoinDto socialJoinDto) {
-//		log.debug(socialJoinDto.toString());
-		try {
-			userMapper.socialJoin(socialJoinDto);
-		} catch (SQLException e) {
-			log.error(e.getMessage());
-		}
-		
+		userMapper.socialJoin(socialJoinDto);
 		return socialJoinDto.getUserIdx();
 	}
 
 	@Override
 	public String findUserNicknameByReviewIdx(Long reviewIdx) {
 		return userMapper.findUserNameByReviewIdx(reviewIdx);
+	}
+
+	@Override
+	public int nicknameCheck(String nickname) {
+		return userMapper.nicknameCheck(nickname);
 	}
 	
 }

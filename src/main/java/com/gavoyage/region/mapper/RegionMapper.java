@@ -13,12 +13,12 @@ import com.gavoyage.region.dto.request.RegionSearchReq;
 
 @Mapper
 public interface RegionMapper {
-	List<Sido> getSido() throws SQLException;
-	List<Gugun> getGugun(int sidoCode) throws SQLException;
+	List<Sido> getSido();
+	List<Gugun> getGugun(int sidoCode);
 	
-	AttractionDescription getAttractionDescription(int contentId) throws SQLException;
-	AttractionDetail getAttractionDetail(int contentId) throws SQLException;
+	AttractionDescription getAttractionDescription(int contentId);
+	AttractionDetail getAttractionDetail(int contentId);
 	
-	List<AttractionInfo> getAttractionInfos(RegionSearchReq regionSearchReq) throws SQLException;
-	AttractionInfo getAttractionInfosByContentId(int contentId) throws SQLException;
+	List<AttractionInfo> getAttractionInfos(RegionSearchReq regionSearchReq);
+	AttractionInfo getAttractionInfosByContentId(int contentId);
 }

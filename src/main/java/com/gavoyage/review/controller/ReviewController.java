@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gavoyage.config.login.PrincipalDetails;
 import com.gavoyage.review.dto.request.CreateReviewReq;
+import com.gavoyage.review.dto.response.GetReviewInfoLikesRes;
 import com.gavoyage.review.dto.response.GetReviewInfoRes;
 import com.gavoyage.review.dto.sql.FindReviewInfo;
 import com.gavoyage.review.service.ReviewServiceImpl;
@@ -32,12 +33,7 @@ public class ReviewController {
 	private final ReviewServiceImpl reviewService;
 	
 	@PostMapping("")
-	public ResponseEntity<Void> createReview(@RequestBody CreateReviewReq reviewCreateReq, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
-		
-		if(principalDetails == null) {
-			log.error("로그인 후 이용해주세요");
-			throw new Exception();
-		}
+	public ResponseEntity<Void> createReview(@RequestBody CreateReviewReq reviewCreateReq, @AuthenticationPrincipal PrincipalDetails principalDetails) {
 		
 		reviewCreateReq.setUserIdx(principalDetails.getUser().getUserIdx());
 		reviewCreateReq.setHit(0);
@@ -47,7 +43,7 @@ public class ReviewController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<GetReviewInfoRes>> getAllReviewInfos(@AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
+	public ResponseEntity<List<GetReviewInfoRes>> getAllReviewInfos(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 		
 		// 로그인 하지 않은 경우
 		if(principalDetails == null) {
@@ -59,7 +55,7 @@ public class ReviewController {
 	}
 	
 	@GetMapping("/find-by-plan")
-	public ResponseEntity<GetReviewInfoRes> getReviewInfoByPlanIdx(@RequestParam(defaultValue = "0") Long planIdx, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception{
+	public ResponseEntity<GetReviewInfoRes> getReviewInfoByPlanIdx(@RequestParam(defaultValue = "0") Long planIdx, @AuthenticationPrincipal PrincipalDetails principalDetails){
 		FindReviewInfo findReviewInfo = reviewService.findReviewInfoByPlanIdx(planIdx);
 		
 		// 로그인 하지 않은 경우
@@ -72,7 +68,7 @@ public class ReviewController {
 	}
 	
 	@GetMapping("/{reviewIdx}")
-	public ResponseEntity<GetReviewInfoRes> getReviewInfo(@PathVariable Long reviewIdx, @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception{
+	public ResponseEntity<GetReviewInfoRes> getReviewInfo(@PathVariable Long reviewIdx, @AuthenticationPrincipal PrincipalDetails principalDetails){
 		
 		// 로그인 하지 않은 경우
 		if(principalDetails == null) {
@@ -83,9 +79,23 @@ public class ReviewController {
 		return new ResponseEntity<>(reviewService.getReviewInfo(reviewIdx, principalDetails.getUserIdx()), HttpStatus.OK);
 	}
 	
+	@GetMapping("/users")
+	public ResponseEntity<List<GetReviewInfoRes>> getReviewInfosByUserIdx(@AuthenticationPrincipal PrincipalDetails principalDetails){
+		
+		log.debug("userIdx : {}", principalDetails.getUserIdx()); 
+		
+		// 로그인 한 경우
+		return new ResponseEntity<>(reviewService.getReviewInfosByUserIdx(principalDetails.getUserIdx()), HttpStatus.OK);
+	} 
+	
 	@DeleteMapping("/{reviewIdx}")
-	public ResponseEntity<Void> deleteReview(@PathVariable Long reviewIdx) throws Exception {
+	public ResponseEntity<Void> deleteReview(@PathVariable Long reviewIdx) {
 		reviewService.deleteReview(reviewIdx);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping("/likes")
+	public ResponseEntity<List<GetReviewInfoLikesRes>> getReviewInfoLikes(@AuthenticationPrincipal PrincipalDetails principalDetails){
+		return new ResponseEntity<>(reviewService.getReviewInfoLikes(principalDetails.getUserIdx()), HttpStatus.OK);
 	}
 }
