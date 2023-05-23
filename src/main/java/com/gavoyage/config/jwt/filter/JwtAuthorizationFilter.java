@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import com.gavoyage.config.jwt.service.JwtService;
 import com.gavoyage.config.login.PrincipalDetails;
+import com.gavoyage.exception.exception.ExpiredJwtException;
 import com.gavoyage.user.domain.Users;
 import com.gavoyage.user.service.UserServiceImpl;
 
@@ -94,7 +95,11 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 			log.debug("유효한 토큰인 경우");
 			
 			if(!jwtService.isTokenValid(accessToken)) {
-				throw new ServletException("유효하지 않은 토큰입니다.");
+				
+				// refresh token 검증 로직
+				
+				// refresh도 안된다
+				throw new ExpiredJwtException();
 			}
 			
 			String email = jwtService.extractEmail(accessToken).orElse(null); // claim으로 부터 email 추출
