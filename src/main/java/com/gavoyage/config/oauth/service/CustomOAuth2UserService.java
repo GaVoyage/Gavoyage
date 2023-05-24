@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import com.gavoyage.config.oauth.CustomOAuth2User;
 import com.gavoyage.config.oauth.OAuth2UserInfo;
 import com.gavoyage.config.oauth.OAuthAttributes;
+import com.gavoyage.exception.RestException;
+import com.gavoyage.exception.errorcode.ErrorCode;
 import com.gavoyage.user.domain.Users;
 import com.gavoyage.user.dto.SocialJoinDto;
 import com.gavoyage.user.service.UserServiceImpl;
@@ -63,7 +65,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         		SocialJoinDto socialJoinDto = createSocialJoinDto(socialType, oAuthAttributes);
         		log.debug("SocialJoinDto : " +  socialJoinDto.toString());
         		Long userIdx = userService.socialJoin(createSocialJoinDto(socialType, oAuthAttributes));
-				user = userService.findByUserIdx(userIdx);
+				user = userService.findByUserIdx(userIdx).orElseThrow(() -> new RestException(ErrorCode.RESOURCE_NOT_FOUND));
 			} catch (Exception e) {
 				log.error(e.getMessage());
 			}

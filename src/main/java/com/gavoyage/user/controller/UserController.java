@@ -2,9 +2,9 @@ package com.gavoyage.user.controller;
 
 import java.util.List;
 
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,10 +12,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gavoyage.config.login.PrincipalDetails;
+import com.gavoyage.exception.RestException;
+import com.gavoyage.exception.errorcode.ErrorCode;
 import com.gavoyage.user.domain.Users;
+import com.gavoyage.user.dto.request.UpdateNicknameReq;
+import com.gavoyage.user.dto.request.UpdateUserImageUrlReq;
 import com.gavoyage.user.dto.request.UserJoinReq;
 import com.gavoyage.user.service.UserServiceImpl;
 
@@ -71,13 +75,18 @@ public class UserController {
 		return new ResponseEntity<>(userService.nicknameCheck(nickname), HttpStatus.OK);
 	}
 	
+	@GetMapping("/findbyuseremail/{email}")
+	public ResponseEntity<Users> findbyuseremail(@PathVariable String email) {
+		return new ResponseEntity<>(userService.findByUserEmail(email).orElseThrow(() -> new RestException(ErrorCode.RESOURCE_NOT_FOUND)), HttpStatus.OK);
+	}
+	
 	/**
 	 * 유저 정보 조회
 	 */
-	@GetMapping("/{userIdx}")
-	public ResponseEntity<Users> findOne(@PathVariable("userIdx") Long userIdx) {
+	@GetMapping("/login")
+	public ResponseEntity<Users> findOne(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 		try {
-			Users findUser = userService.findByUserIdx(userIdx);
+			Users findUser = userService.findByUserIdx(principalDetails.getUserIdx()).orElseThrow(() -> new RestException(ErrorCode.RESOURCE_NOT_FOUND));
 			log.debug("findUser : " + findUser);
 			
 			if(findUser == null) { // userIdx에 해당하는 user가 존재하지 않는 경우
@@ -112,11 +121,29 @@ public class UserController {
 	}
 	
 	@DeleteMapping("/{userIdx}")
-	public ResponseEntity<?> deleteUser(@PathVariable Long userIdx) {
-		
+	public ResponseEntity<Void> deleteUser(@PathVariable Long userIdx) {
 		userService.deleteUser(userIdx);
-		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
+	@DeleteMapping()
+	public ResponseEntity<Void> quitUser(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+		userService.deleteUser(principalDetails.getUserIdx());
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@PostMapping("/update/nickname")
+	public ResponseEntity<Void> updateNickname(@RequestBody UpdateNicknameReq updateNicknameReq, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+		updateNicknameReq.setUserIdx(principalDetails.getUserIdx());
+		userService.updateNickname(updateNicknameReq);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@PostMapping("/update/userimageurl")
+	public ResponseEntity<Void> updateUserImageUrl(@RequestBody UpdateUserImageUrlReq updateUserImageUrlReq, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+		updateUserImageUrlReq.setUserIdx(principalDetails.getUserIdx());
+		userService.updateUserImageUrl(updateUserImageUrlReq);
+		return new ResponseEntity<>(HttpStatus.OK);
+	} 
 	
 }

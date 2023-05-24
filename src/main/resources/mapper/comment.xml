@@ -9,13 +9,13 @@
 	</insert>
 	 
 	 <select id="findComment" parameterType="Long" resultType="commentRes">
-	 	select c.commentIdx, c.reviewIdx, u.userIdx, u.nickname, c.contents, c.createdAt
+	 	select c.commentIdx, c.reviewIdx, u.userIdx, u.nickname, u.userImageUrl, c.contents, c.createdAt
     	from comment c, user u 
     	where c.userIdx = u.userIdx and c.commentIdx = #{commentIdx} and c.status = 'Y';
 	 </select>
 	 
 	 <select id="findAllComments" resultType="commentRes">
-	 	select c.commentIdx, c.reviewIdx, u.userIdx, u.nickname, c.contents, c.createdAt
+	 	select c.commentIdx, c.reviewIdx, u.userIdx, u.nickname, u.userImageUrl, c.contents, c.createdAt
     	from comment c, user u 
     	where c.userIdx = u.userIdx and c.status = 'Y';
 	 </select>
@@ -25,9 +25,9 @@
 	 </update>
 	 
 	 <select id="findCommentsByReviewIdx" parameterType="Long" resultType="commentRes">
-	 	select c.commentIdx, c.reviewIdx, u.userIdx, u.nickname, c.contents, c.createdAt
+	 	select c.commentIdx, c.reviewIdx, u.userIdx, u.nickname, u.userImageUrl, c.contents, c.createdAt
 		from comment c, user u, review r
-		where c.userIdx = u.userIdx and c.reviewIdx = r.reviewIdx and r.reviewIdx = #{reviewIdx} and c.status = 'Y';
+		where c.userIdx = u.userIdx and c.reviewIdx = r.reviewIdx and r.reviewIdx = #{reviewIdx} and c.status = 'Y' and r.status = 'Y';
 	 </select>
 	 
 </mapper>

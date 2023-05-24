@@ -14,6 +14,7 @@ public class CommentRes {
 	private Long reviewIdx;
 	private Long userIdx;
 	private String nickname;
+	private String userImageUrl;
 	private String contents;
 	public LocalDate createdAt;
 }

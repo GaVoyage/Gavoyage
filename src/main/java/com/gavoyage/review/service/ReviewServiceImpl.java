@@ -1,10 +1,13 @@
 package com.gavoyage.review.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.gavoyage.exception.RestException;
+import com.gavoyage.exception.errorcode.ErrorCode;
 import com.gavoyage.likes.mapper.LikesMapper;
 import com.gavoyage.review.domain.Review;
 import com.gavoyage.review.dto.request.CreateReviewReq;
@@ -62,7 +65,7 @@ public class ReviewServiceImpl implements ReviewService{
 	
 	@Override
 	public GetReviewInfoRes getReviewInfo(Long reviewIdx, Long userIdx) {		
-		return createGetReviewInfoRes(findReview(reviewIdx), userIdx);
+		return createGetReviewInfoRes(findReview(reviewIdx).orElseThrow(() -> new RestException(ErrorCode.RESOURCE_NOT_FOUND)), userIdx);
 	}
 
 	@Override
@@ -78,7 +81,7 @@ public class ReviewServiceImpl implements ReviewService{
 	}
 
 	@Override
-	public Review findReview(Long reviewIdx) {
+	public Optional<Review> findReview(Long reviewIdx) {
 		return reviewMapper.findReview(reviewIdx);
 	}
 

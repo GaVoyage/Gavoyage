@@ -18,6 +18,8 @@ import com.gavoyage.comment.dto.request.CreateCommentReq;
 import com.gavoyage.comment.dto.response.CommentRes;
 import com.gavoyage.comment.service.CommentServiceImpl;
 import com.gavoyage.config.login.PrincipalDetails;
+import com.gavoyage.exception.RestException;
+import com.gavoyage.exception.errorcode.ErrorCode;
 
 import lombok.RequiredArgsConstructor;
 
@@ -50,4 +52,5 @@ public class CommentController {
 	public ResponseEntity<List<CommentRes>> findCommentsByReviewIdx(@PathVariable Long reviewIdx) {
 		return new ResponseEntity<>(commentService.findCommentsByReviewIdx(reviewIdx), HttpStatus.OK); 
 	}
+	
 }
