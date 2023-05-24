@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 세션을 사용하지 않도록 설정
 		http.authorizeHttpRequests()
-		.antMatchers("/", "/users/join", "/users/emailCheck/**", "/users/nicknameCheck/**", "/regions/**", "/css/**", "/img/**", "/js/**", "/favicon.ico").permitAll()
+		.antMatchers("/", "/users/join", "/swagger-ui/**", "/users/emailCheck/**", "/users/nicknameCheck/**", "/regions/**", "/css/**", "/img/**", "/js/**", "/favicon.ico").permitAll()
 		.antMatchers(HttpMethod.GET, "/reviews/**").permitAll()
 		.antMatchers("/reviews/users", "/reviews/likes").authenticated()
 //		.antMatchers(HttpMethod.POST, "/reviews/**").hasRole("USER")
