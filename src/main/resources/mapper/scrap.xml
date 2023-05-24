@@ -6,12 +6,12 @@
 	
 	<select id="hasScrap" parameterType="scrapDto" resultType="int">
 		select count(*) from scrap 
-		where userIdx = #{userIdx} and content_id = #{content_id};
+		where userIdx = #{userIdx} and content_id = #{content_id} and status = 'Y';
 	</select>
 	
 	<select id="findScrapByContentId" parameterType="scrapDto" resultType="scrap">
 		select * from scrap 
-		where userIdx = #{userIdx} and content_id = #{content_id};
+		where userIdx = #{userIdx} and content_id = #{content_id} and status = 'Y';
 	</select>
 	
 	<insert id="createScrap" parameterType="scrapDto">

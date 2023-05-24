@@ -38,4 +38,12 @@ public class ScrapController {
 	public ResponseEntity<List<ScrapAttractionRes>> scrapAttractionByUserIdx(@AuthenticationPrincipal PrincipalDetails principalDetails) {
 		return new ResponseEntity<>(scrapService.scrapAttractionByUserIdx(principalDetails.getUserIdx()), HttpStatus.OK);
 	}
+	
+	@GetMapping("/{content_id}")
+	public ResponseEntity<Integer> isScrabed(@PathVariable Integer content_id, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+		return new ResponseEntity<>(scrapService.hasScrap(ScrapDto.builder().
+				userIdx(principalDetails.getUserIdx())
+				.content_id(content_id)
+				.build()), HttpStatus.OK);
+	}
 }

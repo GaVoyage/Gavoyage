@@ -18,6 +18,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.CorsFilter;
 
 import com.gavoyage.config.jwt.filter.JwtAuthorizationFilter;
+import com.gavoyage.config.jwt.filter.JwtExceptionFilter;
 import com.gavoyage.config.jwt.service.JwtService;
 import com.gavoyage.config.login.filter.LoginFilter;
 import com.gavoyage.config.oauth.handler.OAuth2LoginFailureHandler;
@@ -72,6 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		http.addFilterAfter(new LoginFilter(authenticationManager(), jwtService, userService), LogoutFilter.class); // 로그인 시 정상 회원이라면 jwt 토큰을 생성해주는 필터
 		http.addFilterBefore(new JwtAuthorizationFilter(authenticationManager(), jwtService, userService), LoginFilter.class); // 회원용 api 호출 시 jwt의 유효성을 검사해주는 필터
+		http.addFilterBefore(new JwtExceptionFilter(), JwtAuthorizationFilter.class); // jwt 토큰 유효성 검사해주는 필터
 	}
 	
 	@Bean

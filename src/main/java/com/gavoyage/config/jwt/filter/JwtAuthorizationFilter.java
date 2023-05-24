@@ -15,10 +15,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import com.gavoyage.config.jwt.service.JwtService;
 import com.gavoyage.config.login.PrincipalDetails;
-import com.gavoyage.exception.exception.ExpiredJwtException;
 import com.gavoyage.user.domain.Users;
 import com.gavoyage.user.service.UserServiceImpl;
-
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -74,7 +72,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 		}
 		
 		
-		// refresh token이 만료된 경우 에러를 발생 시키고 access token과 refresh token 모두 재발급
+		// access token이 만료된 경우 에러를 발생 시키고 access token과 refresh token 모두 재발급
 		if(refreshToken != null) {
 			log.debug("refresh token이 만료된 경우");
 			
@@ -90,17 +88,12 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 								reIssuedRefreshToken);
 		}
 		
+		
 		// access token을 보내 인증 처리
 		if(refreshToken == null) {
-			log.debug("유효한 토큰인 경우");
+			log.debug("Access Token이 온 경우");
 			
-			if(!jwtService.isTokenValid(accessToken)) {
-				
-				// refresh token 검증 로직
-				
-				// refresh도 안된다
-				throw new ExpiredJwtException();
-			}
+			jwtService.isTokenValid(accessToken);
 			
 			String email = jwtService.extractEmail(accessToken).orElse(null); // claim으로 부터 email 추출
 			Users userEntity = userService.findByUserEmail(email).orElse(null);
