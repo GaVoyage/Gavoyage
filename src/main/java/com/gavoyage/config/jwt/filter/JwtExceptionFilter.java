@@ -38,6 +38,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter{
         
         System.out.println(ex.getMessage());
         if(ex.getMessage().equals("JWT 토큰 만료")) {
+        	System.out.println("JWT 토큰 만료");
         	body.put("status", 5000); // 토큰 만료 시
         }else {
         	body.put("status", 6000); // 시그니처 검증 미 통과 시

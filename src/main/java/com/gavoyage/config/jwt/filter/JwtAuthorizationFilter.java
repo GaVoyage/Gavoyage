@@ -64,19 +64,18 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 		String accessToken = jwtService.extractAccessToken(request).orElse(null);
 		String refreshToken = jwtService.extractRefreshToken(request).orElse(null);
 		
-		log.debug("accessToken : " + refreshToken);
-		log.debug("refreshToken : " + refreshToken);
-		
 		if((accessToken == null && refreshToken == null)) { // header가 없거나 Bearer 방식이 아닐 경우
 			log.debug("토큰이 아예 없는 경우");
 			chain.doFilter(request, response);
 			return;
 		}
 		
+		log.debug("accessToken : " + accessToken);
+		log.debug("refreshToken : " + refreshToken);
 		
 		// access token이 만료된 경우 에러를 발생 시키고 access token과 refresh token 모두 재발급
 		if(refreshToken != null) {
-			log.debug("refresh token이 만료된 경우");
+			log.debug("access token이 만료된 경우");
 			
 			Users findUser = userService.findByRefreshToken(refreshToken).orElseThrow(() -> new RestException(ErrorCode.RESOURCE_NOT_FOUND));
 			log.debug("findUser : " + findUser);
