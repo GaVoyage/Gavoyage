@@ -82,13 +82,22 @@ public class JwtService {
    }
    
    public Optional<String> extractAccessToken(HttpServletRequest request) {
-	   log.debug("access token : " + request.getHeader(accessHeader));
+	   log.debug("accessHeader : " + accessHeader);
+	   if(request.getHeader(accessHeader) == null) {
+		   log.debug("====extractAccessToken is Null!!====");
+	   }
+	   log.debug("Bearer access token : " + request.getHeader(accessHeader));
 	   return Optional.ofNullable(request.getHeader(accessHeader))
 	   			.filter(token -> token.startsWith(tokenPrefix))
 	   			.map(token -> token.replace(tokenPrefix, ""));
    }
    
    public Optional<String> extractRefreshToken(HttpServletRequest request) {
+	   log.debug("refreshHeader : " + refreshHeader);
+	   if(request.getHeader(refreshHeader) == null) {
+		   log.debug("====extractRefreshToken is Null!!====");
+	   }
+	   log.debug("Bearer refresh token : " + request.getHeader(refreshHeader));
 	   return Optional.ofNullable(request.getHeader(refreshHeader))
 			   			.filter(token -> token.startsWith(tokenPrefix))
 			   			.map(token -> token.replace(tokenPrefix, ""));
@@ -128,7 +137,7 @@ public class JwtService {
    
    public boolean isTokenValid(String token) {
        try {
-    	   log.debug("token : " +  token);
+    	   log.debug("isValid token : " +  token);
            JWT.require(Algorithm.HMAC512(secretKey)).build().verify(token);
            return true;
        } catch(SignatureVerificationException e) {

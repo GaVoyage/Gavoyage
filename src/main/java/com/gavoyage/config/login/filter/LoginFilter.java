@@ -101,6 +101,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter{
 		/**
 		 * 로그인한 사용자 refresh token 값 갱신
 		 */
+		log.debug("=====login 시 발급한 refresh token=====");
 		userService.updateRefreshToken(user.getEmail(), refreshToken);
 		
 		ObjectMapper objectMapper = new ObjectMapper();

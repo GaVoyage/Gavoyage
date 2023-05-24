@@ -13,6 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.gavoyage.config.jwt.service.JwtService;
 import com.gavoyage.config.oauth.CustomOAuth2User;
+import com.gavoyage.user.mapper.UserMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler{
 	
 	private final JwtService jwtService;
+	private final UserMapper userMapper;
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -34,11 +36,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler{
 		String accessToken = jwtService.createAccessToken(oAuth2User.getEmail(), oAuth2User.getNickname());
 		String refreshToken = jwtService.createRefreshToken();
 		
-//		jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
-		
-//		ObjectMapper objectMapper = new ObjectMapper();
-//		String userResponse = objectMapper.writeValueAsString(new UserResponse(oAuth2User.getName(), oAuth2User.getEmail()));
-//		response.getWriter().print(userResponse);
+		userMapper.updateRefreshToken(oAuth2User.getEmail(), refreshToken);
 		
 		String uri = UriComponentsBuilder.fromUriString("http://localhost:8080/")
                 .queryParam("accessToken", accessToken)
