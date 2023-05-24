@@ -1,6 +1,7 @@
 package com.gavoyage.scrap.mapper;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,7 +13,7 @@ import com.gavoyage.scrap.dto.response.ScrapAttractionRes;
 public interface ScrapMapper {
 	
 	void createScrap(ScrapDto scrapDto);
-	Scrap findScrapByContentId(ScrapDto scrapDto);
+	Optional<Scrap> findScrapByContentId(ScrapDto scrapDto);
 	int hasScrap(ScrapDto scrapDto);
 	void scrap(Long scrapIdx);
 	void unscrap(Long scrapIdx);

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.gavoyage.user.domain.Users;
 import com.gavoyage.user.dto.SocialJoinDto;
+import com.gavoyage.user.dto.request.UpdateNicknameReq;
+import com.gavoyage.user.dto.request.UpdateUserImageUrlReq;
 import com.gavoyage.user.dto.request.UserJoinReq;
 import com.gavoyage.user.dto.request.UserLoginReq;
 import com.gavoyage.user.mapper.UserMapper;
@@ -30,7 +32,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public Users findByUserIdx(Long userIdx) {
+	public Optional<Users> findByUserIdx(Long userIdx) {
 		return userMapper.findByUserIdx(userIdx);
 	}
 
@@ -51,7 +53,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public Optional<Users> findByUserEmail(String email){
-		return Optional.ofNullable(userMapper.findByUserEmail(email));
+		return userMapper.findByUserEmail(email);
 	}
 
 	@Override
@@ -60,7 +62,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public Users findByRefreshToken(String refreshToken){
+	public Optional<Users> findByRefreshToken(String refreshToken){
 		return userMapper.findByRefreshToken(refreshToken);
 	}
 
@@ -83,6 +85,16 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public int nicknameCheck(String nickname) {
 		return userMapper.nicknameCheck(nickname);
+	}
+
+	@Override
+	public void updateNickname(UpdateNicknameReq updateNicknameReq) {
+		userMapper.updateNickname(updateNicknameReq);
+	}
+
+	@Override
+	public void updateUserImageUrl(UpdateUserImageUrlReq updateUserImageUrlReq) {
+		userMapper.updateUserImageUrl(updateUserImageUrlReq);
 	}
 	
 }

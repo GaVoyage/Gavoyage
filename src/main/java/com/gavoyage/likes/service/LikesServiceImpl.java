@@ -1,7 +1,11 @@
 package com.gavoyage.likes.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
+import com.gavoyage.exception.RestException;
+import com.gavoyage.exception.errorcode.ErrorCode;
 import com.gavoyage.likes.domain.Likes;
 import com.gavoyage.likes.mapper.LikesMapper;
 
@@ -26,7 +30,7 @@ public class LikesServiceImpl implements LikesService{
 			return 'Y';
 		}
 		
-		Likes likes = findLikesByReviewIdx(reviewIdx, userIdx);
+		Likes likes = findLikesByReviewIdx(reviewIdx, userIdx).orElseThrow(() -> new RestException(ErrorCode.RESOURCE_NOT_FOUND));
 		
 		if(likes.getStatus() == 'Y') { // 좋아요가 이미 눌린 경우
 			likesMapper.dislike(likes.getLikeIdx());
@@ -43,7 +47,7 @@ public class LikesServiceImpl implements LikesService{
 	}
 
 	@Override
-	public Likes findLikesByReviewIdx(Long reviewIdx, Long userIdx) {
+	public Optional<Likes> findLikesByReviewIdx(Long reviewIdx, Long userIdx) {
 		return likesMapper.findLikesByReviewIdx(reviewIdx, userIdx);
 	}
 

@@ -98,4 +98,12 @@
 		select u.nickname from review r, user u where r.userIdx = u.userIdx and r.reviewIdx = #{reviewIdx};
 	</select>
 	
+	<update id="updateNickname" parameterType="updateNicknameReq">
+		update user set nickname = #{nickname} where userIdx = #{userIdx}
+	</update>
+	
+	<update id="updateUserImageUrl" parameterType="updateUserImageUrlReq">
+		update user set userImageUrl = #{userImageUrl} where userIdx = #{userIdx}
+	</update>
+	
 </mapper>

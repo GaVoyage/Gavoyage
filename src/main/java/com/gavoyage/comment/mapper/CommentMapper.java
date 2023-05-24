@@ -1,6 +1,7 @@
 package com.gavoyage.comment.mapper;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,8 +12,7 @@ import com.gavoyage.comment.dto.response.CommentRes;
 public interface CommentMapper {
 	
 	void createComment(CreateCommentReq createCommentReq);
-	CommentRes findComment(Long commentIdx);
-	CommentRes findByReveiwIdx(Long reviewIdx);
+	Optional<CommentRes> findComment(Long commentIdx);
 	List<CommentRes> findAllComments();
 	void deleteComment(Long commentIdx);
 	List<CommentRes> findCommentsByReviewIdx(Long reviewIdx);

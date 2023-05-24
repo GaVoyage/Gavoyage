@@ -1,6 +1,7 @@
 package com.gavoyage.comment.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class CommentServiceImpl implements CommentService{
 	}
 
 	@Override
-	public CommentRes findComment(Long commentIdx) {
+	public Optional<CommentRes> findComment(Long commentIdx) {
 		return commentMapper.findComment(commentIdx);
 	}
 
@@ -38,6 +39,7 @@ public class CommentServiceImpl implements CommentService{
 
 	@Override
 	public List<CommentRes> findCommentsByReviewIdx(Long reviewIdx) {
+		System.out.println(commentMapper.findCommentsByReviewIdx(reviewIdx));
 		return commentMapper.findCommentsByReviewIdx(reviewIdx);
 	}
 	
