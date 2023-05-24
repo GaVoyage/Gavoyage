@@ -7,14 +7,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.gavoyage.user.domain.Users;
 import com.gavoyage.user.service.UserServiceImpl;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -99,10 +101,16 @@ public class JwtService {
 						.verify(accessToken)  // access token 유효성 검증
 						.getClaim("email")
 						.asString());   
-	   } catch (Exception e) { // 토큰이 유효하지 않을 때는 빈 optinal 객체 return
-		   log.error("Access Token이 유효하지 않아 이메일을 들고 올 수 없습니다");
-		   return Optional.empty(); 
-	   }
+	   } catch(SignatureVerificationException e) {
+    	   log.info("시그니처 검증 미통과");
+           throw new JwtException("시그니처 검증 미 통과");
+       } catch(TokenExpiredException e) {
+    	   log.info("JWT 토큰 만료");
+           throw new JwtException("JWT 토큰 만료");
+       }  catch (IllegalArgumentException e) {
+           log.info("JWT token compact of handler are invalid.");
+           throw new JwtException("JWT token compact of handler are invalid.");
+       }
 	   
 			   						 
    }
@@ -119,14 +127,18 @@ public class JwtService {
    
    public boolean isTokenValid(String token) {
        try {
-    	   // jwt verifier builder 호출 후 jwt verifier를 생성하여 검증
-    	   // 이 과정에서 예외가 터진다면 토큰이 유효하지 않다는 것이다!
     	   log.debug("token : " +  token);
            JWT.require(Algorithm.HMAC512(secretKey)).build().verify(token);
            return true;
-       } catch (Exception e) {
-           log.error("유효하지 않은 토큰 {}", e.getMessage());
-           return false;
+       } catch(SignatureVerificationException e) {
+    	   log.info("시그니처 검증 미통과");
+           throw new JwtException("시그니처 검증 미 통과");
+       } catch(TokenExpiredException e) {
+    	   log.info("JWT 토큰 만료");
+           throw new JwtException("JWT 토큰 만료");
+       }  catch (IllegalArgumentException e) {
+           log.info("JWT token compact of handler are invalid.");
+           throw new JwtException("JWT token compact of handler are invalid.");
        }
    }
    
