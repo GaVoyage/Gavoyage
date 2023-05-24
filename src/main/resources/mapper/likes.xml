@@ -6,12 +6,12 @@
 	
 	<select id="hasLikes" parameterType="Long" resultType="int">
 		select count(*) from likes 
-		where userIdx = #{userIdx} and reviewIdx = #{reviewIdx};
+		where userIdx = #{userIdx} and reviewIdx = #{reviewIdx} and status = 'Y';
 	</select>
 	
 	<select id="findLikesByReviewIdx" parameterType="Long" resultType="likes">
 		select * from likes 
-		where userIdx = #{userIdx} and reviewIdx = #{reviewIdx};
+		where userIdx = #{userIdx} and reviewIdx = #{reviewIdx} and status = 'Y';
 	</select>
 	
 	<insert id="createLikes" parameterType="Long">
