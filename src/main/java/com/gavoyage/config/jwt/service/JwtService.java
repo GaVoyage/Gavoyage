@@ -117,6 +117,7 @@ public class JwtService {
    
    public void updateRefreshToken(String email, String refreshToken) {
 	   Optional<Users> user = userService.findByUserEmail(email);
+	   
 	   if(user.isPresent()) {
 		   userService.updateRefreshToken(user.get().getEmail(), refreshToken);
 		   return;

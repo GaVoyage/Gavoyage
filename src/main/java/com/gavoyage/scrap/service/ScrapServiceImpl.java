@@ -1,9 +1,12 @@
 package com.gavoyage.scrap.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.gavoyage.exception.RestException;
+import com.gavoyage.exception.errorcode.ErrorCode;
 import com.gavoyage.scrap.domain.Scrap;
 import com.gavoyage.scrap.dto.ScrapDto;
 import com.gavoyage.scrap.dto.response.ScrapAttractionRes;
@@ -26,7 +29,7 @@ public class ScrapServiceImpl implements ScrapService{
 			return 'Y';
 		}
 		
-		Scrap scrap = scrapMapper.findScrapByContentId(scrapDto);
+		Scrap scrap = scrapMapper.findScrapByContentId(scrapDto).orElseThrow(() -> new RestException(ErrorCode.RESOURCE_NOT_FOUND));
 		
 		if(scrap.getStatus() == 'Y') { // 좋아요가 이미 눌린 경우
 			scrapMapper.unscrap(scrap.getScrapIdx());
@@ -42,7 +45,7 @@ public class ScrapServiceImpl implements ScrapService{
 	}
 
 	@Override
-	public Scrap findScrapByContentId(ScrapDto scrapDto) {
+	public Optional<Scrap> findScrapByContentId(ScrapDto scrapDto) {
 		return scrapMapper.findScrapByContentId(scrapDto);
 	}
 

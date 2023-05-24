@@ -15,6 +15,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import com.gavoyage.config.jwt.service.JwtService;
 import com.gavoyage.config.login.PrincipalDetails;
+import com.gavoyage.exception.RestException;
+import com.gavoyage.exception.errorcode.ErrorCode;
 import com.gavoyage.user.domain.Users;
 import com.gavoyage.user.service.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -76,7 +78,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 		if(refreshToken != null) {
 			log.debug("refresh token이 만료된 경우");
 			
-			Users findUser = userService.findByRefreshToken(refreshToken);
+			Users findUser = userService.findByRefreshToken(refreshToken).orElseThrow(() -> new RestException(ErrorCode.RESOURCE_NOT_FOUND));
 			log.debug("findUser : " + findUser);
 			
 			// refresh token 갱신

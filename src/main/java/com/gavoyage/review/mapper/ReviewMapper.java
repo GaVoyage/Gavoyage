@@ -1,6 +1,7 @@
 package com.gavoyage.review.mapper;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -19,7 +20,7 @@ public interface ReviewMapper {
 	void createRecommend(CreateRecommendDto createRecommendDto);
 	void createUnRecommend(CreateRecommendDto createRecommendDto);
 	
-	Review findReview(Long reviewIdx);
+	Optional<Review> findReview(Long reviewIdx);
 	List<Review> findAllReviews();
 	List<Review> findReviewsByUserIdx(Long userIdx);
 	FindReviewInfo findReviewInfoByPlanIdx(Long planIdx);

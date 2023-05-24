@@ -1,6 +1,7 @@
 package com.gavoyage.review.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.gavoyage.review.domain.Review;
 import com.gavoyage.review.dto.request.CreateReviewReq;
@@ -16,7 +17,7 @@ public interface ReviewService {
 	List<GetReviewInfoRes> getAllReviewInfos(Long userIdx) throws Exception;
 	void deleteReview(Long reviewIdx) throws Exception;
 	FindReviewInfo findReviewInfoByPlanIdx(Long planIdx);
-	Review findReview(Long reviewIdx);
+	Optional<Review> findReview(Long reviewIdx);
 	List<GetReviewInfoLikesRes> getReviewInfoLikes(Long userIdx);
 	List<GetReviewInfoRes> getReviewInfosByUserIdx(Long userIdx);
 	
