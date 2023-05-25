@@ -1,6 +1,6 @@
 package com.gavoyage.review.domain;
 
-import com.gavoyage.config.BaseEntity;
+import com.gavoyage.global.BaseEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

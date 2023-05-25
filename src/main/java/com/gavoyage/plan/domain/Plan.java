@@ -2,7 +2,7 @@ package com.gavoyage.plan.domain;
 
 import java.time.LocalDate;
 
-import com.gavoyage.config.BaseEntity;
+import com.gavoyage.global.BaseEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

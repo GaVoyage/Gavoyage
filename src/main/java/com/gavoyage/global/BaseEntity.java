@@ -1,4 +1,4 @@
-package com.gavoyage.config;
+package com.gavoyage.global;
 
 import java.time.LocalDate;
 
