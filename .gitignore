@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# ignore properties file
+aws.properties
+jwt.properties
+kakao.properties
+naver.properties
+mysql.properties
