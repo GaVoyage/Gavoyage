@@ -3,6 +3,7 @@ package com.gavoyage.region.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.gavoyage.region.domain.AttractionDescription;
 import com.gavoyage.region.domain.AttractionDetail;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class RegionServiceImpl implements RegionService {
 	
 	
