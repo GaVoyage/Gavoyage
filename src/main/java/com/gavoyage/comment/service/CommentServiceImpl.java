@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.gavoyage.comment.dto.request.CreateCommentReq;
 import com.gavoyage.comment.dto.response.CommentRes;
@@ -13,10 +14,11 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CommentServiceImpl implements CommentService{
 	
 	private final CommentMapper commentMapper;
-
+	
 	@Override
 	public void createComment(CreateCommentReq createCommentReq) {
 		commentMapper.createComment(createCommentReq);

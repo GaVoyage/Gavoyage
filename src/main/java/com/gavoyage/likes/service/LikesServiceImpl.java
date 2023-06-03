@@ -3,6 +3,7 @@ package com.gavoyage.likes.service;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.gavoyage.exception.RestException;
 import com.gavoyage.exception.errorcode.ErrorCode;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class LikesServiceImpl implements LikesService{
 	
 	private final LikesMapper likesMapper;
